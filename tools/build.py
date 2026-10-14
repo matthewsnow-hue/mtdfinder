@@ -2,7 +2,7 @@
 """Static site generator for MTD Finder. Run: python3 tools/build.py (outputs HTML to repo root)."""
 import json,os,html
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SITE="https://matthewsnow-hue.github.io/mtdfinder"  # TODO: switch to https://mtdfinder.co.uk once DNS is live
+SITE="https://mtdfinder.co.uk"
 UPDATED="2026-10-14"
 ELIG="https://www.gov.uk/guidance/check-if-youre-eligible-for-making-tax-digital-for-income-tax"
 QI="https://www.gov.uk/guidance/work-out-your-qualifying-income-for-making-tax-digital-for-income-tax"
@@ -11,7 +11,7 @@ TOOL="https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software
 QU="https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates"
 TR="https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/submit-your-tax-return"
 SIGN="https://www.gov.uk/guidance/sign-up-your-business-for-making-tax-digital-for-income-tax"
-EMAIL="hello@snoautomations.co.uk"  # TODO placeholder: confirm Sno Automations contact address
+EMAIL="hello@mtdfinder.co.uk"
 data=json.load(open(f"{ROOT}/data/products.json"))
 N=data["count"]
 NAV=[("finder/","Software finder"),("guides/deadlines/","Deadlines"),("guides/landlords/","Landlords"),("guides/tradespeople/","Trades"),("faq/","FAQ"),("sponsor/","Sponsor")]
@@ -24,27 +24,27 @@ def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None):
     depth=path.count("/");pre="../"*depth
     url=f"{SITE}/{path}"
     lds=[{"@context":"https://schema.org","@graph":[ORG,{"@type":"WebSite","@id":SITE+"/#site","name":"MTD Finder","url":SITE+"/","publisher":{"@id":SITE+"/#org"}},{"@type":"WebPage","name":title,"url":url,"dateModified":UPDATED,"isPartOf":{"@id":SITE+"/#site"}}]}]
-    if faqs:lds.append(faq_ld(faqs));body+=f"<section class='wrap narrow'><h2>Frequently asked questions</h2>{faq_html(faqs)}</section>"
+    if faqs:lds.append(faq_ld(faqs));body+=f"<section class='wrap narrow'><span class='eyebrow'>Questions</span><h2 style='margin-top:0'>Frequently asked</h2>{faq_html(faqs)}</section>"
     if extra_ld:lds.append(extra_ld)
     nav="".join(f'<li><a href="{pre}{h}"{" aria-current=page" if h==path else ""}>{t}</a></li>' for h,t in NAV)
     ld="".join(f'<script type="application/ld+json">{json.dumps(l,ensure_ascii=False)}</script>' for l in lds)
     doc=f"""<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}"><link rel="canonical" href="{url}">
 <meta property="og:type" content="website"><meta property="og:site_name" content="MTD Finder"><meta property="og:title" content="{html.escape(title)}"><meta property="og:description" content="{html.escape(desc)}"><meta property="og:url" content="{url}"><meta property="og:locale" content="en_GB"><meta name="twitter:card" content="summary">
-<meta name="theme-color" content="#f6f4ef"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231d5c4a'/%3E%3Ctext x='16' y='22' font-size='17' text-anchor='middle' fill='white' font-family='Georgia'%3EM%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#f8f4ec"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231d5c4a'/%3E%3Ctext x='16' y='22' font-size='17' text-anchor='middle' fill='white' font-family='Georgia'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{pre}assets/style.css">{ld}</head><body>
-<a href="#main" class="small" style="position:absolute;left:-999px">Skip to content</a>
+<a href="#main" class="skip">Skip to content</a>
 <header class="site"><div class="wrap nav"><a class="brand" href="{pre or './'}">MTD <em>Finder</em></a><button class="menu-btn" aria-expanded="false" aria-label="Menu">Menu</button><ul>{nav}</ul></div></header>
 <main id="main">{body}</main>
-<footer><div class="wrap"><div class="cols"><div><a class="brand" href="{pre or './'}">MTD <em>Finder</em></a><p>An independent guide to Making Tax Digital for Income Tax software, for UK sole traders and landlords. Not affiliated with HMRC. Not tax advice. Run by Matthew Snow trading as Sno Automations.</p><p>Software data from <a href="{TOOL}" rel="noopener">HMRC's software finder</a>, last checked {data['last_checked']}.</p></div>
+<footer><div class="wrap"><div class="cols"><div><a class="brand" href="{pre or './'}">MTD <em>Finder</em></a><p>An independent guide to Making Tax Digital for Income Tax software, for UK sole traders and landlords. Not affiliated with HMRC. Not tax advice. Run by Matthew Snow trading as Sno Automations.</p><p>Owner: Matthew Snow trading as Sno Automations · <a href="mailto:{EMAIL}">{EMAIL}</a></p><p>Software data from <a href="{TOOL}" rel="noopener">HMRC's software finder</a>, last checked {data['last_checked']}.</p></div>
 <ul><li><a href="{pre}finder/">Software finder</a></li><li><a href="{pre}guides/deadlines/">Deadlines</a></li><li><a href="{pre}guides/landlords/">Landlords</a></li><li><a href="{pre}guides/tradespeople/">Tradespeople</a></li><li><a href="{pre}guides/bridging-software/">Bridging software</a></li><li><a href="{pre}faq/">FAQ</a></li></ul>
 <ul><li><a href="{pre}about/">About</a></li><li><a href="{pre}sponsor/">Sponsor us</a></li><li><a href="{pre}newsletter/">Newsletter</a></li><li><a href="{pre}privacy/">Privacy</a></li><li><a href="{pre}disclaimer/">Disclaimer</a></li></ul></div></div></footer>
 <script src="{pre}assets/site.js" defer></script></body></html>"""
     d=os.path.join(ROOT,path);os.makedirs(d,exist_ok=True);open(os.path.join(d,"index.html"),"w").write(doc);pages.append(path)
 
 def hero(eb,h1,lede,answer=None,btns=""):
-    a=f"<div class='answer'><strong>Short answer:</strong> {answer}</div>" if answer else ""
+    a=f"<div class='answer'><strong>Short answer:</strong> {answer[0].upper()+answer[1:]}</div>" if answer else ""
     return f"<section class='hero wrap'><div class='narrow'><span class='eyebrow'>{eb}</span><h1>{h1}</h1><p class='lede'>{lede}</p>{a}{btns}</div></section>"
 def prose(s):return f"<section class='wrap narrow prose reveal'>{s}</section>"
 
@@ -59,27 +59,33 @@ home_faq=[("Who needs to use Making Tax Digital for Income Tax?",f"Sole traders 
 page("","MTD Finder: Do I need Making Tax Digital, and which software?","Free Making Tax Digital for Income Tax checker and independent finder for all "+str(N)+" HMRC-recognised MTD software products for UK sole traders and landlords.",
 hero("Making Tax Digital for Income Tax","Do I need MTD, <em>and when?</em>","An independent, plain-English guide for UK sole traders and landlords, with a finder covering every HMRC-recognised product.",
  f"if your self-employment and property income before expenses is over £50,000 (2024 to 2025), you should have started MTD from 6 April 2026. Over £30,000 in 2025 to 2026 means 6 April 2027, and over £20,000 in 2026 to 2027 means 6 April 2028. <a href='{ELIG}' rel='noopener'>Source: HMRC</a>.",
- "<div class='btns'><a class='btn' href='#checker'>Check in 30 seconds</a><a class='btn ghost' href='finder/'>Browse "+str(N)+" products</a></div>")+
-f"""<section class="wrap" id="checker"><div class="calc reveal"><form id="calc" class="card" novalidate><span class="eyebrow">MTD checker</span><h2 style="margin-top:0">Enter your income</h2><p class="small">Gross income before expenses, from your Self Assessment returns. Leave years blank if you don't know them yet.</p>
+ "<div class='btns'><a class='btn' href='#checker'>Check in 30 seconds</a><a class='btn ghost' href='finder/'>Browse "+str(N)+" products</a></div><div class='trust'><span>Every claim linked to HMRC</span><span>Independent</span><span>Free to use</span></div>")+
+f"""<section class="wrap" id="checker"><div class="calc reveal"><form id="calc" novalidate><span class="eyebrow">MTD checker</span><h2 style="margin-top:0">Enter your income</h2><p class="small">Gross income before expenses, from your Self Assessment returns. Leave years blank if you don't know them yet.</p>
 <div class="field"><label><input type="checkbox" id="sa" checked> I'm a sole trader or landlord registered for Self Assessment</label></div>{fields}
 <p class="small">Don't include wages (PAYE), dividends, pensions or partnership profit shares. They don't count towards <a href="{QI}" rel="noopener">qualifying income</a>.</p></form>
 <div class="result" id="calc-out" aria-live="polite"></div></div></section>
 <section class="wrap narrow reveal"><h2>The thresholds</h2>{THRESH}</section>
-<section class="wrap reveal"><h2>Explore</h2><div class="grid">
-<a class="card" style="text-decoration:none;color:inherit" href="finder/"><span class="stat">{N}</span><h3>Software finder</h3><p class="small">Filter HMRC-recognised products by income type, bridging or bookkeeping, free version, VAT and CIS.</p></a>
-<a class="card" style="text-decoration:none;color:inherit" href="guides/deadlines/"><span class="stat">4×</span><h3>Quarterly deadlines</h3><p class="small">7 August, 7 November, 7 February and 7 May, explained.</p></a>
-<a class="card" style="text-decoration:none;color:inherit" href="guides/tradespeople/"><span class="stat">CIS</span><h3>For tradespeople</h3><p class="small">Electricians, plumbers, builders and solar installers.</p></a></div></section>""",faqs=home_faq)
+<section class="wrap reveal explore"><h2>Explore</h2><div class="grid">
+<a class="card" href="finder/"><span class="num">{N}</span><h3>Software finder</h3><p class="small">Filter HMRC-recognised products by income type, bridging or bookkeeping, free version, VAT and CIS.</p></a>
+<a class="card" href="guides/deadlines/"><span class="num">4×</span><h3>Quarterly deadlines</h3><p class="small">7 August, 7 November, 7 February and 7 May, explained.</p></a>
+<a class="card" href="guides/tradespeople/"><span class="num">CIS</span><h3>For tradespeople</h3><p class="small">Electricians, plumbers, builders and solar installers.</p></a></div></section>""",faqs=home_faq)
 
 page("finder/","MTD Software Finder: compare all "+str(N)+" HMRC-recognised products","Filter every HMRC-recognised Making Tax Digital for Income Tax product by sole trader or landlord, bridging or bookkeeping, free version, VAT, CIS and HMRC Assist.",
 hero("Software finder","Find your <em>MTD software</em>","Every product listed in HMRC's software finder, with filters that match how you actually work.",
  f"pick software that supports all your income sources, sends quarterly updates and submits your tax return. All {N} products here are on <a href='{TOOL}' rel='noopener'>HMRC's list</a>; HMRC doesn't recommend any of them.")+
-f"""<section class="wrap"><div class="toolbar"><div><label for="q">Search by name</label><input id="q" type="search" placeholder="e.g. Xero, FreeAgent, spreadsheet"></div>
-<div><label for="who">I am a</label><select id="who"><option value="any">Any</option><option value="st">Sole trader</option><option value="ll">Landlord</option><option value="both">Both</option></select></div>
-<div><label for="type">Software type</label><select id="type"><option value="any">Any</option><option value="records">Full bookkeeping (creates records)</option><option value="bridging">Bridging (connects spreadsheets)</option></select></div></div>
-<div class="filters" role="group" aria-label="Features"><button class="chip" data-k="free" aria-pressed="false">Free version</button><button class="chip" data-k="tax" aria-pressed="false">Files tax return</button><button class="chip" data-k="vat" aria-pressed="false">MTD for VAT</button><button class="chip" data-k="cis" aria-pressed="false">CIS ready</button><button class="chip" data-k="assist" aria-pressed="false">HMRC Assist</button><button class="chip" data-k="welsh" aria-pressed="false">Welsh language</button></div>
-<p class="small"><strong id="count">…</strong> of <span id="count-total">{N}</span> products. Order is alphabetical, never paid. Pricing: check each vendor; data last checked {data['last_checked']} from <a href="{TOOL}" rel="noopener">HMRC</a>. Mobile app availability isn't in HMRC's data yet, so we haven't listed it.</p>
-<div class="grid" style="margin-top:20px"><article class="card featured"><span class="badge">Featured · Sponsored slot</span><h3>Your software here</h3><p class="small">One clearly labelled placement for an HMRC-recognised product. It never changes the order of the main list.</p><a class="btn" href="../sponsor/">Sponsor us</a></article></div>
-<div class="grid" id="list" data-src="../data/products.json" style="margin-top:20px"></div></section>""",extra_ld=ITEMS)
+f"""<section class="wrap"><div class="searchbar"><div><label for="q">Search {N} products</label><input id="q" type="search" placeholder="Name, e.g. Xero, FreeAgent, spreadsheet" autocomplete="off"></div><button class="btn ghost filter-toggle" aria-expanded="false" aria-controls="side">Filters</button></div>
+<div class="finder"><aside class="side" id="side" aria-label="Filters"><h2>Filter</h2>
+<div class="grp"><label for="who">I am a</label><select id="who"><option value="any">Any</option><option value="st">Sole trader</option><option value="ll">Landlord</option><option value="both">Both</option></select></div>
+<div class="grp"><label for="type">Software type</label><select id="type"><option value="any">Any</option><option value="records">Full bookkeeping (creates records)</option><option value="bridging">Bridging (connects spreadsheets)</option></select></div>
+<div class="grp" role="group" aria-label="Features"><label>Features</label>
+<label class="chk"><input type="checkbox" data-k="free"> Free version</label><label class="chk"><input type="checkbox" data-k="tax"> Files tax return</label><label class="chk"><input type="checkbox" data-k="vat"> MTD for VAT</label><label class="chk"><input type="checkbox" data-k="cis"> CIS ready</label><label class="chk"><input type="checkbox" data-k="assist"> HMRC Assist</label><label class="chk"><input type="checkbox" data-k="welsh"> Welsh language</label></div>
+<div class="grp"><button class="linkbtn" id="clear" type="button">Clear all filters</button></div>
+<p class="small">Price band and mobile app filters are coming: HMRC's data doesn't include them yet.</p></aside>
+<div><div class="resbar"><p class="small" style="margin:0" aria-live="polite"><strong id="count">…</strong> of <span id="count-total">{N}</span> products · alphabetical, never paid</p><p class="small" style="margin:0">Data: <a href="{TOOL}" rel="noopener">HMRC</a>, checked {data['last_checked']}</p></div>
+<div class="grid"><article class="card featured"><span class="badge">Featured · Sponsored</span><h3>Your software here</h3><p class="small">One clearly labelled placement for an HMRC-recognised product. It never changes the order of the main list.</p><div><a class="btn" href="../sponsor/">Sponsor us</a></div></article></div>
+<div class="grid" id="list" data-src="../data/products.json" style="margin-top:18px"></div></div></div></section>
+<div class="tray" id="tray" aria-live="polite"><span id="tray-n">0 selected</span><button class="btn" id="cmp-open" type="button">Compare</button></div>
+<dialog id="cmp"><div class="in"><div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Compare</h2><button class="btn ghost" id="cmp-close" type="button">Close</button></div><div id="cmp-body" style="overflow:auto;margin-top:18px"></div></div></dialog>""",extra_ld=ITEMS)
 
 page("guides/deadlines/","MTD for Income Tax deadlines and quarterly update dates (2026)","Making Tax Digital for Income Tax start dates and quarterly update deadlines: 7 August, 7 November, 7 February and 7 May, plus the 31 January tax return.",
 hero("Guide","MTD deadlines and <em>quarterly dates</em>","When you start, and when each update is due.",f"quarterly updates are due by 7 August, 7 November, 7 February and 7 May. Your tax return is due by 31 January after the tax year. <a href='{QU}' rel='noopener'>Source: HMRC</a>.")+
