@@ -14,6 +14,7 @@ SIGN="https://www.gov.uk/guidance/sign-up-your-business-for-making-tax-digital-f
 EMAIL="hello@mtdfinder.co.uk"
 SPONSOR_EMAIL="sponsors@mtdfinder.co.uk"
 NEWS_EMAIL="newsletter@mtdfinder.co.uk"
+KIT_FORM="https://app.kit.com/forms/10047232/subscriptions"
 STRIPE="https://buy.stripe.com/fZu4gA75G9gW5qF59pa3u00"
 PORTAL="https://billing.stripe.com/p/login/fZu4gA75G9gW5qF59pa3u00"
 data=json.load(open(f"{ROOT}/data/products.json"))
@@ -40,6 +41,9 @@ def ext_links(doc):
         if 'class="vh"' not in inner:inner+='<span class="vh"> (opens in new tab)</span>'
         return f'<a{attrs}>{inner}</a>'
     return _re.sub(r'<a(\s[^>]*)>(.*?)</a>',fix,doc,flags=_re.S)
+
+def nl_form(pre,uid):
+    return f"""<form class="nl" action="{KIT_FORM}" method="post" novalidate><div class="nl-row"><label class="vh" for="nl-{uid}">Email address</label><input id="nl-{uid}" type="email" name="email_address" required autocomplete="email" placeholder="you@example.co.uk"><button class="btn" type="submit">Subscribe</button></div><div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div><p class="small nl-note">One short email before each quarterly deadline, plus HMRC changes. We'll email you to confirm first. Unsubscribe anytime. See our <a href="{pre}privacy/">privacy policy</a>.</p><p class="nl-msg" role="status" aria-live="polite"></p></form>"""
 def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None):
     depth=path.count("/");pre="../"*depth
     url=f"{SITE}/{path}"
@@ -88,7 +92,8 @@ f"""<section class="wrap" id="checker"><div class="calc reveal"><form id="calc" 
 <section class="wrap reveal explore"><h2>Explore</h2><div class="grid">
 <a class="card" href="finder/"><span class="num">{N}</span><h3>Software finder</h3><p class="small">Filter HMRC-recognised products by income type, bridging or bookkeeping, free version, VAT and CIS.</p></a>
 <a class="card" href="guides/deadlines/"><span class="num">4×</span><h3>Quarterly deadlines</h3><p class="small">7 August, 7 November, 7 February and 7 May, explained.</p></a>
-<a class="card" href="guides/tradespeople/"><span class="num">CIS</span><h3>For tradespeople</h3><p class="small">Electricians, plumbers, builders and solar installers.</p></a></div></section>""",faqs=home_faq)
+<a class="card" href="guides/tradespeople/"><span class="num">CIS</span><h3>For tradespeople</h3><p class="small">Electricians, plumbers, builders and solar installers.</p></a></div></section>
+<section class="wrap narrow reveal"><div class="card nl-band"><span class="eyebrow">Newsletter</span><h2 style="margin-top:0">Never miss an <em>MTD deadline</em></h2>"""+nl_form("","home")+"""</div></section>""",faqs=home_faq)
 
 page("finder/","MTD Software Finder: compare all "+str(N)+" HMRC-recognised products","Filter every HMRC-recognised Making Tax Digital for Income Tax product by sole trader or landlord, bridging or bookkeeping, free version, VAT, CIS and HMRC Assist.",
 hero("Software finder","Find your <em>MTD software</em>","Every product listed in HMRC's software finder, with filters that match how you actually work.",
@@ -153,9 +158,9 @@ hero("For software vendors","Sponsor <em>MTD Finder</em>","Put your HMRC-recogni
 f"""<section class="wrap"><div class="grid two"><div class="card featured reveal"><span class="badge">Featured listing</span><div class="stat">£49<span style="font-size:1.1rem">/month</span></div><p>Introductory price. One clearly labelled featured slot on the software finder, plus a mention in the newsletter.</p><p class="small">Prices in GBP.</p><div class="btns" style="justify-content:flex-start"><a class="btn" href="{STRIPE}" rel="noopener">Become a sponsor, £49/month</a></div><p class="small" style="margin-top:12px">Billed monthly · cancel anytime. See the <a href="../terms/#sponsorship">sponsorship terms</a>.</p><p class="small">Already a sponsor? <a href="{PORTAL}">Manage your sponsorship</a></p><p class="small">Questions first? <a href="mailto:{SPONSOR_EMAIL}?subject=MTD%20Finder%20sponsorship">{SPONSOR_EMAIL}</a></p></div>
 <div class="card reveal"><h3>Our rules</h3><ul class="small"><li>Only HMRC-recognised products.</li><li>Sponsored placements are always labelled.</li><li>Sponsorship never changes the main list order or our editorial content.</li><li>We may earn affiliate commission; we always disclose it.</li></ul></div></div></section>""")
 
-page("newsletter/","MTD Finder newsletter: deadline reminders for sole traders and landlords","Sign up for MTD Finder's newsletter for plain-English Making Tax Digital deadline reminders and software updates. Coming soon.",
-hero("Newsletter","Deadline reminders, <em>coming soon</em>","A short email before each quarterly deadline, plus any changes HMRC makes. No spam.")+
-f"""<section class="wrap narrow"><form class="card" onsubmit="event.preventDefault();this.querySelector('p.small').textContent='Thanks! Sign-ups open soon. Nothing has been stored.'"><!-- TODO: connect to newsletter backend (Gmail routine / provider) after privacy policy is finalised --><label for="em">Email address</label><input id="em" type="email" required placeholder="you@example.co.uk"><div class="btns"><button class="btn">Notify me</button></div><p class="small">Sign-ups aren't live yet, so nothing is stored. When live, emails come from {NEWS_EMAIL}. See our <a href="../privacy/">privacy policy</a>.</p></form></section>""")
+page("newsletter/","MTD Finder newsletter: deadline reminders for sole traders and landlords","Sign up for MTD Finder's free newsletter: plain-English Making Tax Digital deadline reminders and software updates for UK sole traders and landlords.",
+hero("Newsletter","Deadline reminders, <em>in plain English</em>","A short email before each quarterly deadline, plus any changes HMRC makes. Free, no spam.")+
+f"""<section class="wrap narrow"><div class="card nl-band"><p class="notice nl-confirmed" hidden>Thanks, you're subscribed. Your first reminder will arrive before the next deadline.</p>"""+nl_form("../","page")+f"""<p class="small">Emails come from {NEWS_EMAIL}. Sign-ups are handled by Kit, our email provider.</p></div></section>""")
 
 page("about/","About MTD Finder: independent, run by Sno Automations","MTD Finder is an independent guide to Making Tax Digital for Income Tax software, run by Matthew Snow trading as Sno Automations, a UK sole trader.",
 hero("About","Built by a sole trader, <em>for sole traders</em>","MTD Finder is run by Matthew Snow trading as Sno Automations, a UK sole trader.")+

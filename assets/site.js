@@ -38,3 +38,15 @@ let t;document.getElementById('q').addEventListener('input',e=>{clearTimeout(t);
 document.getElementById('clear').addEventListener('click',()=>{document.querySelectorAll('[data-k]').forEach(b=>{b.checked=false;st[b.dataset.k]=false});['who','type'].forEach(k=>{document.getElementById(k).value='any';st[k]='any'});draw()});
 const ft=document.querySelector('.filter-toggle'),sd=document.getElementById('side');ft.addEventListener('click',()=>{sd.classList.toggle('open');ft.setAttribute('aria-expanded',sd.classList.contains('open'))});
 draw();});}
+
+(()=>{const q=new URLSearchParams(location.search);if(q.get('confirmed')){document.querySelectorAll('.nl-confirmed').forEach(e=>e.hidden=false)}
+document.querySelectorAll('form.nl').forEach(f=>{const m=f.querySelector('.nl-msg'),b=f.querySelector('button'),say=(t,c)=>{m.className='nl-msg '+c;m.innerHTML=t};
+f.addEventListener('submit',async e=>{e.preventDefault();const em=f.email_address.value.trim();
+if(f.website.value){f.classList.add('done');say("Thanks! Please check your inbox to confirm.",'ok');return}
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){say('Please enter a valid email address.','err');f.email_address.focus();return}
+b.disabled=true;b.textContent='Subscribing…';
+try{const r=await fetch(f.action,{method:'POST',headers:{'Accept':'application/json'},body:new URLSearchParams({email_address:em})});const d=await r.json();
+if(d.status==='success'){f.classList.add('done');say("Nearly there. We've sent a confirmation email to <strong>"+em.replace(/</g,'&lt;')+"</strong>. Click the link inside to start receiving reminders.",'ok')}
+else if(d.status==='quarantined'&&d.url){say('One more step: please <a href="'+d.url+'" target="_blank" rel="noopener">confirm you’re not a robot<span class="vh"> (opens in new tab)</span></a>, then check your inbox.','ok')}
+else{throw 0}}catch(_){say('Sorry, something went wrong. Please try again, or email <a href="mailto:hello@mtdfinder.co.uk">hello@mtdfinder.co.uk</a>.','err')}
+finally{b.disabled=false;b.textContent='Subscribe'}})})})();

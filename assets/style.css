@@ -79,3 +79,5 @@ h3{font-weight:400;font-variation-settings:"opsz" 36;letter-spacing:-.01em}
 h1 em{font-weight:350}
 .vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .grid.two{grid-template-columns:repeat(2,minmax(0,1fr));max-width:900px;margin:0 auto}@media(max-width:760px){.grid.two{grid-template-columns:1fr}}
+.nl-band{padding:36px 40px}.nl-row{display:flex;gap:10px}.nl-row input{flex:1;min-width:0}.nl-row .btn{flex:none}.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}.nl-note{margin:14px 0 0}.nl-msg{margin:12px 0 0;font-size:.95rem;min-height:0}.nl-msg.ok{color:var(--accent)}.nl-msg.err{color:#9b2c2c}.nl.done .nl-row,.nl.done .nl-note{display:none}
+@media(max-width:600px){.nl-band{padding:26px 22px}.nl-row{flex-direction:column}.nl-row .btn{justify-content:center}}
