@@ -23,6 +23,22 @@ def faq_ld(qs):return {"@context":"https://schema.org","@type":"FAQPage","mainEn
 def faq_html(qs):return "".join(f"<details class='reveal'><summary>{q}</summary><p>{a}</p></details>" for q,a in qs)
 pages=[]
 ITEMS={"@context":"https://schema.org","@type":"ItemList","name":"HMRC-recognised MTD for Income Tax software","numberOfItems":N,"itemListElement":[{"@type":"ListItem","position":i+1,"item":{"@type":"SoftwareApplication","name":p["name"],"applicationCategory":"FinanceApplication","operatingSystem":"Web","url":p["website"] or p["hmrc_url"]}} for i,p in enumerate(data["products"])]}
+
+import re as _re
+def ext_links(doc):
+    def fix(m):
+        attrs,inner=m.group(1),m.group(2)
+        h=_re.search(r'href=["\'](https?://[^"\']+)',attrs)
+        if not h or "mtdfinder.co.uk" in h.group(1):return m.group(0)
+        attrs=_re.sub(r'\s*target=["\'][^"\']*["\']','',attrs)
+        r=_re.search(r'rel=["\']([^"\']*)["\']',attrs)
+        rels=(r.group(1).split() if r else [])
+        for x in ("noopener",):
+            if x not in rels:rels.append(x)
+        attrs=_re.sub(r'\s*rel=["\'][^"\']*["\']','',attrs)+f' target="_blank" rel="{" ".join(rels)}"'
+        if 'class="vh"' not in inner:inner+='<span class="vh"> (opens in new tab)</span>'
+        return f'<a{attrs}>{inner}</a>'
+    return _re.sub(r'<a(\s[^>]*)>(.*?)</a>',fix,doc,flags=_re.S)
 def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None):
     depth=path.count("/");pre="../"*depth
     url=f"{SITE}/{path}"
@@ -44,7 +60,7 @@ def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None):
 <ul><li><a href="{pre}finder/">Software finder</a></li><li><a href="{pre}guides/deadlines/">Deadlines</a></li><li><a href="{pre}guides/landlords/">Landlords</a></li><li><a href="{pre}guides/tradespeople/">Tradespeople</a></li><li><a href="{pre}guides/bridging-software/">Bridging software</a></li><li><a href="{pre}faq/">FAQ</a></li></ul>
 <ul><li><a href="{pre}about/">About</a></li><li><a href="{pre}sponsor/">Sponsor us</a></li><li><a href="{pre}newsletter/">Newsletter</a></li><li><a href="{pre}privacy/">Privacy</a></li><li><a href="{pre}disclaimer/">Disclaimer</a></li></ul></div></div></footer>
 <script src="{pre}assets/site.js" defer></script></body></html>"""
-    d=os.path.join(ROOT,path);os.makedirs(d,exist_ok=True);open(os.path.join(d,"index.html"),"w").write(doc);pages.append(path)
+    d=os.path.join(ROOT,path);os.makedirs(d,exist_ok=True);open(os.path.join(d,"index.html"),"w").write(ext_links(doc));pages.append(path)
 
 def hero(eb,h1,lede,answer=None,btns=""):
     a=f"<div class='answer'><strong>Short answer:</strong> {answer[0].upper()+answer[1:]}</div>" if answer else ""
@@ -133,7 +149,7 @@ hero("FAQ","MTD questions, <em>answered</em>","Short answers first, each linked 
 
 page("sponsor/","Sponsor MTD Finder: reach UK sole traders and landlords choosing MTD software","Sponsor MTD Finder to reach UK sole traders and landlords comparing Making Tax Digital for Income Tax software. Featured placements from £49 a month.",
 hero("For software vendors","Sponsor <em>MTD Finder</em>","Put your HMRC-recognised product in front of sole traders and landlords at the moment they're choosing.")+
-f"""<section class="wrap"><div class="grid"><div class="card featured reveal"><span class="badge">Featured listing</span><div class="stat">£49<span style="font-size:1.1rem">/month</span></div><p>Introductory price. One clearly labelled featured slot on the software finder, plus a mention in the newsletter.</p><p class="small">Prices in GBP.</p><div class="btns" style="justify-content:flex-start"><a class="btn" href="{STRIPE}" rel="noopener">Become a sponsor, £49/month</a></div><p class="small">Questions first? <a href="mailto:{SPONSOR_EMAIL}?subject=MTD%20Finder%20sponsorship">{SPONSOR_EMAIL}</a></p></div>
+f"""<section class="wrap"><div class="grid two"><div class="card featured reveal"><span class="badge">Featured listing</span><div class="stat">£49<span style="font-size:1.1rem">/month</span></div><p>Introductory price. One clearly labelled featured slot on the software finder, plus a mention in the newsletter.</p><p class="small">Prices in GBP.</p><div class="btns" style="justify-content:flex-start"><a class="btn" href="{STRIPE}" rel="noopener">Become a sponsor, £49/month</a></div><p class="small">Questions first? <a href="mailto:{SPONSOR_EMAIL}?subject=MTD%20Finder%20sponsorship">{SPONSOR_EMAIL}</a></p></div>
 <div class="card reveal"><h3>Our rules</h3><ul class="small"><li>Only HMRC-recognised products.</li><li>Sponsored placements are always labelled.</li><li>Sponsorship never changes the main list order or our editorial content.</li><li>We may earn affiliate commission; we always disclose it.</li></ul></div></div></section>""")
 
 page("newsletter/","MTD Finder newsletter: deadline reminders for sole traders and landlords","Sign up for MTD Finder's newsletter for plain-English Making Tax Digital deadline reminders and software updates. Coming soon.",
