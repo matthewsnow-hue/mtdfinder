@@ -160,7 +160,7 @@ f"""<section class="wrap"><div class="grid two"><div class="card featured reveal
 
 page("newsletter/","MTD Finder newsletter: deadline reminders for sole traders and landlords","Sign up for MTD Finder's free newsletter: plain-English Making Tax Digital deadline reminders and software updates for UK sole traders and landlords.",
 hero("Newsletter","Deadline reminders, <em>in plain English</em>","A short email before each quarterly deadline, plus any changes HMRC makes. Free, no spam.")+
-f"""<section class="wrap narrow"><div class="card nl-band"><p class="notice nl-confirmed" hidden>Thanks, you're subscribed. Your first reminder will arrive before the next deadline.</p>"""+nl_form("../","page")+f"""<p class="small">Emails come from {NEWS_EMAIL}. Sign-ups are handled by Kit, our email provider.</p></div></section>""")
+f"""<section class="wrap narrow"><div class="card nl-band"><p class="notice nl-thanks" hidden>Nearly there. Check your inbox for a confirmation email from MTD Finder and click the link inside.</p><p class="notice nl-confirmed" hidden>Thanks, you're subscribed. Your first reminder will arrive before the next deadline.</p>"""+nl_form("../","page")+f"""<p class="small">Emails come from {NEWS_EMAIL}. Sign-ups are handled by Kit, our email provider.</p></div></section>""")
 
 page("about/","About MTD Finder: independent, run by Sno Automations","MTD Finder is an independent guide to Making Tax Digital for Income Tax software, run by Matthew Snow trading as Sno Automations, a UK sole trader.",
 hero("About","Built by a sole trader, <em>for sole traders</em>","MTD Finder is run by Matthew Snow trading as Sno Automations, a UK sole trader.")+
