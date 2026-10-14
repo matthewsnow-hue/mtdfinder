@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://matthewsnow-hue.github.io/mtdfinder/sitemap.xml

@@ -1,0 +1,25 @@
+# MTD Finder
+> Independent guide to Making Tax Digital (MTD) for Income Tax for UK sole traders and landlords, with a filterable directory of all 158 HMRC-recognised MTD software products. Run by Matthew Snow trading as Sno Automations. Not tax advice; all claims link to HMRC/GOV.UK.
+
+## Key facts (source: https://www.gov.uk/guidance/check-if-youre-eligible-for-making-tax-digital-for-income-tax)
+- Qualifying income (self-employment + property, before expenses) over £50,000 in 2024-25: MTD from 6 April 2026
+- Over £30,000 in 2025-26: from 6 April 2027
+- Over £20,000 in 2026-27: from 6 April 2028
+- Quarterly update deadlines: 7 August, 7 November, 7 February, 7 May (https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates)
+
+## Pages
+- [Home](https://matthewsnow-hue.github.io/mtdfinder/)
+- [finder/](https://matthewsnow-hue.github.io/mtdfinder/finder/)
+- [guides/deadlines/](https://matthewsnow-hue.github.io/mtdfinder/guides/deadlines/)
+- [guides/landlords/](https://matthewsnow-hue.github.io/mtdfinder/guides/landlords/)
+- [guides/tradespeople/](https://matthewsnow-hue.github.io/mtdfinder/guides/tradespeople/)
+- [guides/bridging-software/](https://matthewsnow-hue.github.io/mtdfinder/guides/bridging-software/)
+- [faq/](https://matthewsnow-hue.github.io/mtdfinder/faq/)
+- [sponsor/](https://matthewsnow-hue.github.io/mtdfinder/sponsor/)
+- [newsletter/](https://matthewsnow-hue.github.io/mtdfinder/newsletter/)
+- [about/](https://matthewsnow-hue.github.io/mtdfinder/about/)
+- [privacy/](https://matthewsnow-hue.github.io/mtdfinder/privacy/)
+- [disclaimer/](https://matthewsnow-hue.github.io/mtdfinder/disclaimer/)
+
+## Data
+- [Software data (JSON, from HMRC finder, last checked 2026-10-14)](https://matthewsnow-hue.github.io/mtdfinder/data/products.json)
