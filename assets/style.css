@@ -1,4 +1,4 @@
-:root{--bg:#f8f4ec;--paper:#fffcf6;--ink:#0e1b26;--muted:#5a6470;--line:#e4ddcf;--accent:#1f5b47;--accent-soft:#e7efe9;--navy:#0e1b26;--serif:"Literata",Georgia,serif;--sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--ease:cubic-bezier(.2,.7,.2,1)}
+:root{--bg:#f6f5f1;--paper:#fdfdfb;--ink:#0e1b26;--muted:#5a6470;--line:#e3e2dc;--accent:#1b6b4f;--accent-soft:#dfece5;--navy:#0e1b26;--serif:"Literata",Georgia,serif;--sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--ease:cubic-bezier(.2,.7,.2,1)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px}
@@ -76,3 +76,4 @@ footer .cols{display:grid;gap:30px;grid-template-columns:2fr 1fr 1fr}footer ul{l
 @media(max-width:600px){.wrap{padding-left:20px;padding-right:20px}}
 h3{font-weight:400;font-variation-settings:"opsz" 36;letter-spacing:-.01em}
 @media(max-width:600px){.eyebrow{letter-spacing:.14em;gap:10px;font-size:.66rem}}
+h1 em{font-weight:350}
