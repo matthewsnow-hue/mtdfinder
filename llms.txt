@@ -26,6 +26,8 @@
 - [terms/](https://mtdfinder.co.uk/terms/)
 - [disclaimer/](https://mtdfinder.co.uk/disclaimer/)
 - [guides/deadline-calendar/](https://mtdfinder.co.uk/guides/deadline-calendar/)
+- [guides/7-november-deadline/](https://mtdfinder.co.uk/guides/7-november-deadline/)
+- [guides/30k-threshold-april-2027/](https://mtdfinder.co.uk/guides/30k-threshold-april-2027/)
 
 ## Downloads
 - [MTD deadline calendar, .ics](https://mtdfinder.co.uk/assets/mtd-deadlines-2026-27.ics)

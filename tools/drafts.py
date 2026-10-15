@@ -14,7 +14,7 @@ prose(f"""<h2>Who this applies to</h2><p>Anyone already using MTD for Income Tax
 <p class="small">Facts checked against GOV.UK on {UPDATED}. General information, not tax advice.</p>"""),
 faqs=[("When is the MTD quarterly update due in November 2026?",f"By 7 November 2026, for the period 6 April to 5 October (or 1 April to 30 September on calendar periods). <a href='{QU}'>HMRC</a>."),
 ("Is there a penalty for a late quarterly update in 2026 to 2027?",f"No penalty points for late quarterly updates in 2026 to 2027, but you must send them before you can submit your tax return. <a href='{QU}'>HMRC</a>."),
-("Do I need to send an update if I had no income?",f"Yes. HMRC says you must still send it to tell them. <a href='{QU}'>HMRC</a>.")],draft=True)
+("Do I need to send an update if I had no income?",f"Yes. HMRC says you must still send it to tell them. <a href='{QU}'>HMRC</a>.")])
 
 page("guides/30k-threshold-april-2027/","Do I need MTD at £30,000? Your April 2027 checklist","If your self-employment and property income was over £30,000 in 2025 to 2026, you'll need Making Tax Digital for Income Tax from 6 April 2027. What counts, what HMRC will do, and how to get ready.",
 hero("April 2027","Over £30,000? <em>MTD from April 2027</em>","What counts towards the £30,000, what HMRC will do, and how to get ready in time.",
@@ -29,4 +29,4 @@ prose(f"""<h2>What counts towards £30,000</h2><p>Your <strong>qualifying income
 <p class="small">Facts checked against GOV.UK on {UPDATED}. General information, not tax advice.</p>"""),
 faqs=[("Is the £30,000 MTD threshold based on profit or turnover?",f"Turnover. Qualifying income is self-employment and property income before expenses. <a href='{QI}'>HMRC</a>."),
 ("When do I start MTD if I earned over £30,000 in 2025 to 2026?",f"From 6 April 2027. <a href='{ELIG}'>HMRC</a>."),
-("Does my salary count towards the £30,000?",f"No. Employment (PAYE) income doesn't count towards qualifying income. <a href='{QI}'>HMRC</a>.")],draft=True)
+("Does my salary count towards the £30,000?",f"No. Employment (PAYE) income doesn't count towards qualifying income. <a href='{QI}'>HMRC</a>.")])
