@@ -6,6 +6,10 @@
 - Over £30,000 in 2025-26: from 6 April 2027
 - Over £20,000 in 2026-27: from 6 April 2028
 - Quarterly update deadlines: 7 August, 7 November, 7 February, 7 May (https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates)
+- Each quarterly update is cumulative from the start of the tax year; a nil update is still required (https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates)
+- No penalty points for late quarterly updates in 2026-27; from 2027-28, 4 points = £200 penalty (https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates)
+- Partnerships: later, timeline not yet set (https://www.gov.uk/guidance/check-if-youre-eligible-for-making-tax-digital-for-income-tax)
+- Facts last checked against GOV.UK: 2026-10-15
 
 ## Pages
 - [Home](https://mtdfinder.co.uk/)
@@ -21,6 +25,10 @@
 - [privacy/](https://mtdfinder.co.uk/privacy/)
 - [terms/](https://mtdfinder.co.uk/terms/)
 - [disclaimer/](https://mtdfinder.co.uk/disclaimer/)
+- [guides/deadline-calendar/](https://mtdfinder.co.uk/guides/deadline-calendar/)
+
+## Downloads
+- [MTD deadline calendar, .ics](https://mtdfinder.co.uk/assets/mtd-deadlines-2026-27.ics)
 
 ## Data
 - [Software data (JSON, from HMRC finder, last checked 2026-10-14)](https://mtdfinder.co.uk/data/products.json)

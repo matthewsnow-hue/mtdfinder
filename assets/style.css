@@ -82,3 +82,6 @@ h3{font-weight:400;font-variation-settings:"opsz" 36;letter-spacing:-.01em}
 .nl-band{padding:36px 40px}.nl-row{display:flex;gap:10px}.nl-row input{flex:1;min-width:0}.nl-row .btn{flex:none}.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}.nl-note{margin:14px 0 0}.nl-msg{margin:12px 0 0;font-size:.95rem;min-height:0}.nl-msg.ok{color:var(--accent)}.nl-msg.err{color:#9b2c2c}.nl.done .nl-row,.nl.done .nl-note{display:none}
 @media(max-width:600px){.nl-band{padding:26px 22px}.nl-row{flex-direction:column}.nl-row .btn{justify-content:center}}
 h1 em,h2 em,h3 em,.brand em,summary em,legend em{font-style:normal}h1 em,h2 em{font-weight:inherit}.brand em{font-weight:400}
+.after-check{grid-column:1/-1;border-top:1px solid var(--line);padding:26px 36px 30px}
+.after-check h3{margin:0 0 6px}
+.checklist{padding-left:1.3em}.checklist li{margin:0 0 12px}

@@ -1,0 +1,104 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MTD Finder//Deadline calendar//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:MTD deadlines (MTD Finder)
+BEGIN:VEVENT
+UID:20261107-mtd@mtdfinder.co.uk
+DTSTAMP:20261015T000000Z
+DTSTART;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261108
+SUMMARY:MTD quarterly update due (6 April to 5 October)
+DESCRIPTION:Send your cumulative quarterly update for each self-employmen
+ t and property business. https://www.gov.uk/guidance/use-making-tax-digit
+ al-for-income-tax/send-quarterly-updates Not tax advice. mtdfinder.co.uk
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:MTD deadline in 7 days
+TRIGGER:-P7D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:20270131-mtd@mtdfinder.co.uk
+DTSTAMP:20261015T000000Z
+DTSTART;VALUE=DATE:20270131
+DTEND;VALUE=DATE:20270201
+SUMMARY:Self Assessment deadline for 2025 to 2026
+DESCRIPTION:Online tax return and payment due for 2025 to 2026. https://w
+ ww.gov.uk/self-assessment-tax-returns/deadlines Not tax advice. mtdfinder
+ .co.uk
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:MTD deadline in 7 days
+TRIGGER:-P7D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:20270207-mtd@mtdfinder.co.uk
+DTSTAMP:20261015T000000Z
+DTSTART;VALUE=DATE:20270207
+DTEND;VALUE=DATE:20270208
+SUMMARY:MTD quarterly update due (6 April to 5 January)
+DESCRIPTION:Send your cumulative quarterly update. https://www.gov.uk/gui
+ dance/use-making-tax-digital-for-income-tax/send-quarterly-updates Not ta
+ x advice. mtdfinder.co.uk
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:MTD deadline in 7 days
+TRIGGER:-P7D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:20270406-mtd@mtdfinder.co.uk
+DTSTAMP:20261015T000000Z
+DTSTART;VALUE=DATE:20270406
+DTEND;VALUE=DATE:20270407
+SUMMARY:MTD starts if over £30\,000 in 2025 to 2026
+DESCRIPTION:If your qualifying income in 2025 to 2026 was over £30\,000\
+ , you need MTD from today. https://www.gov.uk/guidance/check-if-youre-eli
+ gible-for-making-tax-digital-for-income-tax Not tax advice. mtdfinder.co.
+ uk
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:MTD deadline in 7 days
+TRIGGER:-P7D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:20270507-mtd@mtdfinder.co.uk
+DTSTAMP:20261015T000000Z
+DTSTART;VALUE=DATE:20270507
+DTEND;VALUE=DATE:20270508
+SUMMARY:MTD final quarterly update due (6 April to 5 April)
+DESCRIPTION:Send your fourth quarterly update for 2026 to 2027. https://w
+ ww.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-u
+ pdates Not tax advice. mtdfinder.co.uk
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:MTD deadline in 7 days
+TRIGGER:-P7D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:20270807-mtd@mtdfinder.co.uk
+DTSTAMP:20261015T000000Z
+DTSTART;VALUE=DATE:20270807
+DTEND;VALUE=DATE:20270808
+SUMMARY:MTD quarterly update due (6 April to 5 July)
+DESCRIPTION:First quarterly update of 2027 to 2028. https://www.gov.uk/gu
+ idance/use-making-tax-digital-for-income-tax/send-quarterly-updates Not t
+ ax advice. mtdfinder.co.uk
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:MTD deadline in 7 days
+TRIGGER:-P7D
+END:VALARM
+END:VEVENT
+END:VCALENDAR

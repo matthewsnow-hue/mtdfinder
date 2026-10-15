@@ -3,7 +3,7 @@
 import json,os,html
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE="https://mtdfinder.co.uk"
-UPDATED="2026-10-14"
+UPDATED="2026-10-15"
 ELIG="https://www.gov.uk/guidance/check-if-youre-eligible-for-making-tax-digital-for-income-tax"
 QI="https://www.gov.uk/guidance/work-out-your-qualifying-income-for-making-tax-digital-for-income-tax"
 SW="https://www.gov.uk/guidance/find-software-thats-compatible-with-making-tax-digital-for-income-tax"
@@ -11,6 +11,8 @@ TOOL="https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software
 QU="https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates"
 TR="https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/submit-your-tax-return"
 SIGN="https://www.gov.uk/guidance/sign-up-your-business-for-making-tax-digital-for-income-tax"
+SADL="https://www.gov.uk/self-assessment-tax-returns/deadlines"
+ICS="assets/mtd-deadlines-2026-27.ics"
 EMAIL="hello@mtdfinder.co.uk"
 SPONSOR_EMAIL="sponsors@mtdfinder.co.uk"
 NEWS_EMAIL="newsletter@mtdfinder.co.uk"
@@ -44,16 +46,23 @@ def ext_links(doc):
 
 def nl_form(pre,uid):
     return f"""<form class="nl" action="{KIT_FORM}" method="post" novalidate><div class="nl-row"><label class="vh" for="nl-{uid}">Email address</label><input id="nl-{uid}" type="email" name="email_address" required autocomplete="email" placeholder="you@example.co.uk"><button class="btn" type="submit">Subscribe</button></div><div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div><p class="small nl-note">One short email before each quarterly deadline, plus HMRC changes. We'll email you to confirm first. Unsubscribe anytime. See our <a href="{pre}privacy/">privacy policy</a>.</p><p class="nl-msg" role="status" aria-live="polite"></p></form>"""
-def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None):
+def signup_band(pre,uid):
+    return f"""<section class='wrap narrow reveal'><div class='card nl-band'><span class='eyebrow'>Deadline reminders</span><h2 style='margin-top:0'>Get a nudge before <em>each deadline</em></h2><p>One short email before each quarterly deadline. Or add the dates straight to your calendar with our <a href='{pre}guides/deadline-calendar/'>free MTD deadline calendar</a>.</p>"""+nl_form(pre,uid)+"</div></section>"
+def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,signup=None):
     depth=path.count("/");pre="../"*depth
     url=f"{SITE}/{path}"
     lds=[{"@context":"https://schema.org","@graph":[ORG,{"@type":"WebSite","@id":SITE+"/#site","name":"MTD Finder","url":SITE+"/","publisher":{"@id":SITE+"/#org"}},{"@type":"WebPage","name":title,"url":url,"dateModified":UPDATED,"isPartOf":{"@id":SITE+"/#site"}}]}]
+    if path.startswith("guides/"):
+        lds.append({"@context":"https://schema.org","@type":"Article","headline":title,"description":desc,"url":url,"mainEntityOfPage":url,"inLanguage":"en-GB","dateModified":UPDATED,"author":{"@id":SITE+"/#org"},"publisher":{"@id":SITE+"/#org"},"isPartOf":{"@id":SITE+"/#site"}})
+        lds.append({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":SITE+"/"},{"@type":"ListItem","position":2,"name":"Guides","item":SITE+"/guides/deadlines/"},{"@type":"ListItem","position":3,"name":title,"item":url}]})
+        if signup is None:signup=True
+    if signup:body+=signup_band(pre,path.strip("/").replace("/","-") or "home")
     if faqs:lds.append(faq_ld(faqs));body+=f"<section class='wrap narrow'><span class='eyebrow'>Questions</span><h2 style='margin-top:0'>Frequently asked</h2>{faq_html(faqs)}</section>"
     if extra_ld:lds.append(extra_ld)
     nav="".join(f'<li><a href="{pre}{h}"{" aria-current=page" if h==path else ""}>{t}</a></li>' for h,t in NAV)
     ld="".join(f'<script type="application/ld+json">{json.dumps(l,ensure_ascii=False)}</script>' for l in lds)
     doc=f"""<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}"><link rel="canonical" href="{url}">
+<title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}"><link rel="canonical" href="{url}">{'<meta name="robots" content="noindex">' if draft else ''}
 <meta property="og:type" content="website"><meta property="og:site_name" content="MTD Finder"><meta property="og:title" content="{html.escape(title)}"><meta property="og:description" content="{html.escape(desc)}"><meta property="og:url" content="{url}"><meta property="og:locale" content="en_GB"><meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#f6f5f1"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231d5c4a'/%3E%3Ctext x='16' y='22' font-size='17' text-anchor='middle' fill='white' font-family='Georgia'%3EM%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..600;1,7..72,300..600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -62,10 +71,11 @@ def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None):
 <header class="site"><div class="wrap nav"><a class="brand" href="{pre or './'}">MTD <em>Finder</em></a><button class="menu-btn" aria-expanded="false" aria-label="Menu">Menu</button><ul>{nav}</ul></div></header>
 <main id="main">{body}</main>
 <footer><div class="wrap"><div class="cols"><div><a class="brand" href="{pre or './'}">MTD <em>Finder</em></a><p>An independent guide to Making Tax Digital for Income Tax software, for UK sole traders and landlords. Not affiliated with HMRC. Not tax advice. Run by Matthew Snow trading as Sno Automations.</p><p>Owner: Matthew Snow trading as Sno Automations · <a href="mailto:{EMAIL}">{EMAIL}</a></p><p>Software data from <a href="{TOOL}" rel="noopener">HMRC's software finder</a>, last checked {data['last_checked']}.</p></div>
-<ul><li><a href="{pre}finder/">Software finder</a></li><li><a href="{pre}guides/deadlines/">Deadlines</a></li><li><a href="{pre}guides/landlords/">Landlords</a></li><li><a href="{pre}guides/tradespeople/">Tradespeople</a></li><li><a href="{pre}guides/bridging-software/">Bridging software</a></li><li><a href="{pre}faq/">FAQ</a></li></ul>
+<ul><li><a href="{pre}finder/">Software finder</a></li><li><a href="{pre}guides/deadlines/">Deadlines</a></li><li><a href="{pre}guides/landlords/">Landlords</a></li><li><a href="{pre}guides/tradespeople/">Tradespeople</a></li><li><a href="{pre}guides/bridging-software/">Bridging software</a></li><li><a href="{pre}guides/deadline-calendar/">Deadline calendar</a></li><li><a href="{pre}faq/">FAQ</a></li></ul>
 <ul><li><a href="{pre}about/">About</a></li><li><a href="{pre}sponsor/">Sponsor us</a></li><li><a href="{pre}newsletter/">Newsletter</a></li><li><a href="{pre}privacy/">Privacy</a></li><li><a href="{pre}disclaimer/">Disclaimer</a></li><li><a href="{pre}terms/">Terms</a></li><li><a href="{PORTAL}">Manage sponsorship</a></li></ul></div></div></footer>
 <script src="{pre}assets/site.js" defer></script></body></html>"""
-    d=os.path.join(ROOT,path);os.makedirs(d,exist_ok=True);open(os.path.join(d,"index.html"),"w").write(ext_links(doc));pages.append(path)
+    d=os.path.join(ROOT,path);os.makedirs(d,exist_ok=True);open(os.path.join(d,"index.html"),"w").write(ext_links(doc))
+    if not draft:pages.append(path)
 
 def hero(eb,h1,lede,answer=None,btns=""):
     a=f"<div class='answer'><strong>Short answer:</strong> {answer[0].upper()+answer[1:]}</div>" if answer else ""
@@ -87,7 +97,8 @@ hero("Making Tax Digital for Income Tax","Do I need MTD, <em>and when?</em>","An
 f"""<section class="wrap" id="checker"><div class="calc reveal"><form id="calc" novalidate><span class="eyebrow">MTD checker</span><h2 style="margin-top:0">Enter your income</h2><p class="small">Gross income before expenses, from your Self Assessment returns. Leave years blank if you don't know them yet.</p>
 <div class="field"><label><input type="checkbox" id="sa" checked> I'm a sole trader or landlord registered for Self Assessment</label></div>{fields}
 <p class="small">Don't include wages (PAYE), dividends, pensions or partnership profit shares. They don't count towards <a href="{QI}" rel="noopener">qualifying income</a>.</p></form>
-<div class="result" id="calc-out" aria-live="polite"></div></div></section>
+<div class="result" id="calc-out" aria-live="polite"></div>
+<div class="after-check"><h3>Want a reminder before your next deadline?</h3><p class="small">We'll email you before each quarterly deadline. Prefer your calendar? <a href="guides/deadline-calendar/">Get the MTD deadline calendar</a>.</p>{nl_form('','check')}</div></div></section>
 <section class="wrap narrow reveal"><h2>The thresholds</h2>{THRESH}</section>
 <section class="wrap reveal explore"><h2>Explore</h2><div class="grid">
 <a class="card" href="finder/"><span class="num">{N}</span><h3>Software finder</h3><p class="small">Filter HMRC-recognised products by income type, bridging or bookkeeping, free version, VAT and CIS.</p></a>
@@ -195,6 +206,54 @@ page("disclaimer/","Disclaimer and affiliate disclosure | MTD Finder","MTD Finde
 hero("Legal","Disclaimer","Please read before relying on anything here.")+
 prose(f"""<h2>Not tax advice</h2><p>MTD Finder gives general information only. It isn't tax, legal or financial advice. Always check <a href="{ELIG}" rel="noopener">HMRC guidance</a> or speak to a qualified adviser.</p><h2>Independent</h2><p>We're not affiliated with or endorsed by HMRC. HMRC doesn't recommend any software product.</p><h2>Accuracy</h2><p>Software details come from HMRC's public listing and vendors' sites, and can change. Always confirm features and prices with the vendor.</p><h2>Affiliate disclosure</h2><p>Some links may be affiliate links, so we may earn a commission at no extra cost to you. Featured placements are paid and always labelled. Neither changes the order of the main list.</p>"""))
 
+# ---- Lead magnet: .ics deadline calendar + checklist
+EVENTS=[("20261107","MTD quarterly update due (6 April to 5 October)","Send your cumulative quarterly update for each self-employment and property business. "+QU),
+("20270131","Self Assessment deadline for 2025 to 2026","Online tax return and payment due for 2025 to 2026. "+SADL),
+("20270207","MTD quarterly update due (6 April to 5 January)","Send your cumulative quarterly update. "+QU),
+("20270406","MTD starts if over £30,000 in 2025 to 2026","If your qualifying income in 2025 to 2026 was over £30,000, you need MTD from today. "+ELIG),
+("20270507","MTD final quarterly update due (6 April to 5 April)","Send your fourth quarterly update for 2026 to 2027. "+QU),
+("20270807","MTD quarterly update due (6 April to 5 July)","First quarterly update of 2027 to 2028. "+QU)]
+def _ics_esc(t):return t.replace("\\","\\\\").replace(",","\\,").replace(";","\\;")
+def _fold(line):
+    b=line.encode();out=[]
+    while len(b)>73:
+        cut=73
+        while (b[cut]&0xC0)==0x80:cut-=1
+        out.append(b[:cut].decode());b=b[cut:]
+    out.append(b.decode());return "\r\n ".join(out)
+def _next(d):
+    import datetime as _d;return (_d.date(int(d[:4]),int(d[4:6]),int(d[6:]))+_d.timedelta(days=1)).strftime("%Y%m%d")
+ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//MTD Finder//Deadline calendar//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:MTD deadlines (MTD Finder)"]
+for d,t,desc in EVENTS:
+    ics+=["BEGIN:VEVENT",f"UID:{d}-mtd@mtdfinder.co.uk","DTSTAMP:20261015T000000Z",f"DTSTART;VALUE=DATE:{d}",f"DTEND;VALUE=DATE:{_next(d)}",_fold("SUMMARY:"+_ics_esc(t)),_fold("DESCRIPTION:"+_ics_esc(desc+" Not tax advice. mtdfinder.co.uk")),"TRANSP:TRANSPARENT",
+          "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+_ics_esc("MTD deadline in 7 days"),"TRIGGER:-P7D","END:VALARM","END:VEVENT"]
+ics.append("END:VCALENDAR")
+open(f"{ROOT}/{ICS}","w",newline="").write("\r\n".join(ics)+"\r\n")
+def _d(d):
+    import datetime as _x;return _x.date(int(d[:4]),int(d[4:6]),int(d[6:])).strftime("%-d %B %Y")
+rows="".join(f"<tr><td>{_d(d)}</td><td>{t}</td></tr>" for d,t,_ in EVENTS)
+page("guides/deadline-calendar/","MTD deadline calendar and checklist for 2026 to 2027","Free Making Tax Digital deadline calendar to add to Google, Apple or Outlook, plus a plain-English checklist for sole traders and landlords. Every date linked to HMRC.",
+hero("Free download","MTD deadline <em>calendar</em> and checklist","Every Making Tax Digital date for the next year, in your own calendar, with a reminder a week before each one.",
+ f"quarterly updates are due by 7 November, 7 February, 7 May and 7 August, and the 2025 to 2026 tax return by 31 January 2027. <a href='{QU}' rel='noopener'>Source: HMRC</a>.",
+ f"<div class='btns'><a class='btn' href='../../{ICS}' download>Add the dates to my calendar (.ics)</a><a class='btn ghost' href='#checklist'>See the checklist</a></div>")+
+prose(f"""<h2>The dates</h2><table><thead><tr><th>Date</th><th>What's due</th></tr></thead><tbody>{rows}</tbody></table>
+<p class="small">The file works with Google Calendar, Apple Calendar and Outlook. Each date is an all-day event with a reminder seven days before. Sources: <a href="{QU}" rel="noopener">HMRC: send quarterly updates</a>, <a href="{ELIG}" rel="noopener">HMRC: when you need MTD</a>, <a href="{SADL}" rel="noopener">GOV.UK: Self Assessment deadlines</a>. Checked {UPDATED}.</p>
+<h2 id="checklist">Your MTD checklist</h2>
+<ol class="checklist">
+<li><strong>Check if and when you need MTD.</strong> It depends on your qualifying income, which means self-employment and property income before expenses. Use our <a href="../../#checker">checker</a> or <a href="{ELIG}" rel="noopener">HMRC's tool</a>. If you didn't get a letter, it's still on you to check.</li>
+<li><strong>Check you can sign up.</strong> You need to be registered for Self Assessment and to have sent a tax return in the last 2 years. <a href="{ELIG}" rel="noopener">HMRC</a>.</li>
+<li><strong>Choose compatible software.</strong> It must handle every income source you have. Compare all {N} HMRC-recognised products in the <a href="../../finder/">finder</a>. HMRC doesn't recommend any of them.</li>
+<li><strong>Sign up with HMRC</strong> and authorise your software. <a href="{SIGN}" rel="noopener">HMRC: sign up</a>.</li>
+<li><strong>Keep digital records</strong> of your income and expenses as you go.</li>
+<li><strong>Send a quarterly update by each deadline.</strong> Each one covers the tax year so far, not just the last three months. If you had no income or expenses, you still send one. <a href="{QU}" rel="noopener">HMRC</a>.</li>
+<li><strong>Know the penalty rules.</strong> HMRC won't give penalty points for late quarterly updates in 2026 to 2027, but you must send them before you can file your tax return. From 2027 to 2028, four points means a £200 penalty. <a href="{QU}" rel="noopener">HMRC</a>.</li>
+<li><strong>File your tax return</strong> through your software by 31 January after the tax year. <a href="{TR}" rel="noopener">HMRC</a>.</li>
+</ol>
+<p class="small">General information, not tax advice. If you have an accountant, check with them which update periods to use.</p>"""),
+faqs=[("Do I have to send a quarterly update if I earned nothing?",f"Yes. HMRC says you must still send your quarterly update if you had no income or expenses in the period. <a href='{QU}'>HMRC</a>."),
+("Will I be fined for a late quarterly update in 2026 to 2027?",f"No penalty points for late quarterly updates in the 2026 to 2027 tax year, but you still need to send them before you can submit your tax return. Late tax returns still get points. <a href='{QU}'>HMRC</a>."),
+("Are the deadlines different for calendar update periods?",f"No. The update periods differ, but the deadlines are the same: 7 August, 7 November, 7 February and 7 May. <a href='{QU}'>HMRC</a>.")])
+
 # sitemap, robots, llms
 open(f"{ROOT}/sitemap.xml","w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+"".join(f"<url><loc>{SITE}/{p}</loc><lastmod>{UPDATED}</lastmod></url>" for p in pages)+"</urlset>\n")
 open(f"{ROOT}/robots.txt","w").write(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
@@ -206,8 +265,12 @@ open(f"{ROOT}/llms.txt","w").write(f"""# MTD Finder
 - Over £30,000 in 2025-26: from 6 April 2027
 - Over £20,000 in 2026-27: from 6 April 2028
 - Quarterly update deadlines: 7 August, 7 November, 7 February, 7 May ({QU})
+- Each quarterly update is cumulative from the start of the tax year; a nil update is still required ({QU})
+- No penalty points for late quarterly updates in 2026-27; from 2027-28, 4 points = £200 penalty ({QU})
+- Partnerships: later, timeline not yet set ({ELIG})
+- Facts last checked against GOV.UK: {UPDATED}
 
 ## Pages
-"""+"".join(f"- [{p or 'Home'}]({SITE}/{p})\n" for p in pages)+f"\n## Data\n- [Software data (JSON, from HMRC finder, last checked {data['last_checked']})]({SITE}/data/products.json)\n")
+"""+"".join(f"- [{p or 'Home'}]({SITE}/{p})\n" for p in pages)+f"\n## Downloads\n- [MTD deadline calendar, .ics]({SITE}/{ICS})\n\n## Data\n- [Software data (JSON, from HMRC finder, last checked {data['last_checked']})]({SITE}/data/products.json)\n")
 open(f"{ROOT}/.nojekyll","w").write("")
 print("built",len(pages),"pages")
