@@ -9,7 +9,7 @@
 - Each quarterly update is cumulative from the start of the tax year; a nil update is still required (https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates)
 - No penalty points for late quarterly updates in 2026-27; from 2027-28, 4 points = £200 penalty (https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates)
 - Partnerships: later, timeline not yet set (https://www.gov.uk/guidance/check-if-youre-eligible-for-making-tax-digital-for-income-tax)
-- Facts last checked against GOV.UK: 2026-10-15
+- Facts last checked against GOV.UK: 2026-10-16
 
 ## Pages
 - [Home](https://mtdfinder.co.uk/)
