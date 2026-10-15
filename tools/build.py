@@ -254,6 +254,7 @@ faqs=[("Do I have to send a quarterly update if I earned nothing?",f"Yes. HMRC s
 ("Will I be fined for a late quarterly update in 2026 to 2027?",f"No penalty points for late quarterly updates in the 2026 to 2027 tax year, but you still need to send them before you can submit your tax return. Late tax returns still get points. <a href='{QU}'>HMRC</a>."),
 ("Are the deadlines different for calendar update periods?",f"No. The update periods differ, but the deadlines are the same: 7 August, 7 November, 7 February and 7 May. <a href='{QU}'>HMRC</a>.")])
 
+exec(open(os.path.join(ROOT,'tools','drafts.py')).read())
 # sitemap, robots, llms
 open(f"{ROOT}/sitemap.xml","w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+"".join(f"<url><loc>{SITE}/{p}</loc><lastmod>{UPDATED}</lastmod></url>" for p in pages)+"</urlset>\n")
 open(f"{ROOT}/robots.txt","w").write(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
