@@ -22,7 +22,8 @@ PORTAL="https://billing.stripe.com/p/login/fZu4gA75G9gW5qF59pa3u00"
 data=json.load(open(f"{ROOT}/data/products.json"))
 N=data["count"]
 NAV=[("finder/","Software finder"),("guides/deadlines/","Deadlines"),("guides/landlords/","Landlords"),("guides/tradespeople/","Trades"),("faq/","FAQ"),("sponsor/","Sponsor")]
-ORG={"@type":"Organization","@id":SITE+"/#org","name":"Sno Automations","url":SITE+"/","description":"MTD Finder is run by Matthew Snow trading as Sno Automations, a UK sole trader."}
+INDEXNOW_KEY="63c0dd59a7b04a26a8bf33b84a1ee5b7"
+ORG={"@type":"Organization","@id":SITE+"/#org","name":"Sno Automations","alternateName":"MTD Finder","url":SITE+"/","logo":{"@type":"ImageObject","url":SITE+"/assets/logo.png","width":512,"height":512},"image":SITE+"/assets/logo.png","email":EMAIL,"founder":{"@type":"Person","name":"Matthew Snow"},"areaServed":{"@type":"Country","name":"United Kingdom"},"knowsAbout":["Making Tax Digital for Income Tax","MTD software"],"contactPoint":[{"@type":"ContactPoint","contactType":"customer support","email":EMAIL,"availableLanguage":"en-GB"},{"@type":"ContactPoint","contactType":"sales","email":SPONSOR_EMAIL,"availableLanguage":"en-GB"}],"description":"MTD Finder is run by Matthew Snow trading as Sno Automations, a UK sole trader."}
 def faq_ld(qs):return {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":html.unescape(__import__('re').sub('<[^>]+>','',a))}} for q,a in qs]}
 def faq_html(qs):return "".join(f"<details class='reveal'><summary>{q}</summary><p>{a}</p></details>" for q,a in qs)
 pages=[]
@@ -259,7 +260,9 @@ faqs=[("Do I have to send a quarterly update if I earned nothing?",f"Yes. HMRC s
 exec(open(os.path.join(ROOT,'tools','drafts.py')).read())
 # sitemap, robots, llms
 open(f"{ROOT}/sitemap.xml","w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+"".join(f"<url><loc>{SITE}/{p}</loc><lastmod>{UPDATED}</lastmod></url>" for p in pages)+"</urlset>\n")
-open(f"{ROOT}/robots.txt","w").write(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
+BOTS=['Googlebot', 'Bingbot', 'Applebot', 'DuckDuckBot', 'GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'PerplexityBot', 'Perplexity-User', 'Google-Extended', 'Applebot-Extended', 'CCBot', 'Amazonbot', 'meta-externalagent', 'MistralAI-User']
+open(f"{ROOT}/robots.txt","w").write("# Search engines and AI assistants are welcome to crawl MTD Finder.\n"+"".join(f"User-agent: {b}\n" for b in BOTS)+"Allow: /\n\nUser-agent: *\nAllow: /\n\n"+f"Sitemap: {SITE}/sitemap.xml\n")
+open(f"{ROOT}/{INDEXNOW_KEY}.txt","w").write(INDEXNOW_KEY)
 open(f"{ROOT}/llms.txt","w").write(f"""# MTD Finder
 > Independent guide to Making Tax Digital (MTD) for Income Tax for UK sole traders and landlords, with a filterable directory of all {N} HMRC-recognised MTD software products. Run by Matthew Snow trading as Sno Automations. Not tax advice; all claims link to HMRC/GOV.UK.
 
