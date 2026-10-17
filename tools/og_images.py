@@ -14,7 +14,7 @@ from PIL import Image,ImageDraw,ImageFont
 
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT=os.path.join(ROOT,"assets","og")
-W,H=1200,630
+W,H=1200,627               # LinkedIn's recommended 1.91:1 size
 M=84                      # safe margin all round (LinkedIn/X crop very little at 1.91:1)
 BG="#f6f5f1";PAPER="#fdfdfb";INK="#0e1b26";MUTED="#5a6470";LINE="#e3e2dc";ACCENT="#1b6b4f";SOFT="#dfece5"
 
@@ -27,6 +27,7 @@ CARDS={
 }
 
 FONTS={"serif":("Literata*VariableFont_opsz,wght.ttf","Literata[opsz,wght].ttf","https://github.com/google/fonts/raw/main/ofl/literata/Literata%5Bopsz,wght%5D.ttf"),
+       "mark":("Gelasio-VariableFont_wght.ttf","Gelasio[wght].ttf","https://github.com/google/fonts/raw/main/ofl/gelasio/Gelasio%5Bwght%5D.ttf"),
        "sans":("InstrumentSans-VariableFont_wdth,wght.ttf","InstrumentSans[wdth,wght].ttf","https://github.com/google/fonts/raw/main/ofl/instrumentsans/InstrumentSans%5Bwdth,wght%5D.ttf")}
 CACHE=os.path.expanduser("~/.cache/mtdfinder-fonts")
 
@@ -44,6 +45,27 @@ def serif(size,wght=300):
     f=ImageFont.truetype(font_path("serif"),size);f.set_variation_by_axes([72 if size>=40 else 12,wght]);return f
 def sans(size,wght=400):
     f=ImageFont.truetype(font_path("sans"),size);f.set_variation_by_axes([100,wght]);return f
+
+TILE=100                  # mark size on the cards, px
+def mark(size,ss=4):
+    """MTD mark, option B 'stacked TD' (research/signatures/marks.py): green rounded square,
+    white serif M with a small T over D to its right. Spec is a 60px tile, M 32px, T/D 13px,
+    radius 8px, 2px gap; scaled to `size`. Gelasio stands in for Georgia (same metrics).
+    Drawn at ss x size and downsampled so edges stay crisp."""
+    k=size*ss/60;S=size*ss
+    im=Image.new("RGBA",(S,S),(0,0,0,0));d=ImageDraw.Draw(im)
+    d.rounded_rectangle([0,0,S-1,S-1],radius=round(8*k),fill=ACCENT)
+    def f(px):
+        ft=ImageFont.truetype(font_path("mark"),round(px*k));ft.set_variation_by_axes([400]);return ft
+    fm,fs=f(32),f(13)
+    capM=-fm.getbbox("M",anchor="ls")[1];capS=-fs.getbbox("D",anchor="ls")[1]
+    wM=d.textlength("M",font=fm);wS=max(d.textlength(c,font=fs) for c in "TD");gap=2*k
+    x0=(S-(wM+gap+wS))/2;cy=S/2;half=1*k                      # 1px (2px total) between T and D
+    d.text((x0,cy+capM/2),"M",font=fm,fill="white",anchor="ls")
+    xs=x0+wM+gap
+    d.text((xs+wS/2,cy-half),"T",font=fs,fill="white",anchor="ms")
+    d.text((xs+wS/2,cy+half+capS),"D",font=fs,fill="white",anchor="ms")
+    return im.resize((size,size),Image.LANCZOS)
 
 def runs(text):
     """'Do I need *£30,000*?' -> words, each a list of (piece, is_accent), so punctuation hugs the accent."""
@@ -90,16 +112,14 @@ def card(slug,eyebrow,title,sub):
     im=Image.new("RGB",(W,H),BG);d=ImageDraw.Draw(im)
     d.rectangle([0,0,W,14],fill=ACCENT)                     # green band, top
     # brand row: logo + wordmark
-    logo=Image.open(os.path.join(ROOT,"assets","logo.png")).convert("RGB").resize((72,72),Image.LANCZOS)
-    mask=Image.new("L",(72,72),0);ImageDraw.Draw(mask).rounded_rectangle([0,0,71,71],radius=16,fill=255)
-    im.paste(logo,(M,M-20),mask)
-    wm=serif(40,400);bx=M+72+22;by=M-20+36
+    mk=mark(TILE);im.paste(mk,(M,M-26),mk)
+    wm=serif(46,400);bx=M+TILE+22;by=M-26+TILE//2
     if slug!="default":   # the default card already has the name as its headline
         d.text((bx,by),"MTD ",font=wm,fill=INK,anchor="lm");d.text((bx+d.textlength("MTD ",font=wm),by),"Finder",font=wm,fill=ACCENT,anchor="lm")
     # eyebrow, right aligned on the brand row
     eb=sans(20,500);t=3.2
     ebw=sum(d.textlength(c,font=eb)+t for c in eyebrow.upper())-t
-    tracked(d,(W-M-ebw,by-11),eyebrow.upper(),eb,MUTED,t)
+    tracked(d,(W-M-ebw,by-12),eyebrow.upper(),eb,MUTED,t)
     # title: largest size that fits in 3 lines (default card gets a bigger cap)
     maxw=W-2*M;top=M+110;bottom=H-M-60
     for size in range(150 if slug=="default" else 96,52,-2):
@@ -124,5 +144,17 @@ def card(slug,eyebrow,title,sub):
     return p
 
 if __name__=="__main__":
+    import shutil,sys
+    paths=[]
     for slug,(e,t,s) in CARDS.items():
-        p=card(slug,e,t,s);print(p,os.path.getsize(p)//1024,"KB")
+        p=card(slug,e,t,s);paths.append(p);print(p,os.path.getsize(p)//1024,"KB")
+    # optional: python3 tools/og_images.py --export DIR  -> review copies, LinkedIn uploads, contact sheet
+    if "--export" in sys.argv:
+        out=sys.argv[sys.argv.index("--export")+1];up=os.path.join(out,"linkedin-upload");os.makedirs(up,exist_ok=True)
+        for p in paths:
+            shutil.copy(p,out)
+            if not p.endswith("default.png"):shutil.copy(p,up)
+        sheet=Image.new("RGB",(W,len(paths)*(H+10)-10),"white")
+        for i,p in enumerate(paths):sheet.paste(Image.open(p).convert("RGB"),(0,i*(H+10)))
+        sheet.resize((600,sheet.height//2),Image.LANCZOS).save(os.path.join(out,"contact-sheet.png"),optimize=True)
+        print("exported to",out)
