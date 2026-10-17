@@ -27,7 +27,6 @@ CARDS={
 }
 
 FONTS={"serif":("Literata*VariableFont_opsz,wght.ttf","Literata[opsz,wght].ttf","https://github.com/google/fonts/raw/main/ofl/literata/Literata%5Bopsz,wght%5D.ttf"),
-       "mark":("Gelasio-VariableFont_wght.ttf","Gelasio[wght].ttf","https://github.com/google/fonts/raw/main/ofl/gelasio/Gelasio%5Bwght%5D.ttf"),
        "sans":("InstrumentSans-VariableFont_wdth,wght.ttf","InstrumentSans[wdth,wght].ttf","https://github.com/google/fonts/raw/main/ofl/instrumentsans/InstrumentSans%5Bwdth,wght%5D.ttf")}
 CACHE=os.path.expanduser("~/.cache/mtdfinder-fonts")
 
@@ -47,25 +46,14 @@ def sans(size,wght=400):
     f=ImageFont.truetype(font_path("sans"),size);f.set_variation_by_axes([100,wght]);return f
 
 TILE=100                  # mark size on the cards, px
-def mark(size,ss=4):
-    """MTD mark, option B 'stacked TD' (research/signatures/marks.py): green rounded square,
-    white serif M with a small T over D to its right. Spec is a 60px tile, M 32px, T/D 13px,
-    radius 8px, 2px gap; scaled to `size`. Gelasio stands in for Georgia (same metrics).
-    Drawn at ss x size and downsampled so edges stay crisp."""
-    k=size*ss/60;S=size*ss
-    im=Image.new("RGBA",(S,S),(0,0,0,0));d=ImageDraw.Draw(im)
-    d.rounded_rectangle([0,0,S-1,S-1],radius=round(8*k),fill=ACCENT)
-    def f(px):
-        ft=ImageFont.truetype(font_path("mark"),round(px*k));ft.set_variation_by_axes([400]);return ft
-    fm,fs=f(32),f(13)
-    capM=-fm.getbbox("M",anchor="ls")[1];capS=-fs.getbbox("D",anchor="ls")[1]
-    wM=d.textlength("M",font=fm);wS=max(d.textlength(c,font=fs) for c in "TD");gap=2*k
-    x0=(S-(wM+gap+wS))/2;cy=S/2;half=1*k                      # 1px (2px total) between T and D
-    d.text((x0,cy+capM/2),"M",font=fm,fill="white",anchor="ls")
-    xs=x0+wM+gap
-    d.text((xs+wS/2,cy-half),"T",font=fs,fill="white",anchor="ms")
-    d.text((xs+wS/2,cy+half+capS),"D",font=fs,fill="white",anchor="ms")
-    return im.resize((size,size),Image.LANCZOS)
+def mark(size):
+    """The stacked-TD mark from tools/mark.py: assets/logo.png (rendered from the same geometry as
+    assets/mark.svg) downsampled, with mark.svg's corner radius. Run tools/mark.py first if the mark changes."""
+    import importlib.util
+    spec=importlib.util.spec_from_file_location("mark",os.path.join(ROOT,"tools","mark.py"));mk=importlib.util.module_from_spec(spec);spec.loader.exec_module(mk)
+    ss=4;big=Image.open(os.path.join(ROOT,"assets","logo.png")).convert("RGB").resize((size*ss,size*ss),Image.LANCZOS)
+    mask=Image.new("L",big.size,0);ImageDraw.Draw(mask).rounded_rectangle([0,0,size*ss-1,size*ss-1],radius=round(mk.RADIUS*size*ss/mk.UNIT),fill=255)
+    big.putalpha(mask);return big.resize((size,size),Image.LANCZOS)
 
 def runs(text):
     """'Do I need *£30,000*?' -> words, each a list of (piece, is_accent), so punctuation hugs the accent."""

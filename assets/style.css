@@ -85,3 +85,4 @@ h1 em,h2 em,h3 em,.brand em,summary em,legend em{font-style:normal}h1 em,h2 em{f
 .after-check{grid-column:1/-1;border-top:1px solid var(--line);padding:26px 36px 30px}
 .after-check h3{margin:0 0 6px}
 .checklist{padding-left:1.3em}.checklist li{margin:0 0 12px}
+.nav .brand{display:inline-flex;align-items:center;gap:10px}.brand .mark{width:34px;height:34px;flex:none;display:block}@media(max-width:520px){.brand .mark{width:30px;height:30px}.nav .brand{gap:9px}}
