@@ -4,6 +4,8 @@ import json,os,html
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE="https://mtdfinder.co.uk"
 UPDATED="2026-10-16"
+PRIVACY_UPDATED="2026-10-17"
+ICO_REG="ZC276141"
 ELIG="https://www.gov.uk/guidance/check-if-youre-eligible-for-making-tax-digital-for-income-tax"
 QI="https://www.gov.uk/guidance/work-out-your-qualifying-income-for-making-tax-digital-for-income-tax"
 SW="https://www.gov.uk/guidance/find-software-thats-compatible-with-making-tax-digital-for-income-tax"
@@ -52,7 +54,7 @@ def signup_band(pre,uid):
 def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,signup=None):
     depth=path.count("/");pre="../"*depth
     url=f"{SITE}/{path}"
-    lds=[{"@context":"https://schema.org","@graph":[ORG,{"@type":"WebSite","@id":SITE+"/#site","name":"MTD Finder","url":SITE+"/","publisher":{"@id":SITE+"/#org"}},{"@type":"WebPage","name":title,"url":url,"dateModified":UPDATED,"isPartOf":{"@id":SITE+"/#site"}}]}]
+    lds=[{"@context":"https://schema.org","@graph":[ORG,{"@type":"WebSite","@id":SITE+"/#site","name":"MTD Finder","url":SITE+"/","publisher":{"@id":SITE+"/#org"}},{"@type":"WebPage","name":title,"url":url,"dateModified":PRIVACY_UPDATED if path=="privacy/" else UPDATED,"isPartOf":{"@id":SITE+"/#site"}}]}]
     if path.startswith("guides/"):
         lds.append({"@context":"https://schema.org","@type":"Article","headline":title,"description":desc,"url":url,"mainEntityOfPage":url,"inLanguage":"en-GB","dateModified":UPDATED,"author":{"@id":SITE+"/#org"},"publisher":{"@id":SITE+"/#org"},"isPartOf":{"@id":SITE+"/#site"}})
         lds.append({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":SITE+"/"},{"@type":"ListItem","position":2,"name":"Guides","item":SITE+"/guides/deadlines/"},{"@type":"ListItem","position":3,"name":title,"item":url}]})
@@ -180,8 +182,8 @@ hero("About","Built by a sole trader, <em>for sole traders</em>","MTD Finder is 
 prose(f"""<p>We built MTD Finder because HMRC's official list is accurate but hard to browse, and many \"best MTD software\" articles are written by vendors ranking their own products.</p><h2>How we work</h2><ul><li>Every tax claim links to HMRC or GOV.UK.</li><li>Software data comes from <a href="{TOOL}" rel="noopener">HMRC's software finder</a> and is rechecked regularly. Last checked: {data['last_checked']}.</li><li>The main list is alphabetical. Sponsored slots are labelled.</li><li>We're independent and not affiliated with HMRC.</li></ul><p>Contact: <a href="mailto:{EMAIL}">{EMAIL}</a>. Sponsorship: <a href="mailto:{SPONSOR_EMAIL}">{SPONSOR_EMAIL}</a>.</p>"""))
 
 page("privacy/","Privacy policy | MTD Finder","How MTD Finder, run by Matthew Snow trading as Sno Automations, handles personal data under UK GDPR.",
-hero("Legal","Privacy policy","Last updated "+UPDATED+".")+
-prose(f"""<h2>Who we are</h2><p>MTD Finder (mtdfinder.co.uk) is run by Matthew Snow trading as Sno Automations, a sole trader based in the UK. For the purposes of UK data protection law (the UK GDPR and the Data Protection Act 2018), Matthew Snow is the data controller. Contact: <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
+hero("Legal","Privacy policy","Last updated "+PRIVACY_UPDATED+".")+
+prose(f"""<h2>Who we are</h2><p>MTD Finder (mtdfinder.co.uk) is run by Matthew Snow trading as Sno Automations, a sole trader based in the UK. For the purposes of UK data protection law (the UK GDPR and the Data Protection Act 2018), Matthew Snow is the data controller. Contact: <a href="mailto:{EMAIL}">{EMAIL}</a>. Matthew Snow is registered with the Information Commissioner's Office (ICO), registration number {ICO_REG}. You can check this on the <a href="https://ico.org.uk/ESDWebPages/Search" rel="noopener">ICO register</a>.</p>
 <h2>Browsing the site</h2><p>We don't use analytics, advertising or tracking cookies, and this site sets no cookies of its own. The MTD checker runs entirely in your browser: the figures you type are never sent to us or stored.</p>
 <p>The site is hosted by GitHub Pages (GitHub, Inc.). When you visit, GitHub processes technical information such as your IP address to deliver and secure the site, and may log it. Fonts are loaded from Google Fonts (Google LLC), so your browser connects to Google's servers, which receive your IP address. These providers may process data outside the UK under their own safeguards. See <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a> and <a href="https://policies.google.com/privacy">Google's privacy policy</a>. Our lawful basis is legitimate interests in running a secure, working website.</p>
 <h2>If you email us</h2><p>If you contact us, we use your email address and message to reply, on the basis of legitimate interests. Our email is provided by Google Workspace. We keep correspondence only as long as needed, normally no more than two years.</p>
