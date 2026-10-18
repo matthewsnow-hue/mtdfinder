@@ -4,8 +4,13 @@ const io='IntersectionObserver'in window?new IntersectionObserver(es=>es.forEach
 document.querySelectorAll('.reveal').forEach(el=>io?io.observe(el):el.classList.add('in'));
 // checker lead sign-up: swap in the copy for this result (copy lives in tools/build.py as <template>s)
 const lead=document.getElementById('lead');
+// next quarterly deadline (same sum as next_deadline() in tools/build.py)
+const nextDl=(n=new Date())=>{const t=new Date(n.getFullYear(),n.getMonth(),n.getDate()),P={7:'6 April to 5 July',10:'6 April to 5 October',1:'6 April to 5 January',4:'6 April to 5 April (the whole tax year)'},S={7:'Aug',10:'Nov',1:'Feb',4:'May'},L={7:'August',10:'November',1:'February',4:'May'};
+const d=[0,1].flatMap(a=>[7,10,1,4].map(m=>new Date(t.getFullYear()+a,m,7))).sort((a,b)=>a-b).find(x=>x>=t),m=d.getMonth();
+return {short:'7 '+S[m]+' '+d.getFullYear(),long:'7\u00a0'+L[m],full:'7 '+L[m]+' '+d.getFullYear(),period:P[m]}};
+const fillDl=root=>{const n=nextDl();root.querySelectorAll('[data-dl]').forEach(e=>e.textContent=n[e.dataset.dl])};
 const setLead=k=>{if(!lead||lead.dataset.k===k)return;const t=document.getElementById('lead-'+k);if(!t)return;lead.dataset.k=k;
-document.getElementById('lead-copy').replaceChildren(t.content.cloneNode(true));
+const c=t.content.cloneNode(true);fillDl(c);document.getElementById('lead-copy').replaceChildren(c);
 const f=lead.querySelector('form'),h=f&&f.querySelector('input[type=hidden][name="'+f.dataset.resultField+'"]');if(h)h.value=k==='blank'?'':k};
 // calculator
 const cf=document.getElementById('calc');
@@ -51,7 +56,7 @@ if(f.website.value){f.classList.add('done');say("Thanks! Please check your inbox
 if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){say('Please enter a valid email address.','err');f.email_address.setAttribute('aria-invalid','true');f.email_address.focus();return}
 if(ck&&!ck.checked){say("Please tick the box to say you're happy for us to email you.",'err');ck.setAttribute('aria-invalid','true');ck.focus();return}
 const body=new URLSearchParams({email_address:em});
-if(ck){const seg=f.querySelector('input[type=radio]:checked');if(seg)body.append(seg.name,seg.value);const r=f.dataset.resultField&&f.querySelector('input[type=hidden][name="'+f.dataset.resultField+'"]');if(r&&r.value)body.append(r.name,r.value)}
+if(ck){const seg=f.querySelector('input[type=radio]:checked');if(seg&&seg.value)body.append(seg.name,seg.value);const r=f.dataset.resultField&&f.querySelector('input[type=hidden][name="'+f.dataset.resultField+'"]');if(r&&r.value)body.append(r.name,r.value)}
 b.disabled=true;b.textContent='Sending…';
 try{const r=await fetch(f.action,{method:'POST',headers:{'Accept':'application/json'},body});const d=await r.json();
 if(d.status==='success'){f.classList.add('done');say("Nearly there. We've sent a confirmation email to <strong>"+em.replace(/</g,'&lt;')+"</strong>. Click the link inside to start receiving reminders.",'ok')}

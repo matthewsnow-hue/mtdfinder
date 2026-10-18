@@ -56,9 +56,9 @@ def ext_links(doc):
     return _re.sub(r'<a(\s[^>]*)>(.*?)</a>',fix,doc,flags=_re.S)
 
 def nl_form(pre,uid):
-    return f"""<form class="nl" action="{KIT_FORM}" method="post" novalidate><div class="nl-row"><label class="vh" for="nl-{uid}">Email address</label><input id="nl-{uid}" type="email" name="email_address" required autocomplete="email" placeholder="you@example.co.uk"><button class="btn" type="submit">Subscribe</button></div><div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div><p class="small nl-note">One short email before each quarterly deadline, plus HMRC changes. We'll email you to confirm first. Unsubscribe anytime. See our <a href="{pre}privacy/">privacy policy</a>.</p><p class="nl-msg" role="status" aria-live="polite"></p></form>"""
+    return f"""<form class="nl" action="{KIT_FORM}" method="post" novalidate><div class="nl-row"><label class="vh" for="nl-{uid}">Email address</label><input id="nl-{uid}" type="email" name="email_address" required autocomplete="email" placeholder="you@example.co.uk"><button class="btn" type="submit">Subscribe</button></div><div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div><p class="small nl-note">When you subscribe, you'll get {CONSENT_SCOPE} You can unsubscribe at any time. We'll email you to confirm first. See our <a href="{pre}privacy/">privacy policy</a>.</p><p class="nl-msg" role="status" aria-live="polite"></p></form>"""
 def signup_band(pre,uid):
-    return f"""<section class='wrap narrow reveal'><div class='card nl-band'><span class='eyebrow'>Deadline reminders</span><h2 style='margin-top:0'>Get a nudge before <em>each deadline</em></h2><p>One short email before each quarterly deadline. Or add the dates straight to your calendar with our <a href='{pre}guides/deadline-calendar/'>free MTD deadline calendar</a>.</p>"""+nl_form(pre,uid)+"</div></section>"
+    return f"""<section class='wrap narrow reveal'><div class='card nl-band'><span class='eyebrow'>Deadline reminders</span><h2 style='margin-top:0'>Get a nudge before <em>each deadline</em></h2><p>Deadline reminders and our newsletter, in plain English. Or add the dates straight to your calendar with our <a href='{pre}guides/deadline-calendar/'>free MTD deadline calendar</a>.</p>"""+nl_form(pre,uid)+"</div></section>"
 def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,signup=None):
     depth=path.count("/");pre="../"*depth
     url=f"{SITE}/{path}"
@@ -104,24 +104,42 @@ yrs=[("2024 to 2025","£50k test"),("2025 to 2026","£30k test"),("2026 to 2027"
 # see mtdfinder-plans/lead-magnet-draft.md). Kit makes the key from the label: "MTD segment" -> mtd_segment.
 KIT_SEGMENT_FIELD="mtd_segment"
 KIT_RESULT_FIELD="mtd_checker_result"
-SEGMENTS=[("sole_trader","Sole trader"),("landlord","Landlord"),("both","Both"),("agent","Accountant or bookkeeper")]
+SEGMENTS=[("sole_trader","Sole trader"),("landlord","Landlord"),("both","Both"),("agent","Accountant or bookkeeper"),("","Prefer not to say")]   # "" = nothing sent to Kit
+import datetime as _dt
+# Next quarterly update deadline, worked out at build time. site.js repeats the same sum in the browser,
+# so the page stays right between builds. Only this date moves on its own; everything else is reviewed by hand.
+_DL=[(8,"6 April to 5 July"),(11,"6 April to 5 October"),(2,"6 April to 5 January"),(5,"6 April to 5 April (the whole tax year)")]
+_MON={2:("Feb","February"),5:("May","May"),8:("Aug","August"),11:("Nov","November")}
+def next_deadline(today=None):
+    t=today or _dt.date.today()
+    c=sorted(_dt.date(y,m,7) for y in (t.year,t.year+1) for m,_ in _DL)
+    d=next(x for x in c if x>=t);per=dict(_DL)[d.month];sh,lo=_MON[d.month]
+    return {"short":f"7 {sh} {d.year}","long":f"7&nbsp;{lo}","full":f"7 {lo} {d.year}","period":per}
+NDL=next_deadline()
+LEAD_REVIEW_FROM=_dt.date(2027,3,1)
+if _dt.date.today()>=LEAD_REVIEW_FROM:
+    print(f"WARNING: checker lead copy review due (from {LEAD_REVIEW_FROM}). The 'from 6 April 2027' copy ('you don't need to send quarterly updates yet') and any penalty wording change after the 2026 to 2027 tax year. Review LEAD in tools/build.py, then move LEAD_REVIEW_FROM on.")
+def _dl(k):return f'<span data-dl="{k}">{NDL[k]}</span>'
 def _src(url,label="HMRC"):return f'<a href="{url}" rel="noopener">{label}</a>'
 # outcome -> (eyebrow, heading, paragraph). site.js picks one from the checker result. "blank" is the default before any figures go in.
 LEAD={
  "blank":("Deadline reminders","Get a reminder before your MTD deadlines",
   "Put your figures in above to see when you start. Either way, we can email you before each deadline that applies to you."),
- "from_apr_2026":("Next deadline: 7 November 2026","Get a reminder before 7 November",
-  f"If you're already using MTD, your next quarterly update covers 6 April to 5 October and is due by <strong>7 November 2026</strong> ({_src(QU)}). If you haven't signed up yet, you still can ({_src(ELIG)}). Our next reminder goes out in the week before 7 November, then before each deadline after that."),
+ "from_apr_2026":("<span>Next deadline: "+_dl("short")+"</span>",   # wrapped: .eyebrow is flex, so a bare inner span would get a gap
+ "Get a reminder before "+_dl("long"),
+  f"If you're already using MTD, your next quarterly update covers {_dl('period')} and is due by <strong>{_dl('full')}</strong> ({_src(QU)}). If you haven't signed up yet, you still can ({_src(ELIG)}). We'll email you in the week before each deadline."),
  "from_apr_2027":("You start: 6 April 2027","We'll remind you before your first deadline",
   f"You don't need to send quarterly updates yet. Your first one will be due by <strong>7 August 2027</strong> ({_src(QU)}). Before then, your 2025 to 2026 online tax return is due by 31 January 2027 ({_src(SADL,'GOV.UK')}). We'll email you in good time before you start, and before each deadline after that."),
  "from_apr_2028":("You start: 6 April 2028","We'll remind you before you need to start",
   f"On these figures you won't need MTD until <strong>6 April 2028</strong> ({_src(ELIG)}), so you don't need to send quarterly updates yet. We'll email you before you need to start, and let you know if the rules or dates change."),
  "under_threshold":("Not on these figures","Stay in the loop",
-  f"You're not over any announced threshold on these figures. HMRC checks each year, so it's worth checking again if your income grows ({_src(ELIG)}). We'll email you if the thresholds or dates change, and before each quarterly deadline in case they apply to you later."),
+  f"You're not over any announced threshold on these figures. HMRC checks each year, so it's worth checking again if your income grows ({_src(ELIG)}). We'll email you if the thresholds or dates change."),
  "not_self_assessment":("Probably not yet","Stay in the loop",
   f"MTD for Income Tax is for sole traders and landlords registered for Self Assessment ({_src(ELIG)}). If that changes, or you look after clients who are affected, we'll keep you up to date."),
 }
-CONSENT_TEXT="Yes, email me MTD deadline reminders and the MTD Finder newsletter. That's usually one or two short emails before each quarterly deadline (there are four a year), plus the odd update when HMRC changes something. I can unsubscribe at any time."
+# One consent scope for every box on the same Kit list. If it changes, log it in mtdfinder-plans/consent-log.md.
+CONSENT_SCOPE="MTD deadline reminders and the MTD Finder newsletter. That's usually one or two short emails before each quarterly deadline (there are four a year), plus the odd update when HMRC changes something."
+CONSENT_TEXT="Yes, email me "+CONSENT_SCOPE+" I can unsubscribe at any time."
 def lead_signup(pre):
     e,h,p=LEAD["blank"]
     tpl="".join(f'<template id="lead-{k}"><span class="eyebrow">{a}</span><h3>{b}</h3><p class="small">{c}</p></template>' for k,(a,b,c) in LEAD.items())
@@ -221,7 +239,7 @@ f"""<section class="wrap"><div class="grid two"><div class="card featured reveal
 <div class="card reveal"><h3>Our rules</h3><ul class="small"><li>Only HMRC-recognised products.</li><li>Sponsored placements are always labelled.</li><li>Sponsorship never changes the main list order or our editorial content.</li><li>We may earn affiliate commission; we always disclose it.</li></ul></div></div></section>""")
 
 page("newsletter/","MTD Finder newsletter: deadline reminders for sole traders and landlords","Sign up for MTD Finder's free newsletter: plain-English Making Tax Digital deadline reminders and software updates for UK sole traders and landlords.",
-hero("Newsletter","Deadline reminders, <em>in plain English</em>","A short email before each quarterly deadline, plus any changes HMRC makes. Free, no spam.")+
+hero("Newsletter","Deadline reminders, <em>in plain English</em>","Short reminders before each quarterly deadline, plus the MTD Finder newsletter when HMRC changes something. Free, no spam.")+
 f"""<section class="wrap narrow"><div class="card nl-band"><p class="notice nl-thanks" hidden>Nearly there. Check your inbox for a confirmation email from MTD Finder and click the link inside.</p><p class="notice nl-confirmed" hidden>Thanks, you're subscribed. Your first reminder will arrive before the next deadline.</p>"""+nl_form("../","page")+f"""<p class="small">Emails come from {NEWS_EMAIL}. Sign-ups are handled by Kit, our email provider.</p></div></section>""")
 
 page("about/","About MTD Finder: independent, run by Sno Automations","MTD Finder is an independent guide to Making Tax Digital for Income Tax software, run by Matthew Snow trading as Sno Automations, a UK sole trader.",
