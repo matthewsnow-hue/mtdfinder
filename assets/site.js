@@ -2,16 +2,21 @@ const h=document.querySelector('header.site');addEventListener('scroll',()=>h&&h
 const mb=document.querySelector('.menu-btn');mb&&mb.addEventListener('click',()=>{const u=document.querySelector('.nav ul');u.classList.toggle('open');mb.setAttribute('aria-expanded',u.classList.contains('open'))});
 const io='IntersectionObserver'in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08}):null;
 document.querySelectorAll('.reveal').forEach(el=>io?io.observe(el):el.classList.add('in'));
+// checker lead sign-up: swap in the copy for this result (copy lives in tools/build.py as <template>s)
+const lead=document.getElementById('lead');
+const setLead=k=>{if(!lead||lead.dataset.k===k)return;const t=document.getElementById('lead-'+k);if(!t)return;lead.dataset.k=k;
+document.getElementById('lead-copy').replaceChildren(t.content.cloneNode(true));
+const f=lead.querySelector('form'),h=f&&f.querySelector('input[type=hidden][name="'+f.dataset.resultField+'"]');if(h)h.value=k==='blank'?'':k};
 // calculator
 const cf=document.getElementById('calc');
 if(cf){const gbp=n=>'£'+n.toLocaleString('en-GB');
 const v=id=>Math.max(0,parseFloat(document.getElementById(id).value)||0);
 const run=()=>{const y=[['2024 to 2025',50000,'6 April 2026'],['2025 to 2026',30000,'6 April 2027'],['2026 to 2027',20000,'6 April 2028']];
-const out=document.getElementById('calc-out');let html='',hit=null;
+const out=document.getElementById('calc-out');let html='',hit=null;const blank=[...cf.querySelectorAll('input[type=number]')].every(i=>i.value.trim()==='');
 y.forEach((r,i)=>{const t=v('se'+i)+v('pr'+i);if(!hit&&t>r[1])hit=[r,t];});
-if(!document.getElementById('sa').checked){html='<span class="eyebrow">Your result</span><h3>Probably not yet</h3><p>MTD for Income Tax applies to sole traders and landlords registered for Self Assessment. If you start self-employment or letting, check again.</p>';}
-else if(hit){html=`<span class="eyebrow">Your result</span><h3>From ${hit[0][2]}</h3><p>Your qualifying income for ${hit[0][0]} is ${gbp(hit[1])}, which is over the ${gbp(hit[0][1])} threshold. You will likely need MTD-compatible software from <strong>${hit[0][2]}</strong>, unless you're exempt.</p><p>${hit[0][1]===30000?'<a href="guides/30k-threshold-april-2027/">Your April 2027 checklist →</a><br>':''}<a href="finder/">Find compatible software →</a></p>`;}
-else{html='<span class="eyebrow">Your result</span><h3>Not on these figures</h3><p>Based on the income you entered, you are not over any announced threshold (up to 2026 to 2027). HMRC checks again each year, so revisit this if your turnover grows.</p>';}
+if(!document.getElementById('sa').checked){html='<span class="eyebrow">Your result</span><h3>Probably not yet</h3><p>MTD for Income Tax applies to sole traders and landlords registered for Self Assessment. If you start self-employment or letting, check again.</p>';setLead('not_self_assessment');}
+else if(hit){html=`<span class="eyebrow">Your result</span><h3>From ${hit[0][2]}</h3><p>Your qualifying income for ${hit[0][0]} is ${gbp(hit[1])}, which is over the ${gbp(hit[0][1])} threshold. You will likely need MTD-compatible software from <strong>${hit[0][2]}</strong>, unless you're exempt.</p><p>${hit[0][1]===30000?'<a href="guides/30k-threshold-april-2027/">Your April 2027 checklist →</a><br>':''}<a href="finder/">Find compatible software →</a></p>`;setLead({50000:'from_apr_2026',30000:'from_apr_2027',20000:'from_apr_2028'}[hit[0][1]]);}
+else{html='<span class="eyebrow">Your result</span><h3>Not on these figures</h3><p>Based on the income you entered, you are not over any announced threshold (up to 2026 to 2027). HMRC checks again each year, so revisit this if your turnover grows.</p>';setLead(blank?'blank':'under_threshold');}
 out.innerHTML=html+'<p class="small">An estimate only, not tax advice. Confirm with <a href="https://www.gov.uk/guidance/check-if-youre-eligible-for-making-tax-digital-for-income-tax" target="_blank" rel="noopener">HMRC\'s official checker<span class="vh"> (opens in new tab)</span></a>.</p>';};
 cf.addEventListener('input',run);cf.addEventListener('submit',e=>{e.preventDefault();run()});run();}
 // finder
@@ -40,13 +45,16 @@ const ft=document.querySelector('.filter-toggle'),sd=document.getElementById('si
 draw();});}
 
 (()=>{const q=new URLSearchParams(location.search);if(q.get('confirmed')){document.querySelectorAll('.nl-confirmed').forEach(e=>e.hidden=false)}if(q.get('thanks')){document.querySelectorAll('.nl-thanks').forEach(e=>e.hidden=false)}
-document.querySelectorAll('form.nl').forEach(f=>{const m=f.querySelector('.nl-msg'),b=f.querySelector('button'),say=(t,c)=>{m.className='nl-msg '+c;m.innerHTML=t};
-f.addEventListener('submit',async e=>{e.preventDefault();const em=f.email_address.value.trim();
+document.querySelectorAll('form.nl').forEach(f=>{f.noValidate=true;const m=f.querySelector('.nl-msg'),b=f.querySelector('button'),lbl=b.textContent,ck=f.querySelector('input[name=consent]'),say=(t,c)=>{m.className='nl-msg '+c;m.innerHTML=t};
+f.addEventListener('submit',async e=>{e.preventDefault();const em=f.email_address.value.trim();f.querySelectorAll('[aria-invalid]').forEach(x=>x.removeAttribute('aria-invalid'));
 if(f.website.value){f.classList.add('done');say("Thanks! Please check your inbox to confirm.",'ok');return}
-if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){say('Please enter a valid email address.','err');f.email_address.focus();return}
-b.disabled=true;b.textContent='Subscribing…';
-try{const r=await fetch(f.action,{method:'POST',headers:{'Accept':'application/json'},body:new URLSearchParams({email_address:em})});const d=await r.json();
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){say('Please enter a valid email address.','err');f.email_address.setAttribute('aria-invalid','true');f.email_address.focus();return}
+if(ck&&!ck.checked){say("Please tick the box to say you're happy for us to email you.",'err');ck.setAttribute('aria-invalid','true');ck.focus();return}
+const body=new URLSearchParams({email_address:em});
+if(ck){const seg=f.querySelector('input[type=radio]:checked');if(seg)body.append(seg.name,seg.value);const r=f.dataset.resultField&&f.querySelector('input[type=hidden][name="'+f.dataset.resultField+'"]');if(r&&r.value)body.append(r.name,r.value)}
+b.disabled=true;b.textContent='Sending…';
+try{const r=await fetch(f.action,{method:'POST',headers:{'Accept':'application/json'},body});const d=await r.json();
 if(d.status==='success'){f.classList.add('done');say("Nearly there. We've sent a confirmation email to <strong>"+em.replace(/</g,'&lt;')+"</strong>. Click the link inside to start receiving reminders.",'ok')}
 else if(d.status==='quarantined'&&d.url){say('One quick security check from our email provider, Kit. Taking you there now…','ok');location.href=d.url;return}
 else{throw 0}}catch(_){say('Sorry, something went wrong. Please try again, or email <a href="mailto:hello@mtdfinder.co.uk">hello@mtdfinder.co.uk</a>.','err')}
-finally{b.disabled=false;b.textContent='Subscribe'}})})})();
+finally{b.disabled=false;b.textContent=lbl}})})})();

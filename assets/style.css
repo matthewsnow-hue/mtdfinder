@@ -86,3 +86,11 @@ h1 em,h2 em,h3 em,.brand em,summary em,legend em{font-style:normal}h1 em,h2 em{f
 .after-check h3{margin:0 0 6px}
 .checklist{padding-left:1.3em}.checklist li{margin:0 0 12px}
 .nav .brand{display:inline-flex;align-items:center;gap:10px}.brand .mark{width:34px;height:34px;flex:none;display:block}@media(max-width:520px){.brand .mark{width:30px;height:30px}.nav .brand{gap:9px}}
+.lead #lead-copy p{margin:0;max-width:68ch}.lead #lead-copy .eyebrow{margin-bottom:12px}.lead-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:16px 28px;margin-top:20px;align-items:start}.lead-grid .field{margin:0}
+.seg{border:0;padding:0;margin:0}.seg legend{font-family:var(--sans);font-size:.8rem;font-weight:500;padding:0;margin:0 0 4px}.seg legend .small{font-weight:400}.seg-opts{display:flex;flex-wrap:wrap;gap:0 20px}.seg-opts .chk{margin:6px 0}
+.consent{display:flex;gap:12px;align-items:flex-start;margin:18px 0 16px}.consent input{flex:none;width:18px;height:18px;margin:3px 0 0;accent-color:var(--accent)}.consent label{font-size:.9rem;font-weight:400;margin:0;line-height:1.5;cursor:pointer}
+.lead-send{display:flex;gap:18px;align-items:center;flex-wrap:wrap}.lead-send .nl-note{margin:0;flex:1;min-width:240px}
+[aria-invalid=true]{outline:2px solid #9b2c2c;outline-offset:2px}
+.lead-form.done .lead-grid,.lead-form.done .consent,.lead-form.done .lead-send{display:none}
+@media(max-width:700px){.lead-grid{grid-template-columns:1fr}.after-check{padding:24px 22px 26px}.lead-send .btn{width:100%;justify-content:center}}
+.calc .lead form{padding:0;background:none}
