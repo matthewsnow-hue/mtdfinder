@@ -6,7 +6,8 @@ SITE="https://mtdfinder.co.uk"
 UPDATED="2026-10-16"
 PRIVACY_UPDATED="2026-10-19"
 # GoatCounter visit counts (no cookies). Approved by Matthew, A-019; dashboard https://mtdfinder.goatcounter.com
-GOATCOUNTER='<script data-goatcounter="https://mtdfinder.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>'
+# count.js is self-hosted at assets/count.js (version + SHA-256 in docs/goatcounter.md); hits still go to the GoatCounter /count endpoint.
+GOATCOUNTER='<script data-goatcounter="https://mtdfinder.goatcounter.com/count" async src="/assets/count.js"></script>'
 ICO_REG="ZC276141"
 # Social preview images, made by tools/og_images.py (1200x630). Pages not listed use default.png.
 OG_IMAGES={"guides/deadline-calendar/":"deadline-calendar","guides/7-november-deadline/":"7-november-deadline","guides/30k-threshold-april-2027/":"30k-threshold-april-2027"}
