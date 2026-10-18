@@ -4,7 +4,7 @@ import json,os,html
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE="https://mtdfinder.co.uk"
 UPDATED="2026-10-16"
-PRIVACY_UPDATED="2026-10-18"
+PRIVACY_UPDATED="2026-10-19"
 # GoatCounter visit counts (no cookies). Approved by Matthew, A-019; dashboard https://mtdfinder.goatcounter.com
 GOATCOUNTER='<script data-goatcounter="https://mtdfinder.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>'
 ICO_REG="ZC276141"
