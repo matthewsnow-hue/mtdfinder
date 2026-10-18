@@ -102,6 +102,8 @@ THRESH=f"""<table><thead><tr><th>Qualifying income over</th><th>In tax year</th>
 # Checker help lines (meaning checked against HMRC's qualifying income guidance, QI)
 SE_HELP="Your total sales or takings before expenses (turnover), not your profit."
 PR_HELP="Your share of rent and other property income before expenses. If you own a property jointly, only count your share of the income (for example, half if you split it equally). If you're only told your share after expenses, use that figure."
+SE_SHORT="Turnover, not profit."
+PR_SHORT="Your share, before expenses."
 yrs=[("2024 to 2025","£50k test"),("2025 to 2026","£30k test"),("2026 to 2027","£20k test")]
 # --- Checker lead magnet: deadline reminder sign-up shown under the checker result ---
 # Kit custom fields the form sends. They must exist in Kit before this goes live (Matthew to create them,
@@ -159,7 +161,7 @@ def lead_signup(pre):
 <div class="consent"><input type="checkbox" id="lead-consent" name="consent" value="yes" required aria-describedby="lead-msg"><label for="lead-consent">{CONSENT_TEXT}</label></div>
 <div class="lead-send"><button class="btn" type="submit">Remind me</button><p class="small nl-note">We'll email you to confirm first. See our <a href="{pre}privacy/">privacy policy</a>. Not tax advice. Prefer your calendar? <a href="{pre}guides/deadline-calendar/">Get the deadline calendar</a>.</p></div>
 <p class="nl-msg" id="lead-msg" role="status" aria-live="polite"></p></form></div>"""
-fields="".join(f"<fieldset><legend>{y} <span class='small'>({t})</span></legend><div class='row2'><div><label for='se{i}'>Self-employment turnover (£)</label><input id='se{i}' type='number' inputmode='decimal' min='0' step='100' placeholder='0' aria-describedby='se{i}-help'><p class='small' id='se{i}-help' style='margin:6px 0 0'>{SE_HELP}</p></div><div><label for='pr{i}'>Property income, your share (£)</label><input id='pr{i}' type='number' inputmode='decimal' min='0' step='100' placeholder='0' aria-describedby='pr{i}-help'><p class='small' id='pr{i}-help' style='margin:6px 0 0'>{PR_HELP}</p></div></div></fieldset>" for i,(y,t) in enumerate(yrs))
+fields="".join(f"<fieldset><legend>{y} <span class='small'>({t})</span></legend><div class='row2'><div><label for='se{i}'>Self-employment turnover (£)</label><input id='se{i}' type='number' inputmode='decimal' min='0' step='100' placeholder='0' aria-describedby='se{i}-help'><p class='small' id='se{i}-help' style='margin:6px 0 0'>{SE_HELP if i==0 else SE_SHORT}</p></div><div><label for='pr{i}'>Property income, your share (£)</label><input id='pr{i}' type='number' inputmode='decimal' min='0' step='100' placeholder='0' aria-describedby='pr{i}-help'><p class='small' id='pr{i}-help' style='margin:6px 0 0'>{PR_HELP if i==0 else PR_SHORT}</p></div></div></fieldset>" for i,(y,t) in enumerate(yrs))
 home_faq=[("Who needs to use Making Tax Digital for Income Tax?",f"Sole traders and landlords registered for Self Assessment whose qualifying income from self-employment and property is over the threshold for the relevant tax year. <a href='{ELIG}'>HMRC guidance</a>."),
 ("What counts as qualifying income?",f"Your total self-employment and property income before expenses (turnover). Employment (PAYE) income, dividends, pensions and your share of partnership profit do not count. <a href='{QI}'>HMRC guidance</a>."),
 ("Does HMRC recommend any MTD software?",f"No. HMRC says all listed software has been through its recognition process, but it does not recommend any product. <a href='{SW}'>HMRC guidance</a>."),
