@@ -7,8 +7,9 @@ const lead=document.getElementById('lead');
 // next quarterly deadline (same sum as next_deadline() in tools/build.py)
 const nextDl=(n=new Date())=>{const t=new Date(n.getFullYear(),n.getMonth(),n.getDate()),P={7:'6 April to 5 July',10:'6 April to 5 October',1:'6 April to 5 January',4:'6 April to 5 April (the whole tax year)'},S={7:'Aug',10:'Nov',1:'Feb',4:'May'},L={7:'August',10:'November',1:'February',4:'May'};
 const d=[0,1].flatMap(a=>[7,10,1,4].map(m=>new Date(t.getFullYear()+a,m,7))).sort((a,b)=>a-b).find(x=>x>=t),m=d.getMonth();
-return {short:'7 '+S[m]+' '+d.getFullYear(),long:'7\u00a0'+L[m],full:'7 '+L[m]+' '+d.getFullYear(),period:P[m]}};
+return {short:'7 '+S[m]+' '+d.getFullYear(),long:'7\u00a0'+L[m],full:'7\u00a0'+L[m]+'\u00a0'+d.getFullYear(),period:P[m],card:'7 '+S[m],href:m==10?'guides/7-november-deadline/':'guides/deadline-calendar/'}};
 const fillDl=root=>{const n=nextDl();root.querySelectorAll('[data-dl]').forEach(e=>e.textContent=n[e.dataset.dl])};
+fillDl(document);document.querySelectorAll('[data-dl-href]').forEach(a=>a.setAttribute('href',nextDl().href));
 const setLead=k=>{if(!lead||lead.dataset.k===k)return;const t=document.getElementById('lead-'+k);if(!t)return;lead.dataset.k=k;
 const c=t.content.cloneNode(true);fillDl(c);document.getElementById('lead-copy').replaceChildren(c);
 const f=lead.querySelector('form'),h=f&&f.querySelector('input[type=hidden][name="'+f.dataset.resultField+'"]');if(h)h.value=k==='blank'?'':k};

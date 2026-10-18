@@ -114,7 +114,9 @@ def next_deadline(today=None):
     t=today or _dt.date.today()
     c=sorted(_dt.date(y,m,7) for y in (t.year,t.year+1) for m,_ in _DL)
     d=next(x for x in c if x>=t);per=dict(_DL)[d.month];sh,lo=_MON[d.month]
-    return {"short":f"7 {sh} {d.year}","long":f"7&nbsp;{lo}","full":f"7 {lo} {d.year}","period":per}
+    # "full" is shown in bold, so it never breaks across lines. "href": the 7 November guide while that's next, otherwise the deadline calendar.
+    return {"short":f"7 {sh} {d.year}","long":f"7&nbsp;{lo}","full":f"7&nbsp;{lo}&nbsp;{d.year}","period":per,"card":f"7 {sh}",
+            "href":"guides/7-november-deadline/" if d.month==11 else "guides/deadline-calendar/"}
 NDL=next_deadline()
 LEAD_REVIEW_FROM=_dt.date(2027,3,1)
 if _dt.date.today()>=LEAD_REVIEW_FROM:
@@ -129,7 +131,7 @@ LEAD={
  "Get a reminder before "+_dl("long"),
   f"If you're already using MTD, your next quarterly update covers {_dl('period')} and is due by <strong>{_dl('full')}</strong> ({_src(QU)}). If you haven't signed up yet, you still can ({_src(ELIG)}). We'll email you in the week before each deadline."),
  "from_apr_2027":("You start: 6 April 2027","We'll remind you before your first deadline",
-  f"You don't need to send quarterly updates yet. Your first one will be due by <strong>7 August 2027</strong> ({_src(QU)}). Before then, your 2025 to 2026 online tax return is due by 31 January 2027 ({_src(SADL,'GOV.UK')}). We'll email you in good time before you start, and before each deadline after that."),
+  f"You don't need to send quarterly updates yet. Your first one will be due by <strong>7&nbsp;August&nbsp;2027</strong> ({_src(QU)}). Before then, your 2025 to 2026 online tax return is due by 31 January 2027 ({_src(SADL,'GOV.UK')}). We'll email you in good time before you start, and before each deadline after that."),
  "from_apr_2028":("You start: 6 April 2028","We'll remind you before you need to start",
   f"On these figures you won't need MTD until <strong>6 April 2028</strong> ({_src(ELIG)}), so you don't need to send quarterly updates yet. We'll email you before you need to start, and let you know if the rules or dates change."),
  "under_threshold":("Not on these figures","Stay in the loop",
@@ -171,7 +173,7 @@ f"""<section class="wrap" id="checker"><div class="calc reveal"><form id="calc" 
 <section class="wrap reveal explore"><h2>Explore</h2><div class="grid">
 <a class="card" href="finder/"><span class="num">{N}</span><h3>Software finder</h3><p class="small">Filter HMRC-recognised products by income type, bridging or bookkeeping, free version, VAT and CIS.</p></a>
 <a class="card" href="guides/deadlines/"><span class="num">4×</span><h3>Quarterly deadlines</h3><p class="small">7 August, 7 November, 7 February and 7 May, explained.</p></a>
-<a class="card" href="guides/7-november-deadline/"><span class="num">7 Nov</span><h3>Next deadline</h3><p class="small">What to send by 7 November, and what happens if you're late.</p></a>
+<a class="card" href="{NDL['href']}" data-dl-href><span class="num">{_dl('card')}</span><h3>Next deadline</h3><p class="small">What to send by {_dl('long')}, and what happens if you're late.</p></a>
 <a class="card" href="guides/tradespeople/"><span class="num">CIS</span><h3>For tradespeople</h3><p class="small">Electricians, plumbers, builders and solar installers.</p></a></div></section>
 <section class="wrap narrow reveal"><div class="card nl-band"><span class="eyebrow">Newsletter</span><h2 style="margin-top:0">Never miss an <em>MTD deadline</em></h2>"""+nl_form("","home")+"""</div></section>""",faqs=home_faq)
 
