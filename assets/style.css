@@ -97,3 +97,4 @@ h1 em,h2 em,h3 em,.brand em,summary em,legend em{font-style:normal}h1 em,h2 em{f
 
 .result .why-now{border-left:3px solid #a9d6c3;padding-left:14px;margin:18px 0 10px}.result .why-cta{margin:0 0 14px}.result .why-cta .btn{background:#a9d6c3;color:var(--navy)}
 .lead.lead-on{background:rgba(169,214,195,.14);box-shadow:inset 4px 0 0 #2f7d62}
+#lead{scroll-margin-top:90px}
