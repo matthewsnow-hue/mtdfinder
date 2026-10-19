@@ -64,8 +64,9 @@ def nl_form(pre,uid):
     return f"""<form class="nl" action="{KIT_FORM}" method="post" novalidate><div class="nl-row"><label class="vh" for="nl-{uid}">Email address</label><input id="nl-{uid}" type="email" name="email_address" required autocomplete="email" placeholder="you@example.co.uk"><button class="btn" type="submit">Subscribe</button></div><div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div><p class="small nl-note">When you subscribe, you'll get {CONSENT_SCOPE} You can unsubscribe at any time. We'll email you to confirm first. See our <a href="{pre}privacy/">privacy policy</a>.</p><p class="nl-msg" role="status" aria-live="polite"></p></form>"""
 def signup_band(pre,uid):
     return f"""<section class='wrap narrow reveal'><div class='card nl-band'><span class='eyebrow'>Deadline reminders</span><h2 style='margin-top:0'>Get a nudge before <em>each deadline</em></h2><p>Deadline reminders and our newsletter, in plain English. Or add the dates straight to your calendar with our <a href='{pre}guides/deadline-calendar/'>free MTD deadline calendar</a>.</p>"""+nl_form(pre,uid)+"</div></section>"
-def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,signup=None):
-    depth=path.count("/");pre="../"*depth
+def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,signup=None,notfound=False):
+    # notfound: writes ROOT/404.html with root-absolute links (served at any depth), noindex, no canonical, kept out of the sitemap
+    depth=path.count("/");pre="/" if notfound else "../"*depth
     url=f"{SITE}/{path}"
     lds=[{"@context":"https://schema.org","@graph":[ORG,{"@type":"WebSite","@id":SITE+"/#site","name":"MTD Finder","url":SITE+"/","publisher":{"@id":SITE+"/#org"}},{"@type":"WebPage","name":title,"url":url,"dateModified":PRIVACY_UPDATED if path=="privacy/" else UPDATED,"isPartOf":{"@id":SITE+"/#site"}}]}]
     if path.startswith("guides/"):
@@ -81,8 +82,8 @@ def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,s
     nav="".join(f'<li><a href="{pre}{h}"{" aria-current=page" if h==path else ""}>{t}</a></li>' for h,t in NAV)
     ld="".join(f'<script type="application/ld+json">{json.dumps(l,ensure_ascii=False)}</script>' for l in lds)
     doc=f"""<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}"><link rel="canonical" href="{url}">{'<meta name="robots" content="noindex">' if draft else ''}
-<meta property="og:type" content="website"><meta property="og:site_name" content="MTD Finder"><meta property="og:title" content="{html.escape(title)}"><meta property="og:description" content="{html.escape(desc)}"><meta property="og:url" content="{url}"><meta property="og:locale" content="en_GB"><meta property="og:image" content="{og_img}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="627"><meta property="og:image:alt" content="{html.escape(og_alt)}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{og_img}">
+<title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}">{'' if notfound else f'<link rel="canonical" href="{url}">'}{'<meta name="robots" content="noindex">' if draft or notfound else ''}
+<meta property="og:type" content="website"><meta property="og:site_name" content="MTD Finder"><meta property="og:title" content="{html.escape(title)}"><meta property="og:description" content="{html.escape(desc)}">{'' if notfound else f'<meta property="og:url" content="{url}">'}<meta property="og:locale" content="en_GB"><meta property="og:image" content="{og_img}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="627"><meta property="og:image:alt" content="{html.escape(og_alt)}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{og_img}">
 <meta name="theme-color" content="#f6f5f1"><link rel="icon" href="{pre}assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="icon" href="{pre}assets/mark.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="{pre}assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..600;1,7..72,300..600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{pre}assets/style.css">{ld}</head><body>
@@ -93,6 +94,7 @@ def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,s
 <ul><li><a href="{pre}finder/">Software finder</a></li><li><a href="{pre}guides/deadlines/">Deadlines</a></li><li><a href="{pre}guides/landlords/">Landlords</a></li><li><a href="{pre}guides/tradespeople/">Tradespeople</a></li><li><a href="{pre}guides/bridging-software/">Bridging software</a></li><li><a href="{pre}guides/deadline-calendar/">Deadline calendar</a></li><li><a href="{pre}guides/7-november-deadline/">7 November deadline</a></li><li><a href="{pre}guides/30k-threshold-april-2027/">£30k from April 2027</a></li><li><a href="{pre}faq/">FAQ</a></li></ul>
 <ul><li><a href="{pre}about/">About</a></li><li><a href="{pre}sponsor/">Sponsor us</a></li><li><a href="{pre}newsletter/">Newsletter</a></li><li><a href="{pre}privacy/">Privacy</a></li><li><a href="{pre}disclaimer/">Disclaimer</a></li><li><a href="{pre}terms/">Terms</a></li><li><a href="{PORTAL}">Manage sponsorship</a></li></ul></div></div></footer>
 <script src="{pre}assets/site.js" defer></script>{GOATCOUNTER}</body></html>"""
+    if notfound:open(os.path.join(ROOT,"404.html"),"w").write(ext_links(doc));return
     d=os.path.join(ROOT,path);os.makedirs(d,exist_ok=True);open(os.path.join(d,"index.html"),"w").write(ext_links(doc))
     if not draft:pages.append(path)
 
@@ -358,6 +360,16 @@ prose(f"""<h2>The dates</h2><table><thead><tr><th>Date</th><th>What's due</th></
 faqs=[("Do I have to send a quarterly update if I earned nothing?",f"Yes. HMRC says you must still send your quarterly update if you had no income or expenses in the period. <a href='{QU}'>HMRC</a>."),
 ("Will I be fined for a late quarterly update in 2026 to 2027?",f"No penalty points for late quarterly updates in the 2026 to 2027 tax year, but you still need to send them before you can submit your tax return. Late tax returns still get points. <a href='{QU}'>HMRC</a>."),
 ("Are the deadlines different for calendar update periods?",f"No. The update periods differ, but the deadlines are the same: 7 August, 7 November, 7 February and 7 May. <a href='{QU}'>HMRC</a>.")])
+
+# ---- 404 page (GitHub Pages and Cloudflare Pages both serve /404.html for missing paths)
+page("","Page not found | MTD Finder","This page doesn't exist on MTD Finder.",
+hero("Error 404","Page <em>not found</em>","Sorry, we couldn't find that page. It may have moved, or the address may have a typo.")+
+prose("""<p>Try one of these instead:</p><ul>
+<li><a href="/">Home and the MTD qualifying income checker</a></li>
+<li><a href="/finder/">Software finder</a>: compare HMRC-recognised MTD software</li>
+<li><a href="/guides/deadlines/">MTD deadlines and quarterly update dates</a></li>
+<li><a href="/guides/landlords/">Guide for landlords</a> · <a href="/guides/tradespeople/">Guide for tradespeople</a> · <a href="/guides/bridging-software/">Bridging software</a> · <a href="/guides/deadline-calendar/">Deadline calendar</a></li>
+</ul>"""),signup=False,notfound=True)
 
 exec(open(os.path.join(ROOT,'tools','drafts.py')).read())
 # sitemap, robots, llms
