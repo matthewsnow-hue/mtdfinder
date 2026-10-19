@@ -1,14 +1,14 @@
 # MTD Finder
 > Independent guide to Making Tax Digital (MTD) for Income Tax for UK sole traders and landlords, with a filterable directory of all 159 HMRC-recognised MTD software products. Run by Matthew Snow trading as Sno Automations. Not tax advice; all claims link to HMRC/GOV.UK.
 
-## Key facts (source: https://www.gov.uk/guidance/check-if-youre-eligible-for-making-tax-digital-for-income-tax)
+## Key facts (source: https://www.gov.uk/guidance/find-out-if-and-when-you-need-to-use-making-tax-digital-for-income-tax)
 - Qualifying income (self-employment + property, before expenses) over £50,000 in 2024-25: MTD from 6 April 2026
 - Over £30,000 in 2025-26: from 6 April 2027
 - Over £20,000 in 2026-27: from 6 April 2028
 - Quarterly update deadlines: 7 August, 7 November, 7 February, 7 May (https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates)
 - Each quarterly update is cumulative from the start of the tax year; a nil update is still required (https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates)
 - No penalty points for late quarterly updates in 2026-27; from 2027-28, 4 points = £200 penalty (https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates)
-- Partnerships: later, timeline not yet set (https://www.gov.uk/guidance/check-if-youre-eligible-for-making-tax-digital-for-income-tax)
+- Partnerships: later, timeline not yet set (https://www.gov.uk/guidance/find-out-if-and-when-you-need-to-use-making-tax-digital-for-income-tax)
 - Facts last checked against GOV.UK: 2026-10-16
 
 ## Pages

@@ -59,9 +59,9 @@ DTSTART;VALUE=DATE:20270406
 DTEND;VALUE=DATE:20270407
 SUMMARY:MTD starts if over £30\,000 in 2025 to 2026
 DESCRIPTION:If your qualifying income in 2025 to 2026 was over £30\,000\
- , you need MTD from today. https://www.gov.uk/guidance/check-if-youre-eli
- gible-for-making-tax-digital-for-income-tax Not tax advice. mtdfinder.co.
- uk
+ , you need MTD from today. https://www.gov.uk/guidance/find-out-if-and-wh
+ en-you-need-to-use-making-tax-digital-for-income-tax Not tax advice. mtdf
+ inder.co.uk
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 ACTION:DISPLAY
