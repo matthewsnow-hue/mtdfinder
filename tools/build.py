@@ -122,7 +122,7 @@ def next_deadline(today=None):
     d=next(x for x in c if x>=t);per=dict(_DL)[d.month];sh,lo=_MON[d.month]
     # "full" is shown in bold, so it never breaks across lines. "href": the 7 November guide while that's next, otherwise the deadline calendar.
     return {"short":f"7 {sh} {d.year}","long":f"7&nbsp;{lo}","full":f"7&nbsp;{lo}&nbsp;{d.year}","period":per,"card":f"7 {sh}",
-            "href":"guides/7-november-deadline/" if d.month==11 else "guides/deadline-calendar/"}
+            "href":"guides/7-november-deadline/" if d.month==11 else "guides/deadline-calendar/","date":d}
 NDL=next_deadline()
 LEAD_REVIEW_FROM=_dt.date(2027,3,1)
 if _dt.date.today()>=LEAD_REVIEW_FROM:
@@ -145,12 +145,31 @@ LEAD={
  "not_self_assessment":("Probably not yet","Stay in the loop",
   f"MTD for Income Tax is for sole traders and landlords registered for Self Assessment ({_src(ELIG)}). If that changes, or you look after clients who are affected, we'll keep you up to date."),
 }
+PEN="https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax"
+# Why-now line shown inside the checker result (site.js copies template "why-<outcome>").
+# Penalty clause: 2026 to 2027 updates (deadlines up to 7 May 2027) get no points; later ones do. site.js shows the
+# right one from the next deadline, so the line doesn't go stale. Sources: QU, SIGN, PEN.
+_PEN_SWITCH=_dt.date(2027,5,7)
+def _pen(k):
+    hide=(NDL["date"]>_PEN_SWITCH)==(k=="pre")
+    return f'<span data-pen="{k}"{" hidden" if hide else ""}>'
+WHY={
+ "from_apr_2026":f"<strong>Why act now:</strong> your next quarterly update covers {_dl('period')} and is due by <strong>{_dl('full')}</strong> ({_src(QU)}). You need to be signed up and have compatible software to send it ({_src(SIGN,'HMRC: sign up')}). "
+   +_pen("pre")+f"HMRC won't give penalty points for late quarterly updates in 2026 to 2027, but you must send them before you can submit your tax return ({_src(QU)}).</span>"
+   +_pen("post")+f"Each late quarterly update now gets a penalty point, and 4 points means a £200 penalty ({_src(PEN)}).</span>",
+ "from_apr_2027":f"<strong>No rush, but don't leave it late:</strong> use the time before 6 April 2027 to choose software. HMRC says to check the software meets your needs before you sign up ({_src(SIGN,'HMRC: sign up')}).",
+ "from_apr_2028":f"<strong>Nothing to do yet.</strong> We can remind you nearer the time, and tell you if the dates change.",
+ "under_threshold":"<strong>Nothing to do on these figures.</strong> Check again after each tax return if your income grows.",
+ "not_self_assessment":"",
+}
+WHY_CTA="Get a reminder before each deadline ↓"
 # One consent scope for every box on the same Kit list. If it changes, log it in mtdfinder-plans/consent-log.md.
 CONSENT_SCOPE="MTD deadline reminders and the MTD Finder newsletter. That's usually one or two short emails before each quarterly deadline (there are four a year), plus the odd update when HMRC changes something."
 CONSENT_TEXT="Yes, email me "+CONSENT_SCOPE+" I can unsubscribe at any time."
 def lead_signup(pre):
     e,h,p=LEAD["blank"]
-    tpl="".join(f'<template id="lead-{k}"><span class="eyebrow">{a}</span><h3>{b}</h3><p class="small">{c}</p></template>' for k,(a,b,c) in LEAD.items())
+    tpl="".join(f'<template id="why-{k}"><p class="why-now">{w}</p><p class="why-cta"><a class="btn" href="#lead" data-lead-jump>{WHY_CTA}</a></p></template>' for k,w in WHY.items() if w)
+    tpl+="".join(f'<template id="lead-{k}"><span class="eyebrow">{a}</span><h3>{b}</h3><p class="small">{c}</p></template>' for k,(a,b,c) in LEAD.items())
     radios="".join(f'<label class="chk"><input type="radio" name="fields[{KIT_SEGMENT_FIELD}]" value="{v}"> {t}</label>' for v,t in SEGMENTS)
     return f"""<div class="after-check lead" id="lead"><div id="lead-copy"><span class="eyebrow">{e}</span><h3>{h}</h3><p class="small">{p}</p></div>{tpl}
 <form class="nl lead-form" action="{KIT_FORM}" method="post" data-result-field="fields[{KIT_RESULT_FIELD}]">

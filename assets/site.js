@@ -7,15 +7,16 @@ const lead=document.getElementById('lead');
 // next quarterly deadline (same sum as next_deadline() in tools/build.py)
 const nextDl=(n=new Date())=>{const t=new Date(n.getFullYear(),n.getMonth(),n.getDate()),P={7:'6 April to 5 July',10:'6 April to 5 October',1:'6 April to 5 January',4:'6 April to 5 April (the whole tax year)'},S={7:'Aug',10:'Nov',1:'Feb',4:'May'},L={7:'August',10:'November',1:'February',4:'May'};
 const d=[0,1].flatMap(a=>[7,10,1,4].map(m=>new Date(t.getFullYear()+a,m,7))).sort((a,b)=>a-b).find(x=>x>=t),m=d.getMonth();
-return {short:'7 '+S[m]+' '+d.getFullYear(),long:'7\u00a0'+L[m],full:'7\u00a0'+L[m]+'\u00a0'+d.getFullYear(),period:P[m],card:'7 '+S[m],href:m==10?'guides/7-november-deadline/':'guides/deadline-calendar/'}};
-const fillDl=root=>{const n=nextDl();root.querySelectorAll('[data-dl]').forEach(e=>e.textContent=n[e.dataset.dl])};
+return {short:'7 '+S[m]+' '+d.getFullYear(),long:'7\u00a0'+L[m],full:'7\u00a0'+L[m]+'\u00a0'+d.getFullYear(),period:P[m],card:'7 '+S[m],date:d,href:m==10?'guides/7-november-deadline/':'guides/deadline-calendar/'}};
+const fillDl=root=>{const n=nextDl(),post=n.date>new Date(2027,4,7);root.querySelectorAll('[data-dl]').forEach(e=>e.textContent=n[e.dataset.dl]);root.querySelectorAll('[data-pen]').forEach(e=>e.hidden=(e.dataset.pen==='post')!==post)};
 fillDl(document);document.querySelectorAll('[data-dl-href]').forEach(a=>a.setAttribute('href',nextDl().href));
-const setLead=k=>{if(!lead||lead.dataset.k===k)return;const t=document.getElementById('lead-'+k);if(!t)return;lead.dataset.k=k;
+const whyHtml=k=>{const t=document.getElementById('why-'+k);if(!t)return '';const c=t.content.cloneNode(true);fillDl(c);const d=document.createElement('div');d.append(c);return d.innerHTML};
+const setLead=k=>{if(lead)lead.classList.toggle('lead-on',k!=='blank');if(!lead||lead.dataset.k===k)return;const t=document.getElementById('lead-'+k);if(!t)return;lead.dataset.k=k;
 const c=t.content.cloneNode(true);fillDl(c);document.getElementById('lead-copy').replaceChildren(c);
 const f=lead.querySelector('form'),h=f&&f.querySelector('input[type=hidden][name="'+f.dataset.resultField+'"]');if(h)h.value=k==='blank'?'':k};
 // calculator
 const cf=document.getElementById('calc');
-if(cf){const gbp=n=>'£'+n.toLocaleString('en-GB');
+let out0;if(cf){const gbp=n=>'£'+n.toLocaleString('en-GB');
 const v=id=>Math.max(0,parseFloat(document.getElementById(id).value)||0);
 const run=()=>{const y=[['2024 to 2025',50000,'6 April 2026'],['2025 to 2026',30000,'6 April 2027'],['2026 to 2027',20000,'6 April 2028']];
 const out=document.getElementById('calc-out');let html='',hit=null;const blank=[...cf.querySelectorAll('input[type=number]')].every(i=>i.value.trim()==='');
@@ -23,8 +24,8 @@ y.forEach((r,i)=>{const t=v('se'+i)+v('pr'+i);if(!hit&&t>r[1])hit=[r,t];});
 if(!document.getElementById('sa').checked){html='<span class="eyebrow">Your result</span><h3>Probably not yet</h3><p>MTD for Income Tax applies to sole traders and landlords registered for Self Assessment. If you start self-employment or letting, check again.</p>';setLead('not_self_assessment');}
 else if(hit){html=`<span class="eyebrow">Your result</span><h3>From ${hit[0][2]}</h3><p>Your qualifying income for ${hit[0][0]} is ${gbp(hit[1])}, which is over the ${gbp(hit[0][1])} threshold. You will likely need MTD-compatible software from <strong>${hit[0][2]}</strong>, unless you're exempt.</p><p>${hit[0][1]===30000?'<a href="guides/30k-threshold-april-2027/">Your April 2027 checklist →</a><br>':''}<a href="finder/">Find compatible software →</a></p>`;setLead({50000:'from_apr_2026',30000:'from_apr_2027',20000:'from_apr_2028'}[hit[0][1]]);}
 else{html='<span class="eyebrow">Your result</span><h3>Not on these figures</h3><p>Based on the income you entered, you are not over any announced threshold (up to 2026 to 2027). HMRC checks again each year, so revisit this if your turnover grows.</p>';setLead(blank?'blank':'under_threshold');}
-out.innerHTML=html+'<p class="small">An estimate only, not tax advice. Confirm with <a href="https://www.gov.uk/guidance/find-out-if-and-when-you-need-to-use-making-tax-digital-for-income-tax" target="_blank" rel="noopener">HMRC\'s official checker<span class="vh"> (opens in new tab)</span></a>.</p>';};
-cf.addEventListener('input',run);cf.addEventListener('submit',e=>{e.preventDefault();run()});run();}
+out.innerHTML=html+whyHtml(lead&&lead.dataset.k||'')+'<p class="small">An estimate only, not tax advice. Confirm with <a href="https://www.gov.uk/guidance/find-out-if-and-when-you-need-to-use-making-tax-digital-for-income-tax" target="_blank" rel="noopener">HMRC\'s official checker<span class="vh"> (opens in new tab)</span></a>.</p>';};
+cf.addEventListener('input',run);out0=document.getElementById('calc-out');out0.addEventListener('click',e=>{const a=e.target.closest('[data-lead-jump]');if(!a)return;e.preventDefault();lead.scrollIntoView({behavior:'smooth',block:'start'});document.getElementById('lead-email').focus({preventScroll:true})});cf.addEventListener('submit',e=>{e.preventDefault();run()});run();}
 // finder
 const list=document.getElementById('list');
 if(list){fetch(list.dataset.src).then(r=>r.json()).then(d=>{const P=d.products;const st={who:'any',type:'any',free:false,vat:false,cis:false,assist:false,welsh:false,tax:false,q:''};const sel=new Set();
