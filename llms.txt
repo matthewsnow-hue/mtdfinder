@@ -1,5 +1,5 @@
 # MTD Finder
-> Independent guide to Making Tax Digital (MTD) for Income Tax for UK sole traders and landlords, with a filterable directory of all 158 HMRC-recognised MTD software products. Run by Matthew Snow trading as Sno Automations. Not tax advice; all claims link to HMRC/GOV.UK.
+> Independent guide to Making Tax Digital (MTD) for Income Tax for UK sole traders and landlords, with a filterable directory of all 159 HMRC-recognised MTD software products. Run by Matthew Snow trading as Sno Automations. Not tax advice; all claims link to HMRC/GOV.UK.
 
 ## Key facts (source: https://www.gov.uk/guidance/check-if-youre-eligible-for-making-tax-digital-for-income-tax)
 - Qualifying income (self-employment + property, before expenses) over £50,000 in 2024-25: MTD from 6 April 2026
@@ -33,4 +33,4 @@
 - [MTD deadline calendar, .ics](https://mtdfinder.co.uk/assets/mtd-deadlines-2026-27.ics)
 
 ## Data
-- [Software data (JSON, from HMRC finder, last checked 2026-10-14)](https://mtdfinder.co.uk/data/products.json)
+- [Software data (JSON, from HMRC finder, last checked 2026-10-19)](https://mtdfinder.co.uk/data/products.json)

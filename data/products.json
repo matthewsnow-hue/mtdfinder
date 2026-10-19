@@ -1,8 +1,8 @@
 {
  "source": "HMRC: Find software that works with Making Tax Digital for Income Tax",
  "source_url": "https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/",
- "last_checked": "2026-10-14",
- "count": 158,
+ "last_checked": "2026-10-19",
+ "count": 159,
  "products": [
   {
    "id": "3333",
@@ -88,21 +88,21 @@
     "UK property",
     "Foreign property",
     "UK interest",
+    "UK dividends",
     "State Pension income",
     "Private pension incomes",
+    "Foreign dividends",
     "Foreign interest",
+    "Capital Gains",
     "Student Loan",
     "High Income Child Benefit Charge"
    ],
    "in_development": [
     "Employment (PAYE)",
-    "UK dividends",
     "Partner income from a partnership",
-    "Foreign dividends",
     "Private pension contributions",
     "Construction Industry Scheme",
     "Charitable giving",
-    "Capital Gains",
     "Marriage Allowance",
     "Voluntary Class 2 National Insurance"
    ],
@@ -282,9 +282,11 @@
     "UK property",
     "Foreign property",
     "UK interest",
+    "Employment (PAYE)",
     "UK dividends",
     "State Pension income",
     "Private pension incomes",
+    "Partner income from a partnership",
     "Foreign dividends",
     "Foreign interest",
     "Private pension contributions",
@@ -296,10 +298,7 @@
     "Voluntary Class 2 National Insurance",
     "High Income Child Benefit Charge"
    ],
-   "in_development": [
-    "Employment (PAYE)",
-    "Partner income from a partnership"
-   ],
+   "in_development": [],
    "cis": true,
    "mobile_app": null
   },
@@ -825,27 +824,27 @@
     "Making Tax Digital for VAT",
     "Sole trader",
     "UK property",
-    "Foreign property"
-   ],
-   "in_development": [
+    "Foreign property",
     "UK interest",
-    "Employment (PAYE)",
     "UK dividends",
     "State Pension income",
+    "Private pension contributions",
+    "Construction Industry Scheme",
+    "Charitable giving",
+    "High Income Child Benefit Charge"
+   ],
+   "in_development": [
+    "Employment (PAYE)",
     "Private pension incomes",
     "Partner income from a partnership",
     "Foreign dividends",
     "Foreign interest",
-    "Private pension contributions",
-    "Construction Industry Scheme",
-    "Charitable giving",
     "Capital Gains",
     "Student Loan",
     "Marriage Allowance",
-    "Voluntary Class 2 National Insurance",
-    "High Income Child Benefit Charge"
+    "Voluntary Class 2 National Insurance"
    ],
-   "cis": false,
+   "cis": true,
    "mobile_app": null
   },
   {
@@ -1234,7 +1233,7 @@
   {
    "id": "3132",
    "name": "ApariPro",
-   "website": null,
+   "website": "https://www.aparipro.com/?utm_source=gov.uk&utm_medium=web_referral&utm_campaign=hmrc_mtd_software",
    "hmrc_url": "https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3132",
    "free_version": false,
    "creates_records": true,
@@ -1388,24 +1387,23 @@
     "UK property",
     "Foreign property",
     "UK interest",
+    "Employment (PAYE)",
     "UK dividends",
     "State Pension income",
+    "Private pension incomes",
     "Partner income from a partnership",
     "Foreign dividends",
     "Foreign interest",
+    "Private pension contributions",
     "Construction Industry Scheme",
     "Charitable giving",
     "Capital Gains",
-    "Marriage Allowance",
-    "Voluntary Class 2 National Insurance"
-   ],
-   "in_development": [
-    "Employment (PAYE)",
-    "Private pension incomes",
-    "Private pension contributions",
     "Student Loan",
+    "Marriage Allowance",
+    "Voluntary Class 2 National Insurance",
     "High Income Child Benefit Charge"
    ],
+   "in_development": [],
    "cis": true,
    "mobile_app": null
   },
@@ -2839,7 +2837,7 @@
   {
    "id": "3423",
    "name": "Finaap MTD Income Tax",
-   "website": "https://finaap.com/dashboard/taxes/",
+   "website": "https://finaap.com/",
    "hmrc_url": "https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3423",
    "free_version": false,
    "creates_records": true,
@@ -3035,7 +3033,7 @@
   {
    "id": "3192",
    "name": "FreeAgent",
-   "website": null,
+   "website": "https://www.freeagent.com/features/mtd-for-income-tax/?utm_source=gov.uk&utm_medium=referral&utm_campaign=mtd_software_page",
    "hmrc_url": "https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3192",
    "free_version": false,
    "creates_records": true,
@@ -3087,7 +3085,7 @@
   {
    "id": "3575",
    "name": "FreeAgent for free with Mettle, NatWest & RBS",
-   "website": null,
+   "website": "https://www.freeagent.com/accounting-software/try/making-tax-digital-income-tax-free/?utm_source=gov.uk&utm_medium=referral&utm_campaign=mtd_software_page_free",
    "hmrc_url": "https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3575",
    "free_version": true,
    "creates_records": true,
@@ -5365,7 +5363,7 @@
   {
    "id": "3566",
    "name": "Quarterwise",
-   "website": null,
+   "website": "https://quarterwise.co.uk/?utm_source=gov.uk&utm_medium=referral&utm_campaign=mtd-software-finder",
    "hmrc_url": "https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3566",
    "free_version": true,
    "creates_records": true,
@@ -5995,7 +5993,9 @@
     "Motor or physical difficulties",
     "Cognitive impairments",
     "UK property",
-    "Foreign property",
+    "Foreign property"
+   ],
+   "in_development": [
     "UK interest",
     "Employment (PAYE)",
     "UK dividends",
@@ -6011,7 +6011,6 @@
     "Marriage Allowance",
     "High Income Child Benefit Charge"
    ],
-   "in_development": [],
    "cis": false,
    "mobile_app": null
   },
@@ -6801,6 +6800,34 @@
    "mobile_app": null
   },
   {
+   "id": "3653",
+   "name": "Trade PA",
+   "website": "https://www.tradespa.co.uk/mtd-income-tax.html",
+   "hmrc_url": "https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3653",
+   "free_version": false,
+   "creates_records": true,
+   "bridging": false,
+   "vat": false,
+   "welsh": false,
+   "hmrc_assist": false,
+   "sole_trader": true,
+   "landlord": false,
+   "foreign_property": false,
+   "submissions": "Quarterly updates",
+   "income_sources": "Sole trader",
+   "price": "Paid – check vendor",
+   "featured": false,
+   "ready": [
+    "Individual software",
+    "Standard update period (6 April to 5 April)",
+    "Software that creates digital records",
+    "Sole trader"
+   ],
+   "in_development": [],
+   "cis": false,
+   "mobile_app": null
+  },
+  {
    "id": "3629",
    "name": "TradeKit",
    "website": "https://tradekitapp.co.uk/",
@@ -7137,25 +7164,25 @@
     "UK property",
     "Foreign property",
     "UK interest",
+    "UK dividends",
+    "Foreign dividends",
     "Foreign interest",
     "Private pension contributions",
-    "Charitable giving"
-   ],
-   "in_development": [
-    "Employment (PAYE)",
-    "UK dividends",
-    "State Pension income",
-    "Private pension incomes",
-    "Partner income from a partnership",
-    "Foreign dividends",
     "Construction Industry Scheme",
-    "Capital Gains",
+    "Charitable giving",
     "Student Loan",
     "Marriage Allowance",
     "Voluntary Class 2 National Insurance",
     "High Income Child Benefit Charge"
    ],
-   "cis": false,
+   "in_development": [
+    "Employment (PAYE)",
+    "State Pension income",
+    "Private pension incomes",
+    "Partner income from a partnership",
+    "Capital Gains"
+   ],
+   "cis": true,
    "mobile_app": null
   },
   {
