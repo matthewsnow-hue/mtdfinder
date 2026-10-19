@@ -20,6 +20,18 @@ def dec(b):
 def norm(s):return re.sub(r"\s+"," ",s).strip().upper()
 def district(pc):
     pc=norm(pc).replace(" ","");return pc[:-3] if len(pc)>=5 else ""
+SMALL={"ON","UPON","UNDER","LE","BY","IN","THE","DE","LA","EN","SUR"}
+def town(s):
+    """Title-case a town: lower case after an apostrophe (Bishop's Stortford), and lower-case
+    joining words inside hyphenated names (Stockton-on-Tees, Ashton-under-Lyne)."""
+    def word(w):
+        parts=w.split("-")
+        out=[]
+        for i,x in enumerate(parts):
+            if 0<i<len(parts)-1 and x.upper() in SMALL:out.append(x.lower());continue
+            out.append("'".join(y[:1].upper()+y[1:].lower() if j==0 else y.lower() for j,y in enumerate(x.split("'"))))
+        return "-".join(out)
+    return " ".join(word(w) for w in norm(s).split(" "))
 def main():
     au,aurl,atext=latest(PUB["active"]);cu,curl,ctext=latest(PUB["ceased"])
     bad={(norm(r["ACSP Name"]),norm(r["Supervisor Name"])) for r in csv.DictReader(io.StringIO(ctext))}
@@ -30,7 +42,7 @@ def main():
         n,s=norm(r["ACSP"]),norm(r["Supervisor Name"])
         if (n,s) in bad:dropped+=1;continue
         if n in sup:continue
-        t=norm(r["Town"]).title();k=(n,s,t,district(r["Postcode"]))
+        t=town(r["Town"]);k=(n,s,t,district(r["Postcode"]))
         if k in seen:continue
         seen.add(k);rows.append({"n":r["ACSP"].strip(),"s":r["Supervisor Name"].strip(),"t":t,"d":district(r["Postcode"])})
     rows.sort(key=lambda x:(x["n"].upper(),x["t"]))

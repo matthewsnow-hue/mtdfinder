@@ -68,7 +68,7 @@ finally{b.disabled=false;b.textContent=lbl}})})})();
 // ACSP finder (acsp/): filters data/acsp.json in the browser. A to Z only, never paid.
 (()=>{const out=document.getElementById('acsp-out');if(!out)return;const q=document.getElementById('acsp-q'),s=document.getElementById('acsp-s'),c=document.getElementById('acsp-count');
 const esc=t=>String(t).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));const MAX=60;
-fetch(out.dataset.src).then(r=>r.json()).then(d=>{const A=d.agents;const run=()=>{const v=q.value.trim().toUpperCase().replace(/\s+/g,' '),pc=v.replace(/\s/g,''),sv=s.value;
+fetch(out.dataset.src).then(r=>r.json()).then(d=>{const A=d.agents;const run=()=>{const v=q.value.trim().toUpperCase().replace(/\s+/g,' '),pc0=v.replace(/\s/g,''),pc=/^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$/.test(pc0)?pc0.slice(0,-3):pc0,sv=s.value;
 if(!v&&!sv){c.textContent=`${A.length.toLocaleString('en-GB')} agents on the list. Type a town, postcode area or name to search.`;out.innerHTML='';return}
 const r=A.filter(a=>(!sv||a.s===sv)&&(!v||a.t.toUpperCase().includes(v)||a.n.toUpperCase().includes(v)||(pc.length>=2&&(a.d===pc||(/\d$/.test(pc)?false:a.d.replace(/\d.*$/,'')===pc)))));
 c.textContent=r.length?`${r.length.toLocaleString('en-GB')} found${r.length>MAX?`, showing the first ${MAX}. Narrow your search to see more`:''}.`:'No agents found. Try a nearby town, or the first letters of a postcode (e.g. BS).';
