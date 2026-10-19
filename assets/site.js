@@ -65,3 +65,12 @@ if(d.status==='success'){f.classList.add('done');say("Nearly there. We've sent a
 else if(d.status==='quarantined'&&d.url){say('One quick security check from our email provider, Kit. Taking you there now…','ok');location.href=d.url;return}
 else{throw 0}}catch(_){say('Sorry, something went wrong. Please try again, or email <a href="mailto:hello@mtdfinder.co.uk">hello@mtdfinder.co.uk</a>.','err')}
 finally{b.disabled=false;b.textContent=lbl}})})})();
+// ACSP finder (acsp/): filters data/acsp.json in the browser. A to Z only, never paid.
+(()=>{const out=document.getElementById('acsp-out');if(!out)return;const q=document.getElementById('acsp-q'),s=document.getElementById('acsp-s'),c=document.getElementById('acsp-count');
+const esc=t=>String(t).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));const MAX=60;
+fetch(out.dataset.src).then(r=>r.json()).then(d=>{const A=d.agents;const run=()=>{const v=q.value.trim().toUpperCase().replace(/\s+/g,' '),pc=v.replace(/\s/g,''),sv=s.value;
+if(!v&&!sv){c.textContent=`${A.length.toLocaleString('en-GB')} agents on the list. Type a town, postcode area or name to search.`;out.innerHTML='';return}
+const r=A.filter(a=>(!sv||a.s===sv)&&(!v||a.t.toUpperCase().includes(v)||a.n.toUpperCase().includes(v)||(pc.length>=2&&(a.d===pc||(/\d$/.test(pc)?false:a.d.replace(/\d.*$/,'')===pc)))));
+c.textContent=r.length?`${r.length.toLocaleString('en-GB')} found${r.length>MAX?`, showing the first ${MAX}. Narrow your search to see more`:''}.`:'No agents found. Try a nearby town, or the first letters of a postcode (e.g. BS).';
+out.innerHTML=r.length?'<div class="grid">'+r.slice(0,MAX).map(a=>`<article class="card prod"><h3>${esc(a.n)}</h3><dl class="spec"><dt>Town</dt><dd>${esc(a.t)}</dd><dt>Postcode area</dt><dd>${esc(a.d)}</dd><dt>AML supervisor</dt><dd>${esc(a.s)}</dd></dl></article>`).join('')+'</div>':'';};
+q.addEventListener('input',run);s.addEventListener('change',run);run();}).catch(()=>{c.textContent='The list didn’t load. Try the Companies House list linked below.'})})();
