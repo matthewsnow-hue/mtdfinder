@@ -69,6 +69,7 @@ def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,s
     depth=path.count("/");pre="/" if notfound else "../"*depth
     url=f"{SITE}/{path}"
     lds=[{"@context":"https://schema.org","@graph":[ORG,{"@type":"WebSite","@id":SITE+"/#site","name":"MTD Finder","url":SITE+"/","publisher":{"@id":SITE+"/#org"}},{"@type":"WebPage","name":title,"url":url,"dateModified":PRIVACY_UPDATED if path=="privacy/" else UPDATED,"isPartOf":{"@id":SITE+"/#site"}}]}]
+    if notfound:lds[0]["@graph"]=[n for n in lds[0]["@graph"] if n.get("@type")!="WebPage"]   # 404: no WebPage node, so no url claimed
     if path.startswith("guides/"):
         lds.append({"@context":"https://schema.org","@type":"Article","headline":title,"description":desc,"url":url,"mainEntityOfPage":url,"inLanguage":"en-GB","dateModified":UPDATED,"author":{"@id":SITE+"/#org"},"publisher":{"@id":SITE+"/#org"},"isPartOf":{"@id":SITE+"/#site"}})
         lds.append({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":SITE+"/"},{"@type":"ListItem","position":2,"name":"Guides","item":SITE+"/guides/deadlines/"},{"@type":"ListItem","position":3,"name":title,"item":url}]})
