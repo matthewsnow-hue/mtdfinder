@@ -12,6 +12,7 @@ prose(f"""<h2>Who this applies to</h2><p>Anyone already using MTD for Income Tax
 <p>If you're volunteering for MTD, penalties don't apply to late quarterly updates, though penalty points still apply to late tax returns. <a href="{QU}" rel="noopener">HMRC</a>.</p>
 <h2>When you can send it</h2><p>Any time from 6 October (or 1 October on calendar periods) up to 7 November. You can also send up to 10 days before the period ends if you don't expect any more transactions. <a href="{QU}" rel="noopener">HMRC</a>.</p>
 <h2>Quick checklist</h2><ul><li>Records up to date to 5 October (or 30 September).</li><li>Check the totals your software shows you.</li><li>Send one update for each self-employment and property business.</li><li>Put the next date in your diary: 7 February 2027. Our <a href="../deadline-calendar/">deadline calendar</a> does it for you.</li></ul>
+<p>Need software? Our <a href="../../finder/">software finder</a> lets you filter the products on <a href="{TOOL}" rel="noopener">HMRC's list of MTD for Income Tax software</a>.</p>
 <p class="small">Facts checked against GOV.UK on {UPDATED}. General information, not tax advice.</p>"""),
 faqs=[("When is the MTD quarterly update due in November 2026?",f"By 7 November 2026, for the period 6 April to 5 October (or 1 April to 30 September on calendar periods). <a href='{QU}'>HMRC</a>."),
 ("Is there a penalty for a late quarterly update in 2026 to 2027?",f"No penalty points for late quarterly updates in 2026 to 2027, but you must send them before you can submit your tax return. <a href='{QU}'>HMRC</a>."),

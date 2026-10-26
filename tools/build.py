@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Static site generator for MTD Finder. Run: python3 tools/build.py (outputs HTML to repo root)."""
-import json,os,html
+import json,os,html,sys
+sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+import lastmod as LM
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE="https://mtdfinder.co.uk"
 UPDATED="2026-10-16"
@@ -42,6 +44,7 @@ ORG={"@type":"Organization","@id":SITE+"/#org","name":"Sno Automations","alterna
 def faq_ld(qs):return {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":html.unescape(__import__('re').sub('<[^>]+>','',a))}} for q,a in qs]}
 def faq_html(qs):return "".join(f"<details class='reveal'><summary>{q}</summary><p>{a}</p></details>" for q,a in qs)
 pages=[]
+LASTMOD_OLD=LM.load();LASTMOD={}   # per-page sitemap lastmod, see tools/lastmod.py (data/lastmod.json)
 ITEMS={"@context":"https://schema.org","@type":"ItemList","name":"HMRC-recognised MTD for Income Tax software","numberOfItems":N,"itemListElement":[{"@type":"ListItem","position":i+1,"item":{"@type":"SoftwareApplication","name":p["name"],"applicationCategory":"FinanceApplication","operatingSystem":"Web","url":p["website"] or p["hmrc_url"]}} for i,p in enumerate(data["products"])]}
 
 import re as _re
@@ -69,10 +72,10 @@ def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,s
     # notfound: writes ROOT/404.html with root-absolute links (served at any depth), noindex, no canonical, kept out of the sitemap
     depth=path.count("/");pre="/" if notfound else "../"*depth
     url=f"{SITE}/{path}"
-    lds=[{"@context":"https://schema.org","@graph":[ORG,{"@type":"WebSite","@id":SITE+"/#site","name":"MTD Finder","url":SITE+"/","publisher":{"@id":SITE+"/#org"}},{"@type":"WebPage","name":title,"url":url,"dateModified":PRIVACY_UPDATED if path=="privacy/" else UPDATED,"isPartOf":{"@id":SITE+"/#site"}}]}]
+    lds=[{"@context":"https://schema.org","@graph":[ORG,{"@type":"WebSite","@id":SITE+"/#site","name":"MTD Finder","url":SITE+"/","publisher":{"@id":SITE+"/#org"}},{"@type":"WebPage","name":title,"url":url,"dateModified":PRIVACY_UPDATED if path=="privacy/" else LM.PLACEHOLDER,"isPartOf":{"@id":SITE+"/#site"}}]}]
     if notfound:lds[0]["@graph"]=[n for n in lds[0]["@graph"] if n.get("@type")!="WebPage"]   # 404: no WebPage node, so no url claimed
     if path.startswith("guides/"):
-        lds.append({"@context":"https://schema.org","@type":"Article","headline":title,"description":desc,"url":url,"mainEntityOfPage":url,"inLanguage":"en-GB","dateModified":UPDATED,"author":{"@id":SITE+"/#org"},"publisher":{"@id":SITE+"/#org"},"isPartOf":{"@id":SITE+"/#site"}})
+        lds.append({"@context":"https://schema.org","@type":"Article","headline":title,"description":desc,"url":url,"mainEntityOfPage":url,"inLanguage":"en-GB","dateModified":LM.PLACEHOLDER,"author":{"@id":SITE+"/#org"},"publisher":{"@id":SITE+"/#org"},"isPartOf":{"@id":SITE+"/#site"}})
         lds.append({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":SITE+"/"},{"@type":"ListItem","position":2,"name":"Guides","item":SITE+"/guides/deadlines/"},{"@type":"ListItem","position":3,"name":title,"item":url}]})
         if signup is None:signup=True
     if signup:body+=signup_band(pre,path.strip("/").replace("/","-") or "home")
@@ -96,8 +99,13 @@ def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,s
 <ul><li><a href="{pre}finder/">Software finder</a></li><li><a href="{pre}guides/deadlines/">Deadlines</a></li><li><a href="{pre}guides/landlords/">Landlords</a></li><li><a href="{pre}guides/tradespeople/">Tradespeople</a></li><li><a href="{pre}guides/bridging-software/">Bridging software</a></li><li><a href="{pre}guides/deadline-calendar/">Deadline calendar</a></li><li><a href="{pre}guides/7-november-deadline/">7 November deadline</a></li><li><a href="{pre}guides/30k-threshold-april-2027/">£30k from April 2027</a></li><li><a href="{pre}acsp/">Find an ACSP</a></li><li><a href="{pre}faq/">FAQ</a></li></ul>
 <ul><li><a href="{pre}about/">About</a></li><li><a href="{pre}sponsor/">Sponsor us</a></li><li><a href="{pre}newsletter/">Newsletter</a></li><li><a href="{pre}privacy/">Privacy</a></li><li><a href="{pre}disclaimer/">Disclaimer</a></li><li><a href="{pre}terms/">Terms</a></li><li><a href="{PORTAL}">Manage sponsorship</a></li></ul></div></div></footer>
 <script src="{pre}assets/site.js" defer></script>{GOATCOUNTER}</body></html>"""
-    if notfound:open(os.path.join(ROOT,"404.html"),"w").write(ext_links(doc));return
-    d=os.path.join(ROOT,path);os.makedirs(d,exist_ok=True);open(os.path.join(d,"index.html"),"w").write(ext_links(doc))
+    doc=ext_links(doc)
+    if notfound:open(os.path.join(ROOT,"404.html"),"w").write(doc.replace(LM.PLACEHOLDER,UPDATED));return
+    if draft:lm=UPDATED   # drafts are not in the sitemap and are not tracked
+    else:
+        lm,LASTMOD[path]=LM.resolve(LASTMOD_OLD,path,doc)
+    doc=doc.replace(LM.PLACEHOLDER,lm)
+    d=os.path.join(ROOT,path);os.makedirs(d,exist_ok=True);open(os.path.join(d,"index.html"),"w").write(doc)
     if not draft:pages.append(path)
 
 def hero(eb,h1,lede,answer=None,btns=""):
@@ -232,7 +240,7 @@ page("guides/deadlines/","MTD for Income Tax deadlines and quarterly update date
 hero("Guide","MTD deadlines and <em>quarterly dates</em>","When you start, and when each update is due.",f"quarterly updates are due by 7 August, 7 November, 7 February and 7 May. Your tax return is due by 31 January after the tax year. <a href='{QU}' rel='noopener'>Source: HMRC</a>.")+
 prose(f"""<h2>When you start</h2>{THRESH}<p class="notice">Next deadline: <a href="../7-november-deadline/">7 November 2026, what to send and what happens if you're late</a>.</p><h2>Quarterly update deadlines</h2><table><thead><tr><th>Standard update period</th><th>Deadline</th></tr></thead><tbody><tr><td>6 April to 5 July</td><td>7 August</td></tr><tr><td>6 April to 5 October</td><td>7 November</td></tr><tr><td>6 April to 5 January</td><td>7 February</td></tr><tr><td>6 April to 5 April</td><td>7 May (the following tax year)</td></tr></tbody></table>
 <p>If your accounting period runs 1 April to 31 March, HMRC suggests you consider <strong>calendar update periods</strong>, which end on the last day of the month. The deadline to send each update is the same either way. You select calendar periods in your software before your first update. <a href="{QU}" rel="noopener">HMRC: send quarterly updates</a>.</p>
-<p>Quarterly updates are summaries of your income and expenses. They are not tax returns. <a href="{SW}" rel="noopener">HMRC</a>.</p><h2>Your tax return</h2><p>You add any other income and submit your tax return through your software by 31 January the following year. <a href="{TR}" rel="noopener">HMRC: submit your tax return</a>.</p>"""),
+<p>Quarterly updates are summaries of your income and expenses. They are not tax returns. <a href="{SW}" rel="noopener">HMRC</a>.</p><h2>Your tax return</h2><p>You add any other income and submit your tax return through your software by 31 January the following year. <a href="{TR}" rel="noopener">HMRC: submit your tax return</a>.</p><p>Need software? Our <a href="../../finder/">software finder</a> lets you filter the products on <a href="{TOOL}" rel="noopener">HMRC's list of MTD for Income Tax software</a>.</p>"""),
 faqs=[("When is the first MTD quarterly update due?",f"For the period 6 April to 5 July, the deadline is 7 August. <a href='{QU}'>HMRC</a>."),("Is a quarterly update a tax return?",f"No. HMRC describes quarterly updates as summaries of your self-employment and property income and expenses, not tax returns. <a href='{SW}'>HMRC</a>."),("Can I use calendar quarters?",f"Yes. If your accounting period covers 1 April to 31 March you can choose calendar update periods in your software; deadlines stay the same. <a href='{QU}'>HMRC</a>.")])
 
 page("guides/landlords/","Making Tax Digital for landlords: thresholds, joint property and software","How MTD for Income Tax works for UK landlords: gross rental income thresholds, jointly owned property, foreign property and choosing landlord software.",
@@ -280,7 +288,7 @@ f"""<section class="wrap narrow"><div class="card nl-band"><p class="notice nl-t
 
 page("about/","About MTD Finder: independent, run by Sno Automations","MTD Finder is an independent guide to Making Tax Digital for Income Tax software, run by Matthew Snow trading as Sno Automations, a UK sole trader.",
 hero("About","Built by a sole trader, <em>for sole traders</em>","MTD Finder is run by Matthew Snow trading as Sno Automations, a UK sole trader.")+
-prose(f"""<p>We built MTD Finder because HMRC's official list is accurate but hard to browse, and many \"best MTD software\" articles are written by vendors ranking their own products.</p><h2>How we work</h2><ul><li>Every tax claim links to HMRC or GOV.UK.</li><li>Software data comes from <a href="{TOOL}" rel="noopener">HMRC's software finder</a> and is rechecked regularly. Last checked: {data['last_checked']}.</li><li>The main list is alphabetical. Sponsored slots are labelled.</li><li>We're independent and not affiliated with HMRC.</li></ul><p>Contact: <a href="mailto:{EMAIL}">{EMAIL}</a>. Sponsorship: <a href="mailto:{SPONSOR_EMAIL}">{SPONSOR_EMAIL}</a>.</p>"""))
+prose(f"""<p>We built MTD Finder because HMRC's official list is accurate but hard to browse, and many \"best MTD software\" articles are written by vendors ranking their own products.</p><h2>How we work</h2><ul><li>Every tax claim links to HMRC or GOV.UK.</li><li>Software data comes from <a href="{TOOL}" rel="noopener">HMRC's software finder</a> and is rechecked regularly. Last checked: {data['last_checked']}.</li><li>The main list is alphabetical. Sponsored slots are labelled.</li><li>We're independent and not affiliated with HMRC.</li></ul><p>We also have a free <a href="../acsp/">search of Companies House's public list of authorised agents (ACSPs)</a>. It isn't about MTD, and it isn't run by Companies House.</p><p>Contact: <a href="mailto:{EMAIL}">{EMAIL}</a>. Sponsorship: <a href="mailto:{SPONSOR_EMAIL}">{SPONSOR_EMAIL}</a>.</p>"""))
 
 page("privacy/","Privacy policy | MTD Finder","How MTD Finder, run by Matthew Snow trading as Sno Automations, handles personal data under UK GDPR.",
 hero("Legal","Privacy policy","Last updated "+PRIVACY_UPDATED+".")+
@@ -422,7 +430,7 @@ faqs=[("What is an ACSP?",f"An Authorised Corporate Service Provider, also known
 
 exec(open(os.path.join(ROOT,'tools','drafts.py')).read())
 # sitemap, robots, llms
-open(f"{ROOT}/sitemap.xml","w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+"".join(f"<url><loc>{SITE}/{p}</loc><lastmod>{UPDATED}</lastmod></url>" for p in pages)+"</urlset>\n")
+open(f"{ROOT}/sitemap.xml","w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+"".join(f"<url><loc>{SITE}/{p}</loc><lastmod>{LASTMOD[p]["lastmod"]}</lastmod></url>" for p in pages)+"</urlset>\n")
 BOTS=['Googlebot', 'Bingbot', 'Applebot', 'DuckDuckBot', 'GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'PerplexityBot', 'Perplexity-User', 'Google-Extended', 'Applebot-Extended', 'CCBot', 'Amazonbot', 'meta-externalagent', 'MistralAI-User']
 open(f"{ROOT}/robots.txt","w").write("# Search engines and AI assistants are welcome to crawl MTD Finder.\n"+"".join(f"User-agent: {b}\n" for b in BOTS)+"Allow: /\n\nUser-agent: *\nAllow: /\n\n"+f"Sitemap: {SITE}/sitemap.xml\n")
 open(f"{ROOT}/{INDEXNOW_KEY}.txt","w").write(INDEXNOW_KEY)
@@ -441,5 +449,6 @@ open(f"{ROOT}/llms.txt","w").write(f"""# MTD Finder
 
 ## Pages
 """+"".join(f"- [{p or 'Home'}]({SITE}/{p})\n" for p in pages)+f"\n## Downloads\n- [MTD deadline calendar, .ics]({SITE}/{ICS})\n\n## Data\n- [Software data (JSON, from HMRC finder, last checked {data['last_checked']})]({SITE}/data/products.json)\n")
+if LASTMOD!=LASTMOD_OLD:LM.save(LASTMOD)
 open(f"{ROOT}/.nojekyll","w").write("")
 print("built",len(pages),"pages")
