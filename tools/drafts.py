@@ -1,4 +1,4 @@
-# DRAFT pages: noindex, not in nav or sitemap. Exec'd at the end of build.py on the drafts branch only.
+# Guide pages kept in this file (it started as the drafts file, and the pages are now published: indexable, in the sitemap). Exec'd at the end of build.py on every branch, main included. Pass draft=True to page() to hide a page again.
 page("guides/7-november-deadline/","MTD 7 November deadline: what to send, and what happens if you're late","The 7 November 2026 Making Tax Digital quarterly update deadline explained: what the update covers, nil updates, and why there are no penalty points for late updates in 2026 to 2027.",
 hero("Deadline · 7 November 2026","The 7 November <em>deadline</em>","What to send, what it covers, and what happens if you miss it.",
  f"if you're using MTD for Income Tax, send your quarterly update covering 6 April to 5 October by 7 November. HMRC won't give penalty points for late quarterly updates in 2026 to 2027, but you must send them before you can file your tax return. <a href='{QU}' rel='noopener'>Source: HMRC</a>.")+
