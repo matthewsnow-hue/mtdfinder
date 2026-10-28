@@ -28,6 +28,8 @@ QI="https://www.gov.uk/guidance/work-out-your-qualifying-income-for-making-tax-d
 SW="https://www.gov.uk/guidance/choose-the-right-software-for-making-tax-digital-for-income-tax"
 TOOL="https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/"
 QU="https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates"
+BUD="https://www.gov.uk/government/publications/budget-2026-document/budget-2026-html#measures-to-close-the-tax-gap-and-modernise-the-tax-system"   # Budget 2026 (28 Oct 2026), MTD for income tax bullet
+OOT="https://www.gov.uk/government/publications/budget-2026-overview-of-tax-legislation-and-rates-ootlar/budget-2026-overview-of-tax-legislation-and-rates-ootlar#mtd-for-income-tax-penalty-easement-april-2027"   # OOTLAR 2.36
 TR="https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/submit-your-tax-return"
 SIGN="https://www.gov.uk/guidance/sign-up-for-making-tax-digital-for-income-tax"
 SADL="https://www.gov.uk/self-assessment-tax-returns/deadlines"
@@ -123,7 +125,7 @@ def hero(eb,h1,lede,answer=None,btns=""):
 def prose(s):return f"<section class='wrap narrow prose reveal'>{s}</section>"
 
 THRESH=f"""<table><thead><tr><th>Qualifying income over</th><th>In tax year</th><th>Use MTD from</th></tr></thead><tbody>
-<tr><td>£50,000</td><td>2024 to 2025</td><td>6 April 2026</td></tr><tr><td>£30,000</td><td>2025 to 2026</td><td>6 April 2027</td></tr><tr><td>£20,000</td><td>2026 to 2027</td><td>6 April 2028</td></tr></tbody></table><p class="small">Source: <a href="{ELIG}" rel="noopener">HMRC, Find out if and when you need to use Making Tax Digital for Income Tax</a>.</p>"""
+<tr><td>£50,000</td><td>2024 to 2025</td><td>6 April 2026</td></tr><tr><td>£30,000</td><td>2025 to 2026</td><td>6 April 2027</td></tr><tr><td>£20,000</td><td>2026 to 2027</td><td>6 April 2028</td></tr></tbody></table><p class="small">Source: <a href="{ELIG}" rel="noopener">HMRC, Find out if and when you need to use Making Tax Digital for Income Tax</a>.</p><p class="small">The Budget 2026 document says the government is "deferring the roll-out of Making Tax Digital for Income Tax to several taxpayer groups until further notice" (<a href="{BUD}" rel="noopener">Budget 2026</a>). Check HMRC's guidance for your own position.</p>"""
 # Checker help lines (meaning checked against HMRC's qualifying income guidance, QI)
 SE_HELP="Your total sales or takings before expenses (turnover), not your profit."
 PR_HELP="Your share of rent and other property income before expenses. If you own a property jointly, only count your share of the income (for example, half if you split it equally). If you're only told your share after expenses, use that figure."
@@ -268,7 +270,7 @@ faqs=[("Do landlords need Making Tax Digital?",f"Yes, if you're registered for S
 
 cis=sum(p['cis'] for p in data['products'])
 page("guides/tradespeople/","Making Tax Digital for tradespeople: electricians, plumbers and solar installers","MTD for Income Tax for self-employed electricians, plumbers, builders and solar installers: turnover thresholds, CIS and choosing software that fits trade work.",
-hero("Guide","MTD for <em>tradespeople</em>","For self-employed electricians, plumbers, builders, heating engineers and solar installers.",f"it's your turnover that counts, not your profit. A sole trader taking more than £30,000 in 2025 to 2026 will need MTD from 6 April 2027. <a href='{ELIG}' rel='noopener'>Source: HMRC</a>.")+
+hero("Guide","MTD for <em>tradespeople</em>","For self-employed electricians, plumbers, builders, heating engineers and solar installers.",f"it's your turnover that counts, not your profit. A sole trader taking more than £30,000 in 2025 to 2026 will need MTD from 6 April 2027, subject to HMRC's guidance. <a href='{ELIG}' rel='noopener'>Source: HMRC</a>.")+
 prose(f"""<h2>Why turnover matters for trades</h2><p>Qualifying income is measured before expenses. <a href="{QI}" rel="noopener">HMRC</a>. Trades that buy in a lot of materials, such as panels, batteries, boilers or cable, can cross the threshold even with modest profits, so check your gross figure.</p>
 <h2>Construction Industry Scheme (CIS)</h2><p>HMRC's software listings show whether each product supports the Construction Industry Scheme for your tax return. {cis} of the {N} products show CIS as ready now. Use the <strong>CIS ready</strong> filter in the <a href="../../finder/">finder</a>.</p>
 <h2>VAT-registered trades</h2><p>If you're VAT registered, HMRC says you should check whether your VAT software also works with MTD for Income Tax, or that your new software meets your VAT needs. <a href="{SW}" rel="noopener">HMRC</a>.</p>
@@ -282,7 +284,7 @@ prose(f"""<h2>Two types of MTD software</h2><p>HMRC describes two types: softwar
 <h2>When it suits you</h2><ul><li>You're comfortable keeping a tidy spreadsheet.</li><li>You have simple income and few transactions.</li><li>You want to keep costs low. HMRC notes free products exist for simple affairs, but they may have limits. <a href="{SW}" rel="noopener">HMRC</a>.</li></ul><p><a class="btn" href="../../finder/">See bridging products</a></p>"""),
 faqs=[("Can I keep using Excel for MTD?",f"Yes, with bridging software that connects your spreadsheet to HMRC. <a href='{SW}'>HMRC</a>."),("Can I use two products?",f"Yes, but only one product for each separate submission, so make sure they work together. <a href='{SW}'>HMRC</a>.")])
 
-faqs_all=home_faq+[("When do I need to start MTD?",f"From 6 April 2026 if over £50,000 in 2024 to 2025; 6 April 2027 if over £30,000 in 2025 to 2026; 6 April 2028 if over £20,000 in 2026 to 2027. <a href='{ELIG}'>HMRC</a>. Over £30,000? See our <a href='../guides/30k-threshold-april-2027/'>April 2027 checklist</a>."),
+faqs_all=home_faq+[("When do I need to start MTD?",f"From 6 April 2026 if over £50,000 in 2024 to 2025; 6 April 2027 if over £30,000 in 2025 to 2026; 6 April 2028 if over £20,000 in 2026 to 2027. <a href='{ELIG}'>HMRC</a>. Over £30,000? See our <a href='../guides/30k-threshold-april-2027/'>April 2027 checklist</a>. The Budget 2026 document says the government is deferring the roll-out of MTD for Income Tax to several taxpayer groups until further notice (<a href='{BUD}'>Budget 2026</a>), so check HMRC's guidance for your own position."),
 ("What if I didn't get a letter from HMRC?",f"It's still your responsibility to check if and when you need MTD and to sign up. <a href='{ELIG}'>HMRC</a>."),
 ("Can I stop using MTD if my income falls?",f"Once you've started, if your qualifying income drops below the threshold for 3 tax years in a row, you can choose to opt out. <a href='{QI}'>HMRC</a>."),
 ("What if I've only traded for part of a year?",f"For sole traders, HMRC annualises qualifying income where it has the information. For example, 6 months' trading is doubled. Landlords must annualise property income themselves. <a href='{QI}'>HMRC</a>."),
@@ -385,7 +387,7 @@ prose(f"""<h2>The dates</h2><table><thead><tr><th>Date</th><th>What's due</th></
 <li><strong>Sign up with HMRC</strong> and authorise your software. <a href="{SIGN}" rel="noopener">HMRC: sign up</a>.</li>
 <li><strong>Keep digital records</strong> of your income and expenses as you go.</li>
 <li><strong>Send a quarterly update by each deadline.</strong> Each one covers the tax year so far, not just the last three months. If you had no income or expenses, you still send one. <a href="{QU}" rel="noopener">HMRC</a>.</li>
-<li><strong>Know the penalty rules.</strong> HMRC won't give penalty points for late quarterly updates in 2026 to 2027, but you must send them before you can file your tax return. From 2027 to 2028, four points means a £200 penalty. <a href="{QU}" rel="noopener">HMRC</a>.</li>
+<li><strong>Know the penalty rules.</strong> HMRC won't give penalty points for late quarterly updates in 2026 to 2027, but you must send them before you can file your tax return. From 2027 to 2028, four points means a £200 penalty. <a href="{QU}" rel="noopener">HMRC</a>. The Budget 2026 document says people joining MTD for Income Tax in April 2027 won't get penalty points for late submission of their first four quarterly updates for the 2027 to 2028 tax year (<a href="{BUD}" rel="noopener">Budget 2026</a>; <a href="{OOT}" rel="noopener">HMRC overview 2.36</a>).</li>
 <li><strong>File your tax return</strong> through your software by 31 January after the tax year. <a href="{TR}" rel="noopener">HMRC</a>.</li>
 </ol>
 <p class="small">General information, not tax advice. If you have an accountant, check with them which update periods to use.</p>"""),
@@ -539,7 +541,7 @@ open(f"{ROOT}/llms.txt","w").write(f"""# MTD Finder
 - Over £20,000 in 2026-27: from 6 April 2028
 - Quarterly update deadlines: 7 August, 7 November, 7 February, 7 May ({QU})
 - Each quarterly update is cumulative from the start of the tax year; a nil update is still required ({QU})
-- No penalty points for late quarterly updates in 2026-27; from 2027-28, 4 points = £200 penalty ({QU})
+- No penalty points for late quarterly updates in 2026-27; from 2027-28, 4 points = £200 penalty ({QU}); Budget 2026 says people joining MTD in April 2027 get no penalty points for late submission of their first four quarterly updates for 2027-28 (Budget 2026: {BUD}; HMRC overview 2.36: {OOT})
 - Partnerships: later, timeline not yet set ({ELIG})
 - Facts last checked against GOV.UK: {UPDATED}
 

@@ -7,7 +7,7 @@
 - Over £20,000 in 2026-27: from 6 April 2028
 - Quarterly update deadlines: 7 August, 7 November, 7 February, 7 May (https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates)
 - Each quarterly update is cumulative from the start of the tax year; a nil update is still required (https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates)
-- No penalty points for late quarterly updates in 2026-27; from 2027-28, 4 points = £200 penalty (https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates)
+- No penalty points for late quarterly updates in 2026-27; from 2027-28, 4 points = £200 penalty (https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/send-quarterly-updates); Budget 2026 says people joining MTD in April 2027 get no penalty points for late submission of their first four quarterly updates for 2027-28 (Budget 2026: https://www.gov.uk/government/publications/budget-2026-document/budget-2026-html#measures-to-close-the-tax-gap-and-modernise-the-tax-system; HMRC overview 2.36: https://www.gov.uk/government/publications/budget-2026-overview-of-tax-legislation-and-rates-ootlar/budget-2026-overview-of-tax-legislation-and-rates-ootlar#mtd-for-income-tax-penalty-easement-april-2027)
 - Partnerships: later, timeline not yet set (https://www.gov.uk/guidance/find-out-if-and-when-you-need-to-use-making-tax-digital-for-income-tax)
 - Facts last checked against GOV.UK: 2026-10-16
 
