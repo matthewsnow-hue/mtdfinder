@@ -55,6 +55,7 @@ ORG={"@type":"Organization","@id":SITE+"/#org","name":"Sno Automations","alterna
 def faq_ld(qs):return {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":html.unescape(__import__('re').sub('<[^>]+>','',a))}} for q,a in qs]}
 def faq_html(qs):return "".join(f"<details class='reveal'><summary>{q}</summary><p>{a}</p></details>" for q,a in qs)
 pages=[]
+NOT_IN_LLMS={"workbook/"}   # indexable and in the sitemap, but not listed in llms.txt (a product page, not a guide)
 LASTMOD_OLD=LM.load();LASTMOD={}   # per-page sitemap lastmod, see tools/lastmod.py (data/lastmod.json)
 ITEMS={"@context":"https://schema.org","@type":"ItemList","name":"HMRC-recognised MTD for Income Tax software","numberOfItems":N,"itemListElement":[{"@type":"ListItem","position":i+1,"item":{"@type":"SoftwareApplication","name":p["name"],"applicationCategory":"FinanceApplication","operatingSystem":"Web","url":p["website"] or p["hmrc_url"]}} for i,p in enumerate(data["products"])]}
 
@@ -112,7 +113,7 @@ def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,s
 <script src="{pre}assets/site.js" defer></script>{GOATCOUNTER}</body></html>"""
     doc=ext_links(doc)
     if notfound:open(os.path.join(ROOT,"404.html"),"w").write(doc.replace(LM.PLACEHOLDER,UPDATED));return
-    if draft:lm=UPDATED   # drafts are not in the sitemap and are not tracked
+    if draft:lm=UPDATED   # draft=True pages are noindex, not in the sitemap and not tracked (no page uses it at the moment)
     else:
         lm,LASTMOD[path]=LM.resolve(LASTMOD_OLD,path,doc)
     doc=doc.replace(LM.PLACEHOLDER,lm)
@@ -451,7 +452,7 @@ faqs=[("What is an ACSP?",f"An Authorised Corporate Service Provider, also known
 ("Do I have to use an ACSP?",f"No. You can verify yourself online with GOV.UK One Login if you have accepted photo ID. <a href='{IDV}'>Companies House</a>."),
 ("Is this the same as Making Tax Digital?",f"No. Companies House identity verification is separate from HMRC's Making Tax Digital for Income Tax. For MTD, use our <a href='../#checker'>checker</a>.")],signup=False)
 
-# ---- Records workbook landing page (B4). PREVIEW ONLY: noindex, not in sitemap, not in nav or footer. The paid file is NOT in this repo (it is public); it is made and kept outside it.
+# ---- Records workbook landing page (B4). PUBLIC and indexable (made public 28 Oct 2026, Matthew's yes): no noindex, canonical set, listed in sitemap.xml and data/lastmod.json, but deliberately NOT listed in llms.txt (see NOT_IN_LLMS) and not in the nav or footer (only the privacy page links to it). The paid file is NOT in this repo (it is public); it is made and kept outside it.
 # Payment: see the guard at the top of this file (WB_PAY_LINK). In a --preview build with no link the buttons are dead (href="#").
 REC="https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/create-digital-records"
 FIRST="https://www.gov.uk/guidance/use-making-tax-digital-for-income-tax/using-making-tax-digital-for-income-tax-for-the-first-time"
@@ -522,7 +523,7 @@ f"""<section class="wrap narrow reveal"><p class="notice"><strong>Quarterly upda
 <p>Matthew Snow trading as Sno Automations. Business address: {ADDR}. Questions, problems or complaints: <a href="mailto:{EMAIL}">{EMAIL}</a>. See our <a href="../terms/#workbook">terms</a> and <a href="../privacy/">privacy policy</a>.</p>
 <div class="btns" style="justify-content:flex-start">{wb_btn('Get the workbook, £12')}</div>
 <p class="small">General information only, not tax advice. GOV.UK pages checked on 25 October 2026.</p></section>""",
-faqs=wb_faqs,signup=False,draft=True)
+faqs=wb_faqs,signup=False)
 if WB_PLACEHOLDER:
     print("WORKBOOK PAGE: [Payment link to be added by Matthew]. WB_PAY_LINK is empty, so the buy buttons are href=\"#\"."+(" (preview build: allowed)" if WB_PREVIEW else ""))
 
@@ -546,7 +547,7 @@ open(f"{ROOT}/llms.txt","w").write(f"""# MTD Finder
 - Facts last checked against GOV.UK: {UPDATED}
 
 ## Pages
-"""+"".join(f"- [{p or 'Home'}]({SITE}/{p})\n" for p in pages)+f"\n## Downloads\n- [MTD deadline calendar, .ics]({SITE}/{ICS})\n\n## Data\n- [Software data (JSON, from HMRC finder, last checked {data['last_checked']})]({SITE}/data/products.json)\n")
+"""+"".join(f"- [{p or 'Home'}]({SITE}/{p})\n" for p in pages if p not in NOT_IN_LLMS)+f"\n## Downloads\n- [MTD deadline calendar, .ics]({SITE}/{ICS})\n\n## Data\n- [Software data (JSON, from HMRC finder, last checked {data['last_checked']})]({SITE}/data/products.json)\n")
 if LASTMOD!=LASTMOD_OLD:LM.save(LASTMOD)
 open(f"{ROOT}/.nojekyll","w").write("")
 print("built",len(pages),"pages")
