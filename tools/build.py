@@ -203,7 +203,8 @@ def _pen(k):
 WHY={
  "from_apr_2026":f"<strong>Why act now:</strong> your next quarterly update covers {_dl('period')} and is due by <strong>{_dl('full')}</strong> ({_src(QU)}). You need to be signed up and have compatible software to send it ({_src(SIGN,'HMRC: sign up')}). "
    +_pen("pre")+f"HMRC won't give penalty points for late quarterly updates in 2026 to 2027, but you must send them before you can submit your tax return ({_src(QU)}).</span>"
-   +_pen("post")+f"Each late quarterly update now gets a penalty point, and 4 points means a £200 penalty ({_src(PEN)}).</span>",
+   +_pen("post")+f"Each late quarterly update now gets a penalty point, and 4 points means a £200 penalty ({_src(PEN)}).</span>"
+   +' <span data-after="2026-11-07" hidden>Missed 7 November? See <a href="guides/missed-quarterly-deadline/">what to do now</a>.</span>',   # A-055 action 2: shown by site.js from 7 Nov 2026 (browser date), no rebuild needed
  "from_apr_2027":f"<strong>No rush, but don't leave it late:</strong> use the time before 6 April 2027 to choose software. HMRC says to check the software meets your needs before you sign up ({_src(SIGN,'HMRC: sign up')}).",
  "from_apr_2028":f"<strong>Nothing to do yet.</strong> We can remind you nearer the time, and tell you if the dates change.",
  "under_threshold":"<strong>Nothing to do on these figures.</strong> Check again after each tax return if your income grows.",
