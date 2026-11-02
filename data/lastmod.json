@@ -28,7 +28,7 @@
   "lastmod": "2026-10-28"
  },
  "guides/7-november-deadline/": {
-  "hash": "3107ec2c485cbf853ed17fc7d0e512a82d77977596dd0040c444d4a0be75e89d",
+  "hash": "c42e1849d7bef531599ef6cce2b3a9c6c8116c4c6738ad5c13bea916b1fe8f0d",
   "lastmod": "2026-11-02"
  },
  "guides/bridging-software/": {
@@ -40,12 +40,16 @@
   "lastmod": "2026-11-02"
  },
  "guides/deadlines/": {
-  "hash": "f10b79daaad863be7d0c9ee4e9512719aab745a0dc4d960ee6d828863556255f",
-  "lastmod": "2026-10-28"
+  "hash": "50c8054f82689b3730769984313ef5a9d48adc17a191226ef7ff20e4e0eddc25",
+  "lastmod": "2026-11-02"
  },
  "guides/landlords/": {
   "hash": "89ae6524c04379c3e4664f2f602ce92735d2986e349607f5d8555f5cc2b673a0",
   "lastmod": "2026-10-19"
+ },
+ "guides/missed-quarterly-deadline/": {
+  "hash": "1cceacf97ad3bc5958d008789af96616dfa77795d8f17e86c71be2d6366af921",
+  "lastmod": "2026-11-02"
  },
  "guides/tradespeople/": {
   "hash": "def309adda119127f2954e76d7e3250db312d48b7ab85a92afa58d39c04d8bd9",

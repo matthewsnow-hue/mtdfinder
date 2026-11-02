@@ -29,6 +29,7 @@
 - [acsp/](https://mtdfinder.co.uk/acsp/)
 - [tax-adviser-registration/](https://mtdfinder.co.uk/tax-adviser-registration/)
 - [guides/7-november-deadline/](https://mtdfinder.co.uk/guides/7-november-deadline/)
+- [guides/missed-quarterly-deadline/](https://mtdfinder.co.uk/guides/missed-quarterly-deadline/)
 - [guides/30k-threshold-april-2027/](https://mtdfinder.co.uk/guides/30k-threshold-april-2027/)
 
 ## Downloads
