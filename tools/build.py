@@ -79,8 +79,17 @@ def nl_form(pre,uid):
     return f"""<form class="nl" action="{KIT_FORM}" method="post" novalidate><div class="nl-row"><label class="vh" for="nl-{uid}">Email address</label><input id="nl-{uid}" type="email" name="email_address" required autocomplete="email" placeholder="you@example.co.uk"><button class="btn" type="submit">Subscribe</button></div><div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div><p class="small nl-note">When you subscribe, you'll get {CONSENT_SCOPE} You can unsubscribe at any time. We'll email you to confirm first. See our <a href="{pre}privacy/">privacy policy</a>.</p><p class="nl-msg" role="status" aria-live="polite"></p></form>"""
 def signup_band(pre,uid):
     return f"""<section class='wrap narrow reveal'><div class='card nl-band'><span class='eyebrow'>Deadline reminders</span><h2 style='margin-top:0'>Get a nudge before <em>each deadline</em></h2><p>Deadline reminders and our newsletter, in plain English. Or add the dates straight to your calendar with our <a href='{pre}guides/deadline-calendar/'>free MTD deadline calendar</a>.</p>"""+nl_form(pre,uid)+"</div></section>"
+def remind_target():
+    # A reminder goes out the week before a deadline. Inside that week it's too late for this one, so name the one after.
+    t=_dt.date.fromisoformat(LM.today())
+    return NDL if (NDL["date"]-t).days>7 else next_deadline(NDL["date"]+_dt.timedelta(days=1))
+def signup_box(pre,uid,lead):
+    # Compact box (A-055 actions 1 and 3): same nl_form, Kit form and consent wording as signup_band.
+    return f"""<section class='wrap narrow reveal'><div class='card nl-band nl-compact'><span class='eyebrow'>Deadline reminders</span><p class='nl-lead'><strong>{lead}</strong></p>"""+nl_form(pre,uid)+"</div></section>"
+def early_signup(pre,uid):
+    return signup_box(pre,uid,f"Get a reminder the week before {remind_target()['full']}. One or two short emails before each quarterly deadline. Unsubscribe any time.")
 OG_ALT={"acsp/":"MTD Finder: find a Companies House authorised agent (ACSP)"}
-def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,signup=None,notfound=False):
+def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,signup=None,notfound=False,after_faq=""):
     # notfound: writes ROOT/404.html with root-absolute links (served at any depth), noindex, no canonical, kept out of the sitemap
     depth=path.count("/");pre="/" if notfound else "../"*depth
     url=f"{SITE}/{path}"
@@ -92,6 +101,7 @@ def page(path,title,desc,body,faqs=None,extra_ld=None,eyebrow=None,draft=False,s
         if signup is None:signup=True
     if signup:body+=signup_band(pre,path.strip("/").replace("/","-") or "home")
     if faqs:lds.append(faq_ld(faqs));body+=f"<section class='wrap narrow'><span class='eyebrow'>Questions</span><h2 style='margin-top:0'>Frequently asked</h2>{faq_html(faqs)}</section>"
+    body+=after_faq
     if extra_ld:lds.append(extra_ld)
     og_slug=OG_IMAGES.get(path,"default")
     og_img=f"{SITE}/assets/og/{og_slug}.png"
@@ -250,7 +260,7 @@ f"""<section class="wrap"><div class="searchbar"><div><label for="q">Search {N} 
 <p class="small">Price band and mobile app filters are coming: HMRC's data doesn't include them yet.</p></aside>
 <div><div class="resbar"><p class="small" style="margin:0" aria-live="polite"><strong id="count">…</strong> of <span id="count-total">{N}</span> products · alphabetical, never paid</p><p class="small" style="margin:0" id="year-end">{YEAR_END}.</p><p class="small" style="margin:0">Data: <a href="{TOOL}" rel="noopener">HMRC</a>, checked {data['last_checked']}</p></div>
 <div class="grid"><article class="card featured"><span class="badge">Featured · Sponsored</span><h3>Your software here</h3><p class="small">One clearly labelled placement for an HMRC-recognised product. It never changes the order of the main list.</p><div><a class="btn" href="../sponsor/">Sponsor us</a></div></article></div>
-<div class="grid" id="list" data-src="../data/products.json" style="margin-top:18px"></div></div></div></section>
+<div class="grid" id="list" data-src="../data/products.json" style="margin-top:18px"></div></div></div></section>"""+signup_box('../','finder',"Not ready to choose software? Get deadline reminders while you decide.")+f"""
 <div class="tray" id="tray" aria-live="polite"><span id="tray-n">0 selected</span><button class="btn" id="cmp-open" type="button">Compare</button></div>
 <dialog id="cmp"><div class="in"><div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Compare</h2><button class="btn ghost" id="cmp-close" type="button">Close</button></div><div id="cmp-body" style="overflow:auto;margin-top:18px"></div></div></dialog>""",extra_ld=ITEMS)
 
@@ -377,7 +387,7 @@ rows="".join(f"<tr><td>{_d(d)}</td><td>{t}</td></tr>" for d,t,_ in EVENTS)
 page("guides/deadline-calendar/","MTD deadline calendar and checklist for 2026 to 2027","Free Making Tax Digital deadline calendar to add to Google, Apple or Outlook, plus a plain-English checklist for sole traders and landlords. Every date linked to HMRC.",
 hero("Free download","MTD deadline <em>calendar</em> and checklist","Every Making Tax Digital date for the next year, in your own calendar, with a reminder a week before each one.",
  f"quarterly updates are due by 7 November, 7 February, 7 May and 7 August, and the 2025 to 2026 tax return by 31 January 2027. <a href='{QU}' rel='noopener'>Source: HMRC</a>.",
- f"<div class='btns'><a class='btn' href='../../{ICS}' download>Add the dates to my calendar (.ics)</a><a class='btn ghost' href='#checklist'>See the checklist</a></div>")+
+ f"<div class='btns'><a class='btn' href='../../{ICS}' download>Add the dates to my calendar (.ics)</a><a class='btn ghost' href='#checklist'>See the checklist</a></div>")+early_signup('../../','deadline-calendar-early')+
 prose(f"""<h2>The dates</h2><table><thead><tr><th>Date</th><th>What's due</th></tr></thead><tbody>{rows}</tbody></table>
 <p class="small">The file works with Google Calendar, Apple Calendar and Outlook. Each date is an all-day event with a reminder seven days before. Sources: <a href="{QU}" rel="noopener">HMRC: send quarterly updates</a>, <a href="{ELIG}" rel="noopener">HMRC: when you need MTD</a>, <a href="{SADL}" rel="noopener">GOV.UK: Self Assessment deadlines</a>. Checked {UPDATED}.</p>
 <h2 id="checklist">Your MTD checklist</h2>
@@ -523,7 +533,7 @@ f"""<section class="wrap narrow reveal"><p class="notice"><strong>Quarterly upda
 <p>Matthew Snow trading as Sno Automations. Business address: {ADDR}. Questions, problems or complaints: <a href="mailto:{EMAIL}">{EMAIL}</a>. See our <a href="../terms/#workbook">terms</a> and <a href="../privacy/">privacy policy</a>.</p>
 <div class="btns" style="justify-content:flex-start">{wb_btn('Get the workbook, £12')}</div>
 <p class="small">General information only, not tax advice. GOV.UK pages checked on 25 October 2026.</p></section>""",
-faqs=wb_faqs,signup=False)
+faqs=wb_faqs,signup=False,after_faq=signup_box('../','workbook',"Using a spreadsheet? Get a reminder before each quarterly update is due."))
 if WB_PLACEHOLDER:
     print("WORKBOOK PAGE: [Payment link to be added by Matthew]. WB_PAY_LINK is empty, so the buy buttons are href=\"#\"."+(" (preview build: allowed)" if WB_PREVIEW else ""))
 

@@ -99,3 +99,4 @@ h1 em,h2 em,h3 em,.brand em,summary em,legend em{font-style:normal}h1 em,h2 em{f
 .lead.lead-on{background:rgba(169,214,195,.14);box-shadow:inset 4px 0 0 #2f7d62}
 #lead{scroll-margin-top:90px}
 .ready-grp{border:1px solid var(--line);border-radius:6px;padding:12px;background:rgba(169,214,195,.14)}.tag-bridge{font-weight:600}
+.nl-compact{padding:24px 28px}.nl-compact .nl-lead{margin:6px 0 14px}@media(max-width:600px){.nl-compact{padding:20px 18px}}
