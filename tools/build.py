@@ -462,10 +462,12 @@ faqs=[("What is an ACSP?",f"An Authorised Corporate Service Provider, also known
 ("Do I have to use an ACSP?",f"No. You can verify yourself online with GOV.UK One Login if you have accepted photo ID. <a href='{IDV}'>Companies House</a>."),
 ("Is this the same as Making Tax Digital?",f"No. Companies House identity verification is separate from HMRC's Making Tax Digital for Income Tax. For MTD, use our <a href='../#checker'>checker</a>.")],signup=False)
 
-# ---- Tax adviser registration + AML supervision (D-017 / A-054). Facts: /workspace/mtdfinder-plans/d017-sources.md (checked 2 Nov 2026).
+# ---- Tax adviser registration + AML supervision (D-017 / A-054). Facts: /workspace/mtdfinder-plans/d017-sources.md (re-checked 5 Nov 2026).
+# Window end dates use the 18ths (GOV.UK news 18 Aug 2026 + SI 2026/807 appointed days). MTAR10800 still shows 17ths; see d017-sources.md note 5a.
 TA_WHEN="https://www.gov.uk/guidance/check-if-and-when-you-need-to-register-as-a-tax-adviser-with-hmrc"
 TA_COND="https://www.gov.uk/guidance/check-if-you-meet-hmrcs-conditions-to-register-as-a-tax-adviser"
 TA_NEWS="https://www.gov.uk/government/news/tax-advisers-check-if-you-need-to-register-under-new-rules"
+TA_NEWS2="https://www.gov.uk/government/news/second-registration-window-now-open-for-tax-advisers"
 TA_MAN="https://www.gov.uk/hmrc-internal-manuals/mandatory-tax-adviser-registration/mtar10800"
 AML_ASP="https://www.gov.uk/guidance/money-laundering-regulations-accountancy-service-provider-registration"
 AML_WHO="https://www.gov.uk/guidance/money-laundering-regulations-who-needs-to-register"
@@ -476,10 +478,10 @@ sl="".join(f"<li>{html.escape(s)}</li>" for s in SUPS)
 page("tax-adviser-registration/","Tax adviser registration with HMRC: dates and AML supervision for bookkeepers","If you're paid to deal with HMRC for clients, you now need an agent services account, and AML supervision first. Registration windows, who's exempt, AML supervisors and HMRC fees, linked to GOV.UK.",
 hero("HMRC tax adviser registration","Do you need to <em>register</em> as a tax adviser?","If you're paid to deal with HMRC about someone else's tax, HMRC now requires you to register for an agent services account. Here are the dates, and the anti-money laundering supervision you need first.",
  f"if you interact with HMRC about someone else's tax affairs and get paid for it, HMRC treats you as a tax adviser and you need an agent services account, even if you don't call yourself a tax adviser. You must have anti-money laundering (AML) supervision in place before you apply. <a href='{TA_WHEN}' rel='noopener'>Source: HMRC</a>.")+
-prose(f"""<h2>Registration windows</h2><p>HMRC is bringing registration in by group. Each group has 3 months from the date its window opens. <a href="{TA_MAN}" rel="noopener">HMRC manual MTAR10800</a>.</p>
-<ul><li><strong>18 May to 17 August 2026:</strong> new tax advisers, or those without an agent services account, Self Assessment or Corporation Tax account.</li>
-<li><strong>18 August to 17 November 2026:</strong> tax advisers with a Self Assessment or Corporation Tax agent account but no agent services account.</li>
-<li><strong>18 November 2026 to 17 February 2027:</strong> advisers who only provide payroll services and don't have an agent services account.</li>
+prose(f"""<h2>Registration windows</h2><p>HMRC is bringing registration in by group. Each group has 3 months from the date its window opens. <a href="{TA_NEWS2}" rel="noopener">HMRC news, 18 August 2026</a>.</p>
+<ul><li><strong>18 May to 18 August 2026:</strong> new tax advisers, or those without an agent services account, Self Assessment or Corporation Tax account.</li>
+<li><strong>18 August to 18 November 2026:</strong> tax advisers with a Self Assessment or Corporation Tax agent account but no agent services account.</li>
+<li><strong>18 November 2026 to 18 February 2027:</strong> advisers who only provide payroll services and don't have an agent services account.</li>
 <li><strong>31 December 2026 to 31 March 2027:</strong> financial services organisations without an agent services account.</li></ul>
 <p>The payroll window only applies if payroll is all you do. If you also do other tax or accounts work with HMRC, an earlier window applies. <a href="{TA_MAN}" rel="noopener">HMRC</a>. If you missed your window or are new, HMRC says register now. <a href="{TA_WHEN}" rel="noopener">HMRC</a>.</p>
 <p>You can keep dealing with HMRC for clients during your 3 months and while HMRC considers your registration. If you already have an agent services account, you don't need to register again. <a href="{TA_WHEN}" rel="noopener">HMRC</a>.</p>
@@ -495,11 +497,11 @@ prose(f"""<h2>Registration windows</h2><p>HMRC is bringing registration in by gr
 <p>If you have no business address, your home or contact address counts as premises. <a href="{AML_WHO}" rel="noopener">HMRC</a>. <a href="{AML_FEES}" rel="noopener">Check GOV.UK for any reductions</a>. Professional bodies set their own fees; ask them.</p>
 <h2>Other conditions</h2><p>Your business mustn't, for example, have relevant outstanding returns or unpaid tax (unless on a payment plan), unspent convictions for fraud or tax offences, or be insolvent. If your business has 5 officers or fewer, all of them must meet the conditions too. <a href="{TA_COND}" rel="noopener">HMRC</a>.</p>
 <h2>If you don't register</h2><p>You may not be able to deal with HMRC for your clients, and you may face sanctions. HMRC says it will give you a chance to put things right first. <a href="{TA_WHEN}" rel="noopener">HMRC</a>. Registration itself is free. <a href="{TA_NEWS}" rel="noopener">HMRC</a>.</p>
-<p class="small">General information, not legal or tax advice. MTD Finder isn't affiliated with HMRC or any supervisory body. Facts checked against GOV.UK on 2 November 2026.</p>"""),
+<p class="small">General information, not legal or tax advice. MTD Finder isn't affiliated with HMRC or any supervisory body. Facts checked against GOV.UK on 5 November 2026.</p>"""),
 faqs=[("Is tax adviser registration the same as Making Tax Digital?",f"No. It's a separate HMRC requirement for people paid to deal with HMRC for clients. <a href='{TA_WHEN}'>HMRC</a>. For MTD, use our <a href='../#checker'>checker</a>."),
 ("Does it cost anything to register?",f"Registration with HMRC is free, but you need AML supervision first, which has its own fees. <a href='{TA_NEWS}'>HMRC</a>."),
 ("I already have an agent services account. Do I need to do anything?",f"You don't need to register again. HMRC will contact you through your account if it needs more information. <a href='{TA_WHEN}'>HMRC</a>."),
-("I only do payroll for clients. When do I register?",f"From 18 November 2026, with 3 months to apply, if payroll is the only way you deal with HMRC. <a href='{TA_MAN}'>HMRC</a>.")],signup=False)
+("I only do payroll for clients. When do I register?",f"From 18 November 2026 to 18 February 2027, if payroll is the only way you deal with HMRC. <a href='{TA_NEWS2}'>HMRC</a>.")],signup=False)
 
 # ---- Records workbook landing page (B4). PUBLIC and indexable (made public 28 Oct 2026, Matthew's yes): no noindex, canonical set, listed in sitemap.xml and data/lastmod.json, but deliberately NOT listed in llms.txt (see NOT_IN_LLMS) and not in the nav or footer (only the privacy page links to it). The paid file is NOT in this repo (it is public); it is made and kept outside it.
 # Payment: see the guard at the top of this file (WB_PAY_LINK). In a --preview build with no link the buttons are dead (href="#").
