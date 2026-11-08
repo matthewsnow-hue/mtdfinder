@@ -1,6 +1,6 @@
 {
  "": {
-  "hash": "afdcd6e183aa4e131ae779706ed02e49bbdc4ee2b9a7026157c84d382e0f0eda",
+  "hash": "34dfad5e8d26655df590fe02b72191b29d593831b740073f18f9a0eab72f0956",
   "lastmod": "2026-11-08"
  },
  "about/": {
@@ -36,12 +36,12 @@
   "lastmod": "2026-10-19"
  },
  "guides/deadline-calendar/": {
-  "hash": "6860ba67f89ff8e60655ba1d52821c5e0a05a7260838837dbf0623f5cf2c58d5",
+  "hash": "3888e9f70af5ff0ef331ed0f9270871225684feaa52ec88d1e14eb518aed1a40",
   "lastmod": "2026-11-08"
  },
  "guides/deadlines/": {
-  "hash": "50c8054f82689b3730769984313ef5a9d48adc17a191226ef7ff20e4e0eddc25",
-  "lastmod": "2026-11-02"
+  "hash": "5d0f7430c458c5f33fce6a1ad5af4631a9aacf97f71bb4cdf010c91907cca628",
+  "lastmod": "2026-11-08"
  },
  "guides/landlords/": {
   "hash": "89ae6524c04379c3e4664f2f602ce92735d2986e349607f5d8555f5cc2b673a0",
@@ -76,7 +76,7 @@
   "lastmod": "2026-10-28"
  },
  "workbook/": {
-  "hash": "883d751c652bd0606f5806f9452aeb37b76931726e435d30107dd82ba3da4ac3",
-  "lastmod": "2026-11-02"
+  "hash": "7889bd1516e6ad76403464bbe79eefd674c10640a4642b043b9cf36e7dee96ff",
+  "lastmod": "2026-11-08"
  }
 }
