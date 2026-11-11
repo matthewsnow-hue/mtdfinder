@@ -16,6 +16,7 @@ SITE="https://mtdfinder.co.uk"
 UPDATED="2026-10-16"
 PRIVACY_UPDATED="2026-10-29"
 TERMS_UPDATED="2026-10-28"
+DISCLAIMER_UPDATED="2026-11-11"
 # GoatCounter visit counts (no cookies). Approved by Matthew, A-019; dashboard https://mtdfinder.goatcounter.com
 # count.js is self-hosted at assets/count.js (version + SHA-256 in docs/goatcounter.md); hits still go to the GoatCounter /count endpoint.
 GOATCOUNTER='<script data-goatcounter="https://mtdfinder.goatcounter.com/count" async src="/assets/count.js"></script>'
@@ -262,7 +263,8 @@ f"""<section class="wrap"><div class="searchbar"><div><label for="q">Search {N} 
 <label class="chk"><input type="checkbox" data-k="free"> Free version</label><label class="chk"><input type="checkbox" data-k="vat"> MTD for VAT</label><label class="chk"><input type="checkbox" data-k="cis"> CIS ready</label><label class="chk"><input type="checkbox" data-k="assist"> HMRC Assist</label><label class="chk"><input type="checkbox" data-k="welsh"> Welsh language</label></div>
 <div class="grp"><button class="linkbtn" id="clear" type="button">Clear all filters</button></div>
 <p class="small">Price band and mobile app filters are coming: HMRC's data doesn't include them yet.</p></aside>
-<div><div class="resbar"><p class="small" style="margin:0" aria-live="polite"><strong id="count">…</strong> of <span id="count-total">{N}</span> products · alphabetical, never paid</p><p class="small" style="margin:0" id="year-end">{YEAR_END}.</p><p class="small" style="margin:0">Data: <a href="{TOOL}" rel="noopener">HMRC</a>, checked {data['last_checked']}</p></div>
+<div><div class="resbar"><p class="small" style="margin:0" aria-live="polite"><strong id="count">…</strong> of <span id="count-total">{N}</span> products · alphabetical, never paid</p><p class="small" style="margin:0" id="year-end">{YEAR_END}.</p><p class="small" style="margin:0">Data: <a href="{TOOL}" rel="noopener">HMRC</a>, checked {data['last_checked']}</p>
+<p class="notice" id="aff-note" hidden></p></div>
 <div class="grid"><article class="card featured"><span class="badge">Featured · Sponsored</span><h3>Your software here</h3><p class="small">One clearly labelled placement for an HMRC-recognised product. It never changes the order of the main list.</p><div><a class="btn" href="../sponsor/">Sponsor us</a></div></article></div>
 <div class="grid" id="list" data-src="../data/products.json" style="margin-top:18px"></div></div></div></section>"""+signup_box('../','finder',"Not ready to choose software? Get deadline reminders while you decide.")+f"""
 <div class="tray" id="tray" aria-live="polite"><span id="tray-n">0 selected</span><button class="btn" id="cmp-open" type="button">Compare</button></div>
@@ -318,7 +320,7 @@ hero("FAQ","MTD questions, <em>answered</em>","Short answers first, each linked 
 page("sponsor/","Sponsor MTD Finder: reach UK sole traders and landlords choosing MTD software","Sponsor MTD Finder to reach UK sole traders and landlords comparing Making Tax Digital for Income Tax software. Featured placements from £49 a month.",
 hero("For software vendors","Sponsor <em>MTD Finder</em>","Put your HMRC-recognised product in front of sole traders and landlords at the moment they're choosing.")+
 f"""<section class="wrap"><div class="grid two"><div class="card featured reveal"><span class="badge">Featured listing</span><div class="stat">£49<span style="font-size:1.1rem">/month</span></div><p>Introductory price. One clearly labelled featured slot on the software finder, plus a mention in the newsletter.</p><p class="small">Prices are in GBP. We're not VAT registered, so no VAT is added. If that changes, we'll give you at least 30 days' notice of any price change.</p><div class="btns" style="justify-content:flex-start"><a class="btn" href="{STRIPE}" rel="noopener">Become a sponsor, £49/month</a></div><p class="small" style="margin-top:12px">Billed monthly · cancel anytime. See the <a href="../terms/#sponsorship">sponsorship terms</a>.</p><p class="small">Already a sponsor? <a href="{PORTAL}">Manage your sponsorship</a></p><p class="small">Questions first? <a href="mailto:{SPONSOR_EMAIL}?subject=MTD%20Finder%20sponsorship">{SPONSOR_EMAIL}</a></p></div>
-<div class="card reveal"><h3>Our rules</h3><ul class="small"><li>Only HMRC-recognised products.</li><li>Sponsored placements are always labelled.</li><li>Sponsorship never changes the main list order or our editorial content.</li><li>We may earn affiliate commission; we always disclose it.</li></ul></div></div></section>""")
+<div class="card reveal"><h3>Our rules</h3><ul class="small"><li>Only HMRC-recognised products.</li><li>Sponsored placements are always labelled.</li><li>Sponsorship never changes the main list order or our editorial content.</li><li>Affiliate links are labelled "Affiliate link". We earn a commission if you sign up through one. They never change the main list order or our editorial content.</li></ul></div></div></section>""")
 
 page("newsletter/","MTD Finder newsletter: deadline reminders for sole traders and landlords","Sign up for MTD Finder's free newsletter: plain-English Making Tax Digital deadline reminders and software updates for UK sole traders and landlords.",
 hero("Newsletter","Deadline reminders, <em>in plain English</em>","Short reminders before each quarterly deadline, plus the MTD Finder newsletter when HMRC changes something. Free, no spam.")+
@@ -364,9 +366,14 @@ prose(f"""<h2>About these terms</h2><p>These terms apply to your use of mtdfinde
 <h3>Liability for sponsors</h3><p>We don't guarantee any level of traffic, clicks or sales. As far as the law allows, our total liability to a sponsor is limited to the fees paid in the three months before the claim, and we're not liable for indirect loss or loss of profit.</p>
 <h2>Changes and law</h2><p>We may update these terms and will show the date at the top. For sponsors, we'll give 30 days' notice of material changes. These terms are governed by the law of England and Wales, and the courts of England and Wales have jurisdiction.</p>"""))
 
-page("disclaimer/","Disclaimer and affiliate disclosure | MTD Finder","MTD Finder is independent, is not affiliated with HMRC, does not give tax advice and may earn affiliate commission.",
-hero("Legal","Disclaimer","Please read before relying on anything here.")+
-prose(f"""<h2>Not tax advice</h2><p>MTD Finder gives general information only. It isn't tax, legal or financial advice. Always check <a href="{ELIG}" rel="noopener">HMRC guidance</a> or speak to a qualified adviser.</p><h2>Independent</h2><p>We're not affiliated with or endorsed by HMRC. HMRC doesn't recommend any software product.</p><h2>Accuracy</h2><p>Software details come from HMRC's public listing and vendors' sites, and can change. Always confirm features and prices with the vendor.</p><h2>Affiliate disclosure</h2><p>Some links may be affiliate links, so we may earn a commission at no extra cost to you. Featured placements are paid and always labelled. Neither changes the order of the main list.</p>"""))
+page("disclaimer/","Disclaimer and affiliate disclosure | MTD Finder","MTD Finder is independent, is not affiliated with HMRC, does not give tax advice, and labels every affiliate link.",
+hero("Legal","Disclaimer","Last updated "+DISCLAIMER_UPDATED+". Please read before relying on anything here.")+
+prose(f"""<h2>Not tax advice</h2><p>MTD Finder gives general information only. It isn't tax, legal or financial advice. Always check <a href="{ELIG}" rel="noopener">HMRC guidance</a> or speak to a qualified adviser.</p><h2>Independent</h2><p>We're not affiliated with or endorsed by HMRC. HMRC doesn't recommend any software product.</p><h2>Accuracy</h2><p>Software details come from HMRC's public listing and vendors' sites, and can change. Always confirm features and prices with the vendor.</p>
+<h2>Affiliate disclosure</h2>
+<p>When a vendor button on the software finder is labelled "Affiliate link", that link is an affiliate link. If you sign up through it, we earn a commission, at no extra cost to you. MTD Finder is run by Matthew Snow trading as Sno Automations.</p>
+<p>Products without that label link to the vendor's own website, and we are not paid for those clicks. Every product on <a href="{TOOL}" rel="noopener">HMRC's list of MTD for Income Tax software</a> stays on our list. Affiliate links never change the order, filters or scores.</p>
+<p>Featured placements are a separate, paid slot. They are always labelled "Featured · Sponsored" and never change the order of the main list.</p>
+<p>Questions about a link: <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>"""))
 
 # ---- Lead magnet: .ics deadline calendar + checklist
 EVENTS=[("20261107","MTD quarterly update due (6 April to 5 October)","Send your cumulative quarterly update for each self-employment and property business. "+QU),
@@ -470,10 +477,36 @@ if _devon_agents:
         f"<table><thead><tr><th>Name</th><th>Town</th><th>Postcode area</th><th>AML supervisor</th></tr></thead><tbody>{_devon_rows}</tbody></table>"
         f'<p class="small">Town and postcode area are as published by Companies House, with the postcode shortened to the area only. One official town field is simply "Devon". Data: <a href="{ACSP_LIST}" rel="noopener">Companies House list of ACSPs</a>, same extract as the search above.</p></div></section>'
     )
+def _acsp_sponsor():
+    """Paid ACSP slot, separate from the free Companies House list. Omitted unless a sponsor file is present
+    and has a name and url. MTD_ACSP_SPONSOR_PREVIEW=1 loads data/acsp-sponsor.preview.json instead
+    (placeholder only, for QA). Never touches ACSP['agents'] or its order."""
+    path=f"{ROOT}/data/acsp-sponsor.preview.json" if os.environ.get("MTD_ACSP_SPONSOR_PREVIEW") else f"{ROOT}/data/acsp-sponsor.json"
+    if not os.path.exists(path):return ""
+    s=json.load(open(path))
+    name=(s.get("name") or "").strip(); url=(s.get("url") or "").strip()
+    if not name or not url or not url.lower().startswith(("http://","https://")):return ""
+    blurb=(s.get("blurb") or "").strip()
+    is_acsp=bool(s.get("is_acsp"))
+    disc="Sponsored: this is a paid placement, separate from the free Companies House list below. We are paid to show it. It does not change the order of that list, or who appears on it."
+    if is_acsp:
+        disc+=" This sponsor is itself listed as an Authorised Corporate Service Provider (ACSP) on the Companies House public list."
+    else:
+        disc+=" This sponsor is not listed here as an ACSP."
+    blurb_html=f"<p>{html.escape(blurb)}</p>" if blurb else ""
+    return (
+        '<section class="wrap" id="acsp-sponsored"><div class="card featured reveal">'
+        f'<span class="badge">Sponsored</span><h2 style="margin-top:0">{html.escape(name)}</h2>'
+        f"{blurb_html}<p class=\"small\">{html.escape(disc)}</p>"
+        f'<p><a class="btn" href="{html.escape(url)}" rel="sponsored nofollow">Visit website</a></p>'
+        "</div></section>"
+    )
+
 page("acsp/"
 ,"Public ACSP list: find a Companies House agent near you",f"Search Companies House's public ACSP list of {ACSP['count']:,} authorised agents. Find an ACSP near you by town or postcode. Independent, not run by Companies House.",
 hero("Companies House identity checks","Find an <em>ACSP</em> near you","Search Companies House's own public list of authorised agents by town or postcode area. Free, independent, and not run by Companies House.",
  f"an ACSP (Authorised Corporate Service Provider), also known as a Companies House authorised agent, is an agent such as an accountant or solicitor who is registered with Companies House and supervised for anti-money laundering. You can ask one to verify your identity for Companies House. <a href='{ACSP_USE}' rel='noopener'>Source: Companies House</a>.")+
+_acsp_sponsor()+
 f"""<section class="wrap" id="acsp-search"><div class="card reveal"><span class="eyebrow">Search {ACSP['count']:,} agents</span><h2 style="margin-top:0">Search the ACSP list</h2>
 <div class="row2"><div class="field"><label for="acsp-q">Town, postcode area or name</label><input id="acsp-q" type="search" placeholder="e.g. Leeds, BS1 or WR10" autocomplete="off" aria-describedby="acsp-help"><p class="small" id="acsp-help" style="margin:6px 0 0">For a postcode, the first half is enough (for example BS1).</p></div>
 <div class="field"><label for="acsp-s">Anti-money laundering supervisor</label><select id="acsp-s"><option value="">Any</option>{sups}</select></div></div>
