@@ -263,8 +263,8 @@ f"""<section class="wrap"><div class="searchbar"><div><label for="q">Search {N} 
 <label class="chk"><input type="checkbox" data-k="free"> Free version</label><label class="chk"><input type="checkbox" data-k="vat"> MTD for VAT</label><label class="chk"><input type="checkbox" data-k="cis"> CIS ready</label><label class="chk"><input type="checkbox" data-k="assist"> HMRC Assist</label><label class="chk"><input type="checkbox" data-k="welsh"> Welsh language</label></div>
 <div class="grp"><button class="linkbtn" id="clear" type="button">Clear all filters</button></div>
 <p class="small">Price band and mobile app filters are coming: HMRC's data doesn't include them yet.</p></aside>
-<div><div class="resbar"><p class="small" style="margin:0" aria-live="polite"><strong id="count">…</strong> of <span id="count-total">{N}</span> products · alphabetical, never paid</p><p class="small" style="margin:0" id="year-end">{YEAR_END}.</p><p class="small" style="margin:0">Data: <a href="{TOOL}" rel="noopener">HMRC</a>, checked {data['last_checked']}</p>
-<p class="notice" id="aff-note" hidden></p></div>
+<div><div class="resbar"><p class="small" style="margin:0" aria-live="polite"><strong id="count">…</strong> of <span id="count-total">{N}</span> products · alphabetical, never paid</p><p class="small" style="margin:0" id="year-end">{YEAR_END}.</p><p class="small" style="margin:0">Data: <a href="{TOOL}" rel="noopener">HMRC</a>, checked {data['last_checked']}</p></div>
+<p class="notice" id="aff-note" hidden></p>
 <div class="grid"><article class="card featured"><span class="badge">Featured · Sponsored</span><h3>Your software here</h3><p class="small">One clearly labelled placement for an HMRC-recognised product. It never changes the order of the main list.</p><div><a class="btn" href="../sponsor/">Sponsor us</a></div></article></div>
 <div class="grid" id="list" data-src="../data/products.json" style="margin-top:18px"></div></div></div></section>"""+signup_box('../','finder',"Not ready to choose software? Get deadline reminders while you decide.")+f"""
 <div class="tray" id="tray" aria-live="polite"><span id="tray-n">0 selected</span><button class="btn" id="cmp-open" type="button">Compare</button></div>
@@ -371,7 +371,7 @@ hero("Legal","Disclaimer","Last updated "+DISCLAIMER_UPDATED+". Please read befo
 prose(f"""<h2>Not tax advice</h2><p>MTD Finder gives general information only. It isn't tax, legal or financial advice. Always check <a href="{ELIG}" rel="noopener">HMRC guidance</a> or speak to a qualified adviser.</p><h2>Independent</h2><p>We're not affiliated with or endorsed by HMRC. HMRC doesn't recommend any software product.</p><h2>Accuracy</h2><p>Software details come from HMRC's public listing and vendors' sites, and can change. Always confirm features and prices with the vendor.</p>
 <h2>Affiliate disclosure</h2>
 <p>When a vendor button on the software finder is labelled "Affiliate link", that link is an affiliate link. If you sign up through it, we earn a commission, at no extra cost to you. MTD Finder is run by Matthew Snow trading as Sno Automations.</p>
-<p>Products without that label link to the vendor's own website, and we are not paid for those clicks. Every product on <a href="{TOOL}" rel="noopener">HMRC's list of MTD for Income Tax software</a> stays on our list. Affiliate links never change the order, filters or scores.</p>
+<p>Products without that label link to the vendor's own website, and we are not paid for those clicks. Every product on <a href="{TOOL}" rel="noopener">HMRC's list of MTD for Income Tax software</a> stays on our list. Affiliate links never change the order or filters.</p>
 <p>Featured placements are a separate, paid slot. They are always labelled "Featured · Sponsored" and never change the order of the main list.</p>
 <p>Questions about a link: <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>"""))
 
