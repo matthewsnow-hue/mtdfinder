@@ -1620,26 +1620,26 @@
     "UK property",
     "Foreign property",
     "UK interest",
+    "Employment (PAYE)",
     "UK dividends",
     "State Pension income",
     "Private pension incomes",
+    "Partner income from a partnership",
     "Foreign dividends",
     "Foreign interest",
-    "Capital Gains",
-    "Student Loan",
-    "High Income Child Benefit Charge"
-   ],
-   "in_development": [
-    "Employment (PAYE)",
-    "Partner income from a partnership",
     "Private pension contributions",
     "Construction Industry Scheme",
     "Charitable giving",
+    "Capital Gains",
+    "Student Loan",
     "Marriage Allowance",
-    "Voluntary Class 2 National Insurance"
+    "Voluntary Class 2 National Insurance",
+    "High Income Child Benefit Charge"
    ],
-   "cis": false,
-   "mobile_app": null
+   "in_development": [],
+   "cis": true,
+   "mobile_app": null,
+   "detail_checked": "2026-11-16"
   },
   {
    "id": "3258",
@@ -3127,7 +3127,7 @@
   {
    "id": "3653",
    "name": "PA for Trades",
-   "website": "https://www.tradespa.co.uk/mtd-income-tax.html",
+   "website": "https://pafortrades.co.uk/mtd-income-tax.html",
    "hmrc_url": "https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3653",
    "free_version": false,
    "creates_records": true,
@@ -3151,7 +3151,8 @@
    "in_development": [],
    "cis": false,
    "mobile_app": null,
-   "name_checked": "2026-11-08"
+   "name_checked": "2026-11-08",
+   "detail_checked": "2026-11-16"
   },
   {
    "id": "3536",
@@ -4404,10 +4405,10 @@
    "welsh": false,
    "hmrc_assist": false,
    "sole_trader": true,
-   "landlord": false,
-   "foreign_property": false,
+   "landlord": true,
+   "foreign_property": true,
    "submissions": "Quarterly updates",
-   "income_sources": "Sole trader",
+   "income_sources": "Sole trader, UK property, Foreign property",
    "price": "Paid – check vendor",
    "featured": false,
    "ready": [
@@ -4417,7 +4418,10 @@
     "Calendar update period (1 April to 31 March)",
     "Software that creates digital records",
     "Sole trader",
+    "UK property",
+    "Foreign property",
     "UK interest",
+    "Employment (PAYE)",
     "UK dividends",
     "Private pension incomes",
     "Foreign dividends",
@@ -4428,14 +4432,14 @@
     "High Income Child Benefit Charge"
    ],
    "in_development": [
-    "Employment (PAYE)",
     "State Pension income",
     "Partner income from a partnership",
     "Marriage Allowance",
     "Voluntary Class 2 National Insurance"
    ],
    "cis": false,
-   "mobile_app": null
+   "mobile_app": null,
+   "detail_checked": "2026-11-16"
   },
   {
    "id": "3123",
@@ -4717,14 +4721,20 @@
     "UK dividends",
     "State Pension income",
     "Private pension incomes",
+    "Foreign dividends",
+    "Foreign interest",
     "Private pension contributions",
     "Construction Industry Scheme",
     "Charitable giving",
+    "Capital Gains",
+    "Student Loan",
     "Marriage Allowance",
+    "Voluntary Class 2 National Insurance",
     "High Income Child Benefit Charge"
    ],
    "cis": false,
-   "mobile_app": null
+   "mobile_app": null,
+   "detail_checked": "2026-11-16"
   },
   {
    "id": "3557",
@@ -6117,7 +6127,7 @@
   {
    "id": "3584",
    "name": "BizHub365",
-   "website": "https://bizhub365.com/",
+   "website": "https://bizhub365.co.uk",
    "hmrc_url": "https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3584",
    "free_version": false,
    "creates_records": true,
@@ -6145,7 +6155,8 @@
    ],
    "in_development": [],
    "cis": false,
-   "mobile_app": null
+   "mobile_app": null,
+   "detail_checked": "2026-11-16"
   },
   {
    "id": "3231",
@@ -6436,15 +6447,11 @@
     "Making Tax Digital for VAT",
     "Sole trader",
     "UK property",
-    "Foreign property"
-   ],
-   "in_development": [
+    "Foreign property",
     "UK interest",
-    "Employment (PAYE)",
     "UK dividends",
     "State Pension income",
     "Private pension incomes",
-    "Partner income from a partnership",
     "Foreign dividends",
     "Foreign interest",
     "Private pension contributions",
@@ -6452,12 +6459,17 @@
     "Charitable giving",
     "Capital Gains",
     "Student Loan",
-    "Marriage Allowance",
-    "Voluntary Class 2 National Insurance",
     "High Income Child Benefit Charge"
    ],
-   "cis": false,
-   "mobile_app": null
+   "in_development": [
+    "Employment (PAYE)",
+    "Partner income from a partnership",
+    "Marriage Allowance",
+    "Voluntary Class 2 National Insurance"
+   ],
+   "cis": true,
+   "mobile_app": null,
+   "detail_checked": "2026-11-16"
   },
   {
    "id": "3482",
@@ -7162,15 +7174,15 @@
    "hmrc_url": "https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/product-details?productId=3210",
    "free_version": true,
    "creates_records": true,
-   "bridging": false,
+   "bridging": true,
    "vat": true,
    "welsh": false,
    "hmrc_assist": true,
    "sole_trader": true,
    "landlord": true,
-   "foreign_property": false,
+   "foreign_property": true,
    "submissions": "Quarterly updates, Tax return",
-   "income_sources": "Sole trader, UK property",
+   "income_sources": "Sole trader, UK property, Foreign property",
    "price": "Free version available",
    "featured": false,
    "ready": [
@@ -7180,10 +7192,12 @@
     "Standard update period (6 April to 5 April)",
     "Calendar update period (1 April to 31 March)",
     "Software that creates digital records",
+    "Bridging software that connects to records",
     "Making Tax Digital for VAT",
     "HMRC Assist (Submission Feedback)",
     "Sole trader",
     "UK property",
+    "Foreign property",
     "UK interest",
     "Employment (PAYE)",
     "UK dividends",
@@ -7203,7 +7217,8 @@
     "Capital Gains"
    ],
    "cis": false,
-   "mobile_app": null
+   "mobile_app": null,
+   "detail_checked": "2026-11-16"
   },
   {
    "id": "3174",
@@ -8350,5 +8365,5 @@
   }
  ],
  "inventory_checked": "2026-11-16",
- "verification_note": "Inventory IDs/names reconciled 2026-11-16. Full details checked 2026-11-16 only for IDs 3692, 3695, 3698, 3701, 3704, 3707, 3710, 3713, 3716, 3722. Inventory IDs/names previously reconciled 2026-11-08. Full details checked 2026-11-08 only for IDs 3677, 3680, 3686, 3689; name checked for 3653. Existing feature data last checked 2026-11-02."
+ "verification_note": "Inventory IDs/names reconciled 2026-11-16. Full details rechecked 2026-11-16 for IDs 3210, 3291, 3180, 3357, 3584, 3653, 3593 (Zoho, StrideBooks, TaxNav, 100PcMTD, BizHub365, PA for Trades, IQ Books). Full details checked 2026-11-16 only for IDs 3692, 3695, 3698, 3701, 3704, 3707, 3710, 3713, 3716, 3722. Inventory IDs/names previously reconciled 2026-11-08. Full details checked 2026-11-08 only for IDs 3677, 3680, 3686, 3689; name checked for 3653. Existing feature data last checked 2026-11-02."
 }
