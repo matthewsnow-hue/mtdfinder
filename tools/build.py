@@ -25,6 +25,7 @@ ICO_REG="ZC276141"
 OG_IMAGES={"guides/deadline-calendar/":"deadline-calendar","guides/7-november-deadline/":"7-november-deadline","guides/30k-threshold-april-2027/":"30k-threshold-april-2027"}
 OG_DEFAULT_ALT="MTD Finder: Free Making Tax Digital checker and software finder"
 ELIG="https://www.gov.uk/guidance/find-out-if-and-when-you-need-to-use-making-tax-digital-for-income-tax"
+EXEMPT="https://www.gov.uk/guidance/find-out-if-you-can-get-an-exemption-from-making-tax-digital-for-income-tax"
 QI="https://www.gov.uk/guidance/work-out-your-qualifying-income-for-making-tax-digital-for-income-tax"
 SW="https://www.gov.uk/guidance/choose-the-right-software-for-making-tax-digital-for-income-tax"
 TOOL="https://www.tax.service.gov.uk/find-making-tax-digital-income-tax-software/"
@@ -312,7 +313,7 @@ faqs_all=home_faq+[("When do I need to start MTD?",f"From 6 April 2026 if over Â
 ("Can I stop using MTD if my income falls?",f"Once you've started, if your qualifying income drops below the threshold for 3 tax years in a row, you can choose to opt out. <a href='{QI}'>HMRC</a>."),
 ("What if I've only traded for part of a year?",f"For sole traders, HMRC annualises qualifying income where it has the information. For example, 6 months' trading is doubled. Landlords must annualise property income themselves. <a href='{QI}'>HMRC</a>."),
 ("Are partnerships included?",f"Not yet. HMRC says partnerships will need to use MTD in future, with a timeline to be set out later. <a href='{ELIG}'>HMRC</a>."),
-("Can I be exempt?",f"Some people are, for example if digitally excluded. Exempt people still file a Self Assessment return. <a href='{ELIG}'>HMRC</a>."),
+("Can I be exempt?",f"Some people are. If you claimed averaging relief (as a farmer, market gardener or someone who personally creates literary or artistic works) on the SA103 supplementary page as an individual, or the SA104 supplementary page as a partner, in your 2024 to 2025 tax return, you are automatically exempt for the 2026 to 2027 tax year and do not need to apply. You may still need MTD from 2027 to 2028 if your qualifying income was above Â£30,000 in 2025 to 2026. Other people, for example if digitally excluded, need to apply. Exempt people still file a Self Assessment return. <a href='{EXEMPT}'>HMRC</a>."),
 ("How do I sign up?",f"You must be registered for Self Assessment and have submitted a return in the last 2 years. Choose software first, then <a href='{SIGN}'>sign up with HMRC</a>.")]
 page("faq/","Making Tax Digital for Income Tax FAQ: plain answers with HMRC sources","Plain-English answers to common Making Tax Digital for Income Tax questions, from thresholds and qualifying income to exemptions and sign-up, each linked to HMRC.",
 hero("FAQ","MTD questions, <em>answered</em>","Short answers first, each linked to the HMRC source."),faqs=faqs_all)
