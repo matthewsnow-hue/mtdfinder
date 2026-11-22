@@ -12,10 +12,17 @@ WB_PREVIEW=("--preview" in sys.argv) or os.environ.get("MTD_PREVIEW")=="1"
 WB_PLACEHOLDER=not WB_PAY_LINK
 if WB_PLACEHOLDER and not WB_PREVIEW:
     sys.stderr.write("\n*** BUILD STOPPED before writing any file: the workbook payment link (WB_PAY_LINK in tools/build.py) is empty ([Payment link to be added by Matthew]). Set it, or run: python3 tools/build.py --preview ***\n");sys.exit(1)
+# ACSP "Featured accountant" slot Stripe links (DRAFT placeholders). Snowman creates both Payment Links under standing Stripe authority, then pastes the public URLs here.
+# While either is still a placeholder, a normal build stops (same guard as the workbook link) so the dead placeholder can't be published. MTD_PREVIEW=1 allows it for QA.
+STRIPE_LINK_TOWN_29="STRIPE_LINK_TOWN_29"          # £29/month, one town or county page
+STRIPE_LINK_NATIONAL_49="STRIPE_LINK_NATIONAL_49"  # £49/month, the national /acsp/ page
+ACSP_PAY_PLACEHOLDER=not (STRIPE_LINK_TOWN_29.startswith("https://buy.stripe.com/") and STRIPE_LINK_NATIONAL_49.startswith("https://buy.stripe.com/"))
+if ACSP_PAY_PLACEHOLDER and not WB_PREVIEW:
+    sys.stderr.write("\n*** BUILD STOPPED before writing any file: STRIPE_LINK_TOWN_29 and/or STRIPE_LINK_NATIONAL_49 in tools/build.py are still placeholders. Paste the Stripe Payment Link URLs, or run: MTD_PREVIEW=1 python3 tools/build.py ***\n");sys.exit(1)
 SITE="https://mtdfinder.co.uk"
 UPDATED="2026-10-16"
 PRIVACY_UPDATED="2026-10-29"
-TERMS_UPDATED="2026-10-28"
+TERMS_UPDATED="2026-11-22"
 DISCLAIMER_UPDATED="2026-11-11"
 # GoatCounter visit counts (no cookies). Approved by Matthew, A-019; dashboard https://mtdfinder.goatcounter.com
 # count.js is self-hosted at assets/count.js (version + SHA-256 in docs/goatcounter.md); hits still go to the GoatCounter /count endpoint.
@@ -321,7 +328,12 @@ hero("FAQ","MTD questions, <em>answered</em>","Short answers first, each linked 
 page("sponsor/","Sponsor MTD Finder: reach UK sole traders and landlords choosing MTD software","Sponsor MTD Finder to reach UK sole traders and landlords comparing Making Tax Digital for Income Tax software. Featured placements from £49 a month.",
 hero("For software vendors","Sponsor <em>MTD Finder</em>","Put your HMRC-recognised product in front of sole traders and landlords at the moment they're choosing.")+
 f"""<section class="wrap"><div class="grid two"><div class="card featured reveal"><span class="badge">Featured listing</span><div class="stat">£49<span style="font-size:1.1rem">/month</span></div><p>Introductory price. One clearly labelled featured slot on the software finder, plus a mention in the newsletter.</p><p class="small">Prices are in GBP. We're not VAT registered, so no VAT is added. If that changes, we'll give you at least 30 days' notice of any price change.</p><div class="btns" style="justify-content:flex-start"><a class="btn" href="{STRIPE}" rel="noopener">Become a sponsor, £49/month</a></div><p class="small" style="margin-top:12px">Billed monthly · cancel anytime. See the <a href="../terms/#sponsorship">sponsorship terms</a>.</p><p class="small">Already a sponsor? <a href="{PORTAL}">Manage your sponsorship</a></p><p class="small">Questions first? <a href="mailto:{SPONSOR_EMAIL}?subject=MTD%20Finder%20sponsorship">{SPONSOR_EMAIL}</a></p></div>
-<div class="card reveal"><h3>Our rules</h3><ul class="small"><li>Only HMRC-recognised products.</li><li>Sponsored placements are always labelled.</li><li>Sponsorship never changes the main list order or our editorial content.</li><li>Affiliate links are labelled "Affiliate link". We earn a commission if you sign up through one. They never change the main list order or our editorial content.</li></ul></div></div></section>""")
+<div class="card reveal"><h3>Our rules</h3><ul class="small"><li>Only HMRC-recognised products.</li><li>Sponsored placements are always labelled.</li><li>Sponsorship never changes the main list order or our editorial content.</li><li>Affiliate links are labelled "Affiliate link". We earn a commission if you sign up through one. They never change the main list order or our editorial content.</li></ul></div></div></section>
+<section class="wrap" id="accountants"><span class="eyebrow">For accountants and solicitors</span><h2 style="margin-top:0">Featured accountant slot on the ACSP pages</h2>
+<p>One clearly labelled "Sponsored" card on our <a href="../acsp/">Find an ACSP</a> pages, shown separately from the A-to-Z Companies House list. It never changes the order of that list, or who is on it.</p>
+<div class="grid two"><div class="card featured reveal"><span class="badge">Town or county page</span><div class="stat">£29<span style="font-size:1.1rem">/month</span></div><p>One slot on one place page, for example <a href="../acsp/bristol/">Bristol</a> or <a href="../acsp/devon/">Devon</a>.</p><div class="btns" style="justify-content:flex-start"><a class="btn" href="{STRIPE_LINK_TOWN_29}" rel="noopener">Book a town slot, £29/month</a></div></div>
+<div class="card featured reveal"><span class="badge">National page</span><div class="stat">£49<span style="font-size:1.1rem">/month</span></div><p>One slot on the national <a href="../acsp/">Find an ACSP</a> page.</p><div class="btns" style="justify-content:flex-start"><a class="btn" href="{STRIPE_LINK_NATIONAL_49}" rel="noopener">Book the national slot, £49/month</a></div></div></div>
+<p class="small">You must appear on Companies House's published list of ACSPs and not on its ceased or suspended list. Prices are in GBP. We're not VAT registered, so no VAT is added. Billed monthly, cancel anytime. See the <a href="../terms/#acsp-sponsorship">ACSP sponsorship terms</a>. Questions first? <a href="mailto:{SPONSOR_EMAIL}?subject=MTD%20Finder%20ACSP%20slot">{SPONSOR_EMAIL}</a>. We don't recommend or endorse any agent, and Companies House and HMRC don't endorse sponsors.</p></section>""")
 
 page("newsletter/","MTD Finder newsletter: deadline reminders for sole traders and landlords","Sign up for MTD Finder's free newsletter: plain-English Making Tax Digital deadline reminders and software updates for UK sole traders and landlords.",
 hero("Newsletter","Deadline reminders, <em>in plain English</em>","Short reminders before each quarterly deadline, plus the MTD Finder newsletter when HMRC changes something. Free, no spam.")+
@@ -365,6 +377,8 @@ prose(f"""<h2>About these terms</h2><p>These terms apply to your use of mtdfinde
 <h3>Cancelling</h3><p>You can cancel anytime, or update your card and download invoices, through our <a href="{PORTAL}">sponsor billing portal</a> (log in with the email you subscribed with), or by emailing <a href="mailto:{SPONSOR_EMAIL}">{SPONSOR_EMAIL}</a>. Cancellation takes effect at the end of the billing period you've paid for, and your listing stays live until then. We don't refund partial months, except where the law requires it.</p>
 <h3>Refusing or removing listings</h3><p>We may refuse any listing. We may also remove a listing if the product leaves HMRC's list, the information is misleading, or the listing breaks these terms or the law. If we remove a listing for any reason other than your breach, we'll refund the unused part of the current month.</p>
 <h3>Liability for sponsors</h3><p>We don't guarantee any level of traffic, clicks or sales. As far as the law allows, our total liability to a sponsor is limited to the fees paid in the three months before the claim, and we're not liable for indirect loss or loss of profit.</p>
+<h2 id="acsp-sponsorship">ACSP sponsorship terms (Featured accountant slot)</h2>
+<p><strong>Featured accountant slot.</strong> One clearly labelled "Sponsored" card on MTD Finder's ACSP pages. You must appear on Companies House's published list of ACSPs and not on its ceased or suspended list; we check this when we update the list and may remove the card if you no longer appear. Sponsorship does not change the order of the A-to-Z list or our guides. We do not recommend or endorse any agent, and nothing on the site is tax or legal advice. We may edit your card text for accuracy and clarity. We don't guarantee traffic or enquiries. Billed monthly in GBP, cancel any time, runs to the end of the paid month. Sponsorship is not endorsed by Companies House or HMRC.</p>
 <h2>Changes and law</h2><p>We may update these terms and will show the date at the top. For sponsors, we'll give 30 days' notice of material changes. These terms are governed by the law of England and Wales, and the courts of England and Wales have jurisdiction.</p>"""))
 
 page("disclaimer/","Disclaimer and affiliate disclosure | MTD Finder","MTD Finder is independent, is not affiliated with HMRC, does not give tax advice, and labels every affiliate link.",
@@ -478,13 +492,45 @@ if _devon_agents:
         f"<table><thead><tr><th>Name</th><th>Town</th><th>Postcode area</th><th>AML supervisor</th></tr></thead><tbody>{_devon_rows}</tbody></table>"
         f'<p class="small">Town and postcode area are as published by Companies House, with the postcode shortened to the area only. One official town field is simply "Devon". Data: <a href="{ACSP_LIST}" rel="noopener">Companies House list of ACSPs</a>, same extract as the search above.</p></div></section>'
     )
-def _acsp_sponsor():
-    """Paid ACSP slot, separate from the free Companies House list. Omitted unless a sponsor file is present
-    and has a name and url. MTD_ACSP_SPONSOR_PREVIEW=1 loads data/acsp-sponsor.preview.json instead
-    (placeholder only, for QA). Never touches ACSP['agents'] or its order."""
-    path=f"{ROOT}/data/acsp-sponsor.preview.json" if os.environ.get("MTD_ACSP_SPONSOR_PREVIEW") else f"{ROOT}/data/acsp-sponsor.json"
+
+# ---- ACSP place pages (batch 1, DRAFT). Generated from data/acsp.json only; no hand-written agent data.
+# Rules (Matthew, 22 Nov 2026 21:55): a town gets its own page only with 5+ agents; smaller places go in county pages;
+# London is one page with 8 postcode-area sections. Town pages match Companies House's town field; London matches postcode area.
+import re as _re
+MIN_TOWN=5
+_LON_RE=_re.compile(r"^(EC|WC|NW|SE|SW|E|N|W)\d")
+_LON_AREAS=[("EC","EC","East Central London"),("WC","WC","West Central London"),("E","E","East London"),("N","N","North London"),("NW","NW","North West London"),("SE","SE","South East London"),("SW","SW","South West London"),("W","W","West London")]
+def _area(d):
+    m=_LON_RE.match((d or "").upper());return _re.match(r"[A-Z]+",d.upper()).group() if m else None
+def _town_norm(t):return (t or "").strip(" ,").lower()
+def _byname(xs):return sorted(xs,key=lambda a:(a["n"].upper(),a["d"]))
+_AG=ACSP["agents"]
+PLACES=[
+ {"slug":"devon","name":"Devon","kind":"county","agents":_devon_agents,"scope":"Devon (the ceremonial county, which includes Plymouth and Torbay)"},
+ {"slug":"london","name":"London","kind":"london","agents":[a for a in _AG if _LON_RE.match((a["d"] or "").upper())],"scope":"the London postcode areas EC, WC, E, N, NW, SE, SW and W"},
+ {"slug":"manchester","name":"Manchester","kind":"town","agents":[a for a in _AG if _town_norm(a["t"])=="manchester"],"scope":"Manchester as the town"},
+ {"slug":"birmingham","name":"Birmingham","kind":"town","agents":[a for a in _AG if _town_norm(a["t"])=="birmingham"],"scope":"Birmingham as the town"},
+ {"slug":"glasgow","name":"Glasgow","kind":"town","agents":[a for a in _AG if _town_norm(a["t"])=="glasgow"],"scope":"Glasgow as the town"},
+ {"slug":"bristol","name":"Bristol","kind":"town","agents":[a for a in _AG if _town_norm(a["t"])=="bristol"],"scope":"Bristol as the town"},
+]
+for _p in PLACES:
+    if _p["kind"]=="town" and len(_p["agents"])<MIN_TOWN:raise SystemExit(f"{_p['name']} has fewer than {MIN_TOWN} agents; it belongs in a county page")
+PLACES=[_p for _p in PLACES if _p["agents"]]
+_PLACE_BROWSE=("<section class=\"wrap\" id=\"acsp-places\"><div class=\"card reveal\"><h2 style=\"margin-top:0\">Browse ACSPs by place</h2>"
+  "<p>Same Companies House list as the search above, split by place. Each page shows only agents on that list.</p><ul>"
+  +"".join(f'<li><a href="{_p["slug"]}/">{html.escape(_p["name"])}</a> ({len(_p["agents"]):,} agents)</li>' for _p in PLACES)
+  +"</ul><p>New to this? Read <a href=\"../guides/how-to-choose-an-acsp/\">how to choose an ACSP</a>.</p></div></section>")
+def _acsp_sponsor(scope="national"):
+    """Paid ACSP slot ("Featured accountant"), separate from the free Companies House list. Hidden (nothing rendered) unless a sponsor exists.
+    scope="national": data/acsp-sponsor.json (the /acsp/ page, £49/month). Any other scope is a place slug: data/acsp-sponsors-town.json,
+    a {slug: {name,url,blurb,is_acsp}} map (£29/month), empty today. MTD_ACSP_SPONSOR_PREVIEW=1 loads data/acsp-sponsor.preview.json
+    on every page (placeholder only, for QA). Never touches ACSP['agents'] or its order."""
+    if os.environ.get("MTD_ACSP_SPONSOR_PREVIEW"):path=f"{ROOT}/data/acsp-sponsor.preview.json"
+    elif scope=="national":path=f"{ROOT}/data/acsp-sponsor.json"
+    else:path=f"{ROOT}/data/acsp-sponsors-town.json"
     if not os.path.exists(path):return ""
     s=json.load(open(path))
+    if scope!="national" and not os.environ.get("MTD_ACSP_SPONSOR_PREVIEW"):s=s.get(scope) or {}
     name=(s.get("name") or "").strip(); url=(s.get("url") or "").strip()
     if not name or not url or not url.lower().startswith(("http://","https://")):return ""
     blurb=(s.get("blurb") or "").strip()
@@ -497,7 +543,7 @@ def _acsp_sponsor():
     blurb_html=f"<p>{html.escape(blurb)}</p>" if blurb else ""
     return (
         '<section class="wrap" id="acsp-sponsored"><div class="card featured reveal">'
-        f'<span class="badge">Sponsored</span><h2 style="margin-top:0">{html.escape(name)}</h2>'
+        f'<span class="badge">Sponsored</span><span class="eyebrow">Featured accountant</span><h2 style="margin-top:0">{html.escape(name)}</h2>'
         f"{blurb_html}<p class=\"small\">{html.escape(disc)}</p>"
         f'<p><a class="btn" href="{html.escape(url)}" rel="sponsored nofollow">Visit website</a></p>'
         "</div></section>"
@@ -514,6 +560,7 @@ f"""<section class="wrap" id="acsp-search"><div class="card reveal"><span class=
 <p class="small" aria-live="polite" id="acsp-count"></p><div id="acsp-out" data-src="../data/acsp.json"></div>
 <p class="small">Listed A to Z. Nobody pays to be on this list or to appear higher. Data: Companies House, <a href="{ACSP_LIST}" rel="noopener">list of ACSPs</a> (updated {_ad('source_active_updated')}), with anyone on the <a href="{ACSP_CEASED}" rel="noopener">ceased or suspended list</a> (updated {_ad('source_ceased_updated')}) removed. Looking for Devon? See <a href="#devon">ACSPs in Devon</a>. Contains public sector information licensed under the <a href="{OGL}" rel="noopener">Open Government Licence v3.0</a>. We show the postcode area only.</p></div></section>"""+
 _devon_html+
+_PLACE_BROWSE+
 prose(f"""<h2>Before you choose an agent</h2>
 <p class="notice"><strong>This list isn't complete.</strong> Companies House says the agents on it "have requested to have their details published. It may not include all agents that have registered as an ACSP." It also says it doesn't update the list on a set schedule, and that it "does not endorse or recommend the agents on this list". <a href="{ACSP_LIST}" rel="noopener">Companies House</a>.</p>
 <ul><li><strong>Ask your own accountant first.</strong> If you already have an accountant or solicitor, Companies House suggests asking them whether they're registered as an ACSP. <a href="{ACSP_USE}" rel="noopener">Companies House</a>.</li>
@@ -534,6 +581,82 @@ faqs=[("What is an ACSP?",f"An Authorised Corporate Service Provider, also known
 ("Is this the full list of ACSPs?",f"No. Companies House only publishes agents who asked to be listed, so it may not include every ACSP. <a href='{ACSP_LIST}'>Companies House</a>."),
 ("Do I have to use an ACSP?",f"No. You can verify yourself online with GOV.UK One Login if you have accepted photo ID. <a href='{IDV}'>Companies House</a>."),
 ("Is this the same as Making Tax Digital?",f"No. Companies House identity verification is separate from HMRC's Making Tax Digital for Income Tax. For MTD, use our <a href='../#checker'>checker</a>.")],signup=False)
+
+
+def _rows(xs):return "".join(f"<tr><td>{html.escape(a['n'])}</td><td>{html.escape(a['t'])}</td><td>{html.escape(a['d'])}</td><td>{html.escape(a['s'])}</td></tr>" for a in _byname(xs))
+def _table(xs):return f"<div style=\"overflow-x:auto\"><table><thead><tr><th>Name</th><th>Town</th><th>Postcode district</th><th>AML supervisor</th></tr></thead><tbody>{_rows(xs)}</tbody></table></div>"
+def _count_table(xs,keyf,head):
+    c={}
+    for a in xs:c[keyf(a)]=c.get(keyf(a),0)+1
+    return f"<table><thead><tr><th>{head}</th><th>Agents</th></tr></thead><tbody>"+"".join(f"<tr><td>{html.escape(k)}</td><td>{v}</td></tr>" for k,v in sorted(c.items(),key=lambda kv:(-kv[1],kv[0])))+"</tbody></table>"
+def _dist_area(a):
+    m=_re.match(r"[A-Z]+",(a["d"] or "").upper());return m.group() if m else "Not given"
+_SYNCED=_dt.date.fromisoformat(ACSP["synced"]).strftime("%-d %B %Y")
+def _checks(pre):
+    return (f"<h2>Before you choose an agent</h2><ul><li>Check they aren't on Companies House's <a href=\"{ACSP_CEASED}\" rel=\"noopener\">ceased or suspended list</a>. If they are, they can't act as an ACSP. <a href=\"{ACSP_LIST}\" rel=\"noopener\">Companies House</a>.</li>"
+      f"<li>Contact agents directly, or check their website, to find out what services they offer, what they charge, their terms and conditions, and whether they need to do checks in person or can work remotely. <a href=\"{ACSP_LIST}\" rel=\"noopener\">Companies House</a>.</li>"
+      f"<li>You may not need an agent. You can verify yourself online with GOV.UK One Login if you have accepted photo ID. <a href=\"{IDV}\" rel=\"noopener\">Companies House</a>.</li></ul>"
+      f"<p>More detail in our guide: <a href=\"{pre}guides/how-to-choose-an-acsp/\">how to choose an ACSP</a>.</p>")
+def _place_page(p):
+    path=f"acsp/{p['slug']}/";xs=p["agents"];n=len(xs);name=p["name"]
+    LM.DEPS[path]=["data/acsp.json"]
+    others="".join(f'<li><a href="../{q["slug"]}/">{html.escape(q["name"])}</a> ({len(q["agents"]):,})</li>' for q in PLACES if q["slug"]!=p["slug"])
+    if p["kind"]=="london":
+        jump="".join(f'<li><a href="#{k.lower()}">{k}: {lbl}</a> ({sum(1 for a in xs if _dist_area(a)==k)})</li>' for k,_,lbl in _LON_AREAS)
+        lists=f"<h2>By postcode area</h2><ul>{jump}</ul>"+"".join(
+            f'<h3 id="{k.lower()}">{k}: {lbl} ({len(sub)} agents)</h3>{_table(sub)}'
+            for k,_,lbl in _LON_AREAS for sub in [[a for a in xs if _dist_area(a)==k]] if sub)
+        breakdown=_count_table(xs,_dist_area,"Postcode area")
+        bhead="Agents by postcode area"
+    else:
+        lists="<h2>The list, A to Z</h2>"+_table(xs)
+        breakdown=_count_table(xs,lambda a:a["d"] or "Not given","Postcode district")
+        bhead="Agents by postcode district"
+    kindnote={"county":"This is a county page: places in the county with fewer than 5 agents on the list are covered here rather than on their own pages.","london":"London is one page, split into its eight postcode areas.","town":"Agents are included where Companies House's town field is "+name+"."}[p["kind"]]
+    body=(hero("Companies House identity checks",f"ACSPs in <em>{html.escape(name)}</em>",f"Authorised agents on Companies House's public list for {html.escape(p['scope'])}. Independent, and not run by Companies House.",
+        f"an ACSP (Authorised Corporate Service Provider), also known as a Companies House authorised agent, is an agent such as an accountant or solicitor who is registered with Companies House and supervised for anti-money laundering. You can ask one to verify your identity for Companies House. <a href='{ACSP_USE}' rel='noopener'>Source: Companies House</a>.")
+      +_acsp_sponsor(p["slug"])
+      +f"""<section class="wrap" id="acsp-place"><div class="card reveal"><p><strong>{n:,} agents</strong> on Companies House's public list match {html.escape(p['scope'])} (list published {_ad('source_active_updated')}, synced {_SYNCED}). {kindnote}</p>
+<p>Nobody pays to be on this list or to appear higher: it is listed A to Z. The official list may be incomplete, and Companies House does not endorse or recommend the agents on it. We are not endorsed by Companies House or HMRC.</p>
+<h3>{bhead}</h3>{breakdown}<h3>Agents by anti-money laundering supervisor</h3>{_count_table(xs,lambda a:a["s"],"AML supervisor")}</div></section>"""
+      +prose(lists+_checks("../../")+f"""<h2>Other places</h2><p>Search the whole list on <a href="../">Find an ACSP</a>, or try:</p><ul>{others}</ul>
+<p class="small">Data: Companies House, <a href="{ACSP_LIST}" rel="noopener">list of ACSPs</a> (published {_ad('source_active_updated')}), with anyone on the <a href="{ACSP_CEASED}" rel="noopener">ceased or suspended list</a> (published {_ad('source_ceased_updated')}) removed. Contains public sector information licensed under the <a href="{OGL}" rel="noopener">Open Government Licence v3.0</a>. We show the postcode district only. Town and postcode are as published by Companies House. General information, not legal or tax advice. MTD Finder isn't affiliated with Companies House or HMRC.</p>
+<p class="small">Accountant or solicitor on the list? <a href="../../sponsor/#accountants">Featured accountant slots</a> are available. They are labelled and never change the order.</p>"""))
+    page(path,f"ACSPs in {name}: Companies House authorised agents list",f"{n:,} Companies House authorised agents (ACSPs) for {p['scope']}, by AML supervisor and postcode. Independent, not run by Companies House.",body,
+         extra_ld={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":SITE+"/"},{"@type":"ListItem","position":2,"name":"Find an ACSP","item":SITE+"/acsp/"},{"@type":"ListItem","position":3,"name":name,"item":SITE+"/"+path}]},signup=False)
+for _p in PLACES:_place_page(_p)
+
+# ---- Guide: How to choose an ACSP (DRAFT). Every claim below rechecked 22 Nov 2026 against the GOV.UK pages linked; see mtdfinder-plans/acsp-batch1-draft-2026-11-22.md.
+page("guides/how-to-choose-an-acsp/","How to choose an ACSP (Companies House authorised agent)","How to find and choose an Authorised Corporate Service Provider (ACSP) to verify your identity for Companies House, what to ask, what to check, and when you don't need one.",
+hero("Guide","How to choose an <em>ACSP</em>","Finding a Companies House authorised agent to verify your identity, what to ask them, and what to check first.",
+ f"an ACSP (Authorised Corporate Service Provider) is an agent, such as an accountant or solicitor, who files on behalf of others and is supervised for anti-money laundering. If you need to verify your identity for Companies House, you can ask one to do it on your behalf. <a href='{ACSP_USE}' rel='noopener'>Source: Companies House</a>.")+
+prose(f"""<h2>Do you need an ACSP?</h2>
+<p>Not necessarily. You can verify yourself online with GOV.UK One Login if you have one of these: a biometric passport from any country, a UK photo driving licence (full or provisional), a UK biometric residence permit, a UK biometric residence card or a UK Frontier Worker permit. If you don't, GOV.UK has a service to find out if you can verify with bank or building society details, or in person at the Post Office. <a href="{IDV}" rel="noopener">Companies House: verify your identity</a>.</p>
+<p>Verifying through GOV.UK One Login is free. <a href="{IDV_NEWS}" rel="noopener">Companies House news</a>. An ACSP is another route, and you'll need to give them suitable identity documents. <a href="{IDV}" rel="noopener">Companies House</a>.</p>
+<h2>When do you need to verify?</h2>
+<p>Identity verification requirements for directors and people with significant control (PSCs) began on 18 November 2025, with a 12-month phase-in. Existing directors confirm they've verified when they file their company's next confirmation statement, and existing PSCs verify in line with an appointed day. <a href="{IDV_NEWS}" rel="noopener">Companies House news</a>. Your own dates depend on your role: see <a href="{IDV_WHEN}" rel="noopener">when you need to verify</a>, and check your due dates on the Companies House register.</p>
+<h2>How to find an ACSP</h2>
+<ul><li><strong>Ask who you already use.</strong> If you have an accountant or solicitor (or any other AML-supervised professional), ask whether they're registered with Companies House as an ACSP. <a href="{ACSP_USE}" rel="noopener">Companies House</a>.</li>
+<li><strong>Use the public list.</strong> Companies House publishes a <a href="{ACSP_LIST}" rel="noopener">list of ACSPs</a>. The agents on it asked to have their details published, so it may not include every ACSP, and it isn't updated on a set schedule. You can search it on our <a href="../../acsp/">Find an ACSP</a> page, by town or postcode, or browse <a href="../../acsp/london/">London</a>, <a href="../../acsp/manchester/">Manchester</a>, <a href="../../acsp/birmingham/">Birmingham</a>, <a href="../../acsp/glasgow/">Glasgow</a>, <a href="../../acsp/bristol/">Bristol</a> or <a href="../../acsp/devon/">Devon</a>.</li></ul>
+<p>Companies House does not endorse or recommend the agents on its list, and neither do we. <a href="{ACSP_LIST}" rel="noopener">Companies House</a>.</p>
+<h2>What to ask</h2>
+<p>Companies House recommends researching an agent's reputation and experience. Contact agents directly, or check their websites, to find out:</p>
+<ul><li>what services they offer, for example accounts, filing or identity verification</li><li>what they charge</li><li>their terms and conditions</li><li>whether they need to do checks in person or can work remotely</li></ul>
+<p><a href="{ACSP_LIST}" rel="noopener">Companies House</a>.</p>
+<h2>What to check before you hand anything over</h2>
+<ul><li><strong>They aren't on the ceased or suspended list.</strong> An agent on <a href="{ACSP_CEASED}" rel="noopener">that list</a> can't act as an ACSP. Companies House updates the list every 2 weeks, so a recent change could take up to 2 weeks to appear. <a href="{ACSP_CEASED}" rel="noopener">Companies House</a>.</li>
+<li><strong>They're supervised for anti-money laundering.</strong> To register as an ACSP, an agent must be supervised by a UK AML supervisory body. <a href="{ACSP_LIST}" rel="noopener">Companies House</a>. For businesses supervised by HMRC, there's a <a href="{AML_HMRC}" rel="noopener">Supervised Business Register</a>. HMRC says being on it is not an endorsement to enter into any commercial transactions with the business. If your agent has a professional body as supervisor, check with that body.</li>
+<li><strong>Don't let others use your identity.</strong> Companies House warns: do not sell or give away your identity to enable people you don't trust to set up or run a company, because criminals can take out loans and other debt in your name and you will be legally responsible. <a href="{IDV}" rel="noopener">Companies House</a>.</li></ul>
+<h2>What the agent needs from you</h2>
+<p>Your full name, your home address, your email address, and evidence to prove your identity. Your ACSP will tell you which evidence you can use. <a href="{ACSP_USE}" rel="noopener">Companies House</a>.</p>
+<h2>What happens next</h2>
+<p>Companies House sends your personal code to the email address you gave your ACSP, so make sure it's correct and you can access it. You should receive it within a few hours, and you may need to check your spam or junk folder. If it doesn't arrive, contact your ACSP to check which email address they gave, and if that's correct, contact Companies House and ask for the ACSP team. If you use your personal code to connect your verified identity to Companies House's records, a verification statement on the public register shows your name, the date you were verified, the ACSP's name and the AML supervisory bodies the ACSP is registered with. <a href="{ACSP_USE}" rel="noopener">Companies House</a>.</p>
+<h2>Search the list</h2>
+<p><a class="btn" href="../../acsp/">Find an ACSP</a></p>
+<p class="small">General information only, not legal or tax advice. MTD Finder is independent and isn't affiliated with, or endorsed by, Companies House or HMRC. Nobody pays to be on our ACSP list or to appear higher on it. Facts checked against the GOV.UK pages linked above on 22 November 2026.</p>"""),
+faqs=[("Do I have to use an ACSP?",f"No. You can verify yourself online with GOV.UK One Login if you have accepted photo ID, and it's free. <a href='{IDV}'>Companies House</a>."),
+("Is the Companies House list complete?",f"No. The agents on it asked to have their details published, so it may not include all ACSPs. <a href='{ACSP_LIST}'>Companies House</a>."),
+("How do I check an agent hasn't been ceased or suspended?",f"Look them up on Companies House's <a href='{ACSP_CEASED}'>ceased or suspended list</a>. It's updated every 2 weeks.")])
 
 # ---- Tax adviser registration + AML supervision (D-017 / A-054). Facts: /workspace/mtdfinder-plans/d017-sources.md (re-checked 5 Nov 2026).
 # Window end dates use the 18ths (GOV.UK news 18 Aug 2026 + SI 2026/807 appointed days). MTAR10800 still shows 17ths; see d017-sources.md note 5a.

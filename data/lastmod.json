@@ -8,8 +8,32 @@
   "lastmod": "2026-10-26"
  },
  "acsp/": {
-  "hash": "1299c5368e5004e9e955f50515fb678a6f2a49e21dc74630b334ea8d979888f3",
-  "lastmod": "2026-11-16"
+  "hash": "9fbfd37ab024a7d566c149021456ec78640cd99da1b3af2000cd8b961ccd2dee",
+  "lastmod": "2026-11-22"
+ },
+ "acsp/birmingham/": {
+  "hash": "fd3123c6d77e972f7443a9434c2b153b17b8889fbccb015edab7fb8f2a36be4b",
+  "lastmod": "2026-11-22"
+ },
+ "acsp/bristol/": {
+  "hash": "0b7383badcadc4f32d9d2e860322362ba29b3af9eebe7e33dc5325ec355b8d21",
+  "lastmod": "2026-11-22"
+ },
+ "acsp/devon/": {
+  "hash": "cbc63004841c0c2c93ab427183971a6e07228b354102e9bbfdc118fe483365a0",
+  "lastmod": "2026-11-22"
+ },
+ "acsp/glasgow/": {
+  "hash": "2b40a5a8adba7db76d5ec4fca70218faca7a3b852de0419ef133832ba8e35b44",
+  "lastmod": "2026-11-22"
+ },
+ "acsp/london/": {
+  "hash": "1b2b898188e1948906fcc60cadeb1139e9ac7daa734d9e2654c926db65faa2f8",
+  "lastmod": "2026-11-22"
+ },
+ "acsp/manchester/": {
+  "hash": "14fc9a4796033b8e3a0658f63554efc0e9a1acf21613df17781328d7cb869d26",
+  "lastmod": "2026-11-22"
  },
  "disclaimer/": {
   "hash": "a2748b1c8a58b914307f1f316d31270d779864740f5833fe512b992251dd8204",
@@ -43,6 +67,10 @@
   "hash": "2d3ff5d7b265bf45aea8f51ca79741e1c20c0045c74b1288aa80b487a849df7b",
   "lastmod": "2026-11-11"
  },
+ "guides/how-to-choose-an-acsp/": {
+  "hash": "f70758425b18b47542a884c811d4c0f1f4a9a3afd3154d5092131fd6aeab47d9",
+  "lastmod": "2026-11-22"
+ },
  "guides/landlords/": {
   "hash": "d2fee214565fc27dd292cfdc2a3eb2bf9f6c394ebb8c8faa1298fd3d4780e24b",
   "lastmod": "2026-11-11"
@@ -64,16 +92,16 @@
   "lastmod": "2026-10-29"
  },
  "sponsor/": {
-  "hash": "62b73376278e836200be71bbd44d7260694f58c97d7f9425bcd02c623d5a10af",
-  "lastmod": "2026-11-11"
+  "hash": "123a91ecdb96640b285e84bd7fa29c2d5f28d3a64930ce7c88d602a8a7ff63d3",
+  "lastmod": "2026-11-22"
  },
  "tax-adviser-registration/": {
   "hash": "4dd022e25a8dcda0033edae5b6b7fa06aeecf7059305cbaa345b3eee22339a96",
   "lastmod": "2026-11-05"
  },
  "terms/": {
-  "hash": "399e915978d5d5aa1522b09db8f502b9038f902108425fcbd7f691ee24e948e2",
-  "lastmod": "2026-10-28"
+  "hash": "1eb44477e2a7849689df08dcf21f86dd9ccb33743a6962b1ea5f143cff0b76bc",
+  "lastmod": "2026-11-22"
  },
  "workbook/": {
   "hash": "7889bd1516e6ad76403464bbe79eefd674c10640a4642b043b9cf36e7dee96ff",
