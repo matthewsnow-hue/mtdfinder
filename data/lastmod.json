@@ -1,7 +1,7 @@
 {
  "": {
-  "hash": "72bcc6b1e35d53215f54dc153ed8f3b40d46b22b104b3e418179b7a8ddff252b",
-  "lastmod": "2026-11-16"
+  "hash": "e182612e0bf844862a899ad34c511a842fbd74f1bbb5d4f0c6f005dcbd0402e1",
+  "lastmod": "2026-11-23"
  },
  "about/": {
   "hash": "82a5a24b0e914f72f0ebaad661e9f8fe89f804837822ff68d95f5465262d6fac",
@@ -44,8 +44,8 @@
   "lastmod": "2026-11-16"
  },
  "finder/": {
-  "hash": "27c39dbf2d191a44af9420076562f693a0dadc44ec2184739eb8d48fcbe921bd",
-  "lastmod": "2026-11-16"
+  "hash": "72e1a0240e6997a76b4e2167ccd7439dae6eb29fc54e732763ef2a2442df2943",
+  "lastmod": "2026-11-23"
  },
  "guides/30k-threshold-april-2027/": {
   "hash": "07c261368ed526894361c85946446dcda4570dde761dfc2a0540a5ea8eaa51eb",
@@ -60,7 +60,7 @@
   "lastmod": "2026-11-11"
  },
  "guides/deadline-calendar/": {
-  "hash": "637b48df6da08f8bdb4bc107c4b37b4dcff91c945bfafddabcd700a31cc99385",
+  "hash": "430479d65a96198d0f52ed1ba720e7617ee987fae1d75313a900a6074a7bd795",
   "lastmod": "2026-11-23"
  },
  "guides/deadlines/": {
@@ -80,8 +80,8 @@
   "lastmod": "2026-11-23"
  },
  "guides/tradespeople/": {
-  "hash": "15bd2330f47ed65149e96b68498d25e74d0f17edb286201305959dd8bda8a0e7",
-  "lastmod": "2026-11-16"
+  "hash": "3f8695ac14d659e3704da03334f9dab21e66185060d5e597c2af1dcbc4f0d354",
+  "lastmod": "2026-11-23"
  },
  "newsletter/": {
   "hash": "f32416eb2d95ca0178f1a592eceef37affc4f9bd533cb5045f1174a694398fbb",
