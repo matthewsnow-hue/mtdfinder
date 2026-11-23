@@ -431,7 +431,7 @@ prose(f"""<h2>The dates</h2><table><thead><tr><th>Date</th><th>What's due</th></
 <li><strong>Sign up with HMRC</strong> and authorise your software. <a href="{SIGN}" rel="noopener">HMRC: sign up</a>.</li>
 <li><strong>Keep digital records</strong> of your income and expenses as you go.</li>
 <li><strong>Send a quarterly update by each deadline.</strong> Each one covers the tax year so far, not just the last three months. If you had no income or expenses, you still send one. <a href="{QU}" rel="noopener">HMRC</a>.</li>
-<li><strong>Know the penalty rules.</strong> HMRC won't give penalty points for late quarterly updates in 2026 to 2027, but you must send them before you can file your tax return. From 2027 to 2028, four points means a £200 penalty. <a href="{QU}" rel="noopener">HMRC</a>. The Budget 2026 document says people joining MTD for Income Tax in April 2027 won't get penalty points for late submission of their first four quarterly updates for the 2027 to 2028 tax year (<a href="{BUD}" rel="noopener">Budget 2026</a>; <a href="{OOT}" rel="noopener">HMRC overview 2.36</a>).</li>
+<li><strong>Know the penalty rules.</strong> HMRC won't give penalty points for late quarterly updates in your first tax year in MTD (2026 to 2027 if you joined in April 2026, 2027 to 2028 if you join in April 2027), but you must send them before you can file your tax return, and a late tax return still gets a point. After that, each missed deadline gets a point, and four points means a £200 penalty. <a href="{PEN}" rel="noopener">HMRC: penalties</a>.</li>
 <li><strong>File your tax return</strong> through your software by 31 January after the tax year. <a href="{TR}" rel="noopener">HMRC</a>.</li>
 </ol>
 <p class="small">General information, not tax advice. If you have an accountant, check with them which update periods to use.</p>"""),
@@ -790,7 +790,7 @@ open(f"{ROOT}/llms.txt","w").write(f"""# MTD Finder
 - Over £20,000 in 2026-27: from 6 April 2028
 - Quarterly update deadlines: 7 August, 7 November, 7 February, 7 May ({QU})
 - Each quarterly update is cumulative from the start of the tax year; a nil update is still required ({QU})
-- No penalty points for late quarterly updates in 2026-27; from 2027-28, 4 points = £200 penalty ({QU}); Budget 2026 says people joining MTD in April 2027 get no penalty points for late submission of their first four quarterly updates for 2027-28 (Budget 2026: {BUD}; HMRC overview 2.36: {OOT})
+- No penalty points for late quarterly updates in your first MTD tax year if you're mandated from 6 April 2026 or 6 April 2027 (confirmed by HMRC 19 Nov 2026); quarterly updates still required and late tax returns still get a point; after that, 4 points = £200 penalty ({PEN})
 - Partnerships: later, timeline not yet set ({ELIG})
 - Facts last checked against GOV.UK: {UPDATED}
 
